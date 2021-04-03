@@ -1,8 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
 import api from '../../../backendAPI'
-import store, { dispatch as $d } from '../../../store'
-import * as TabActions from 'components/Tab/actions'
 import cx from 'classnames'
 import dispatchCommand from 'commands/dispatchCommand'
 

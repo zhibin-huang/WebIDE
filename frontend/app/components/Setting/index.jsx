@@ -2,17 +2,10 @@ import React from 'react'
 import { inject, observer } from 'mobx-react'
 import cx from 'classnames'
 import i18n from 'utils/createI18n'
-import ExtensionList from '../Plugins/extensionList'
 import SettingForm from './SettingForm'
 import KeymapSetting from './KeymapSetting'
 import EditorSetting from './EditorSetting'
 
-const ExtensionSetting = () => (
-  <div>
-    <h2 className='settings-content-header'>{i18n`settings.extension.main`}</h2>
-    <ExtensionList />
-  </div>
-)
 
 const DomainSetting = ({ content, domainKey, component }) => {
   if (component) return component
@@ -26,8 +19,6 @@ const DomainSetting = ({ content, domainKey, component }) => {
       return <EditorSetting content={content} />
     case 'KEYMAP':
       return <KeymapSetting content={content} />
-    case 'EXTENSIONS':
-      return <ExtensionSetting />
   }
 }
 

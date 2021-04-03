@@ -1,7 +1,6 @@
 import flattenDeep from 'lodash/flattenDeep'
 import { registerAction } from 'utils/actions'
 import is from 'utils/is'
-import { action, when } from 'mobx'
 import api from 'backendAPI'
 import state, { FileNode } from './state'
 

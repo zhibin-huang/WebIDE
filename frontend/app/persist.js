@@ -3,7 +3,6 @@ import localforage from 'localforage'
 import config from './config'
 import { hydrate as editorTabHydrate } from './components/Tab/actions'
 import { hydrate as settingsHydrate } from './components/Setting/state'
-import { hydrate as pluginsHydrate } from './components/Plugins/actions'
 import fileState, { hydrate as fileHydrate } from './commons/File/state'
 
 
@@ -22,7 +21,7 @@ function persistStore (store, transform) {
         // 初次等spacekey出现存
     if (config.spaceKey && !mainStore._config.storeName) {
       mainStore.config({ storeName: config.spaceKey })
-    } else if (mainStore._config.storeName && (config.globalKey || !config.isPlatform)) {
+    } else if (mainStore._config.storeName) {
       if (config.hasRehydrated) {
         mainStore.setItem(`${config.spaceKey}.${config.globalKey}`, transformedStore)
       } else {
@@ -50,7 +49,6 @@ const hydrateAction = {
   FileState: fileHydrate,
   EditorTabState: editorTabHydrate,
   SettingState: settingsHydrate,
-  PluginsState: pluginsHydrate
 }
 
 function autoRehydrate (store) {

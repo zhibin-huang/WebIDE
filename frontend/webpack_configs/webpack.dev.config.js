@@ -3,29 +3,12 @@ const path = require('path')
 const merge = require('webpack-merge')
 const str = JSON.stringify
 const commonConfig = require('./common.config.js')
-
 const devServer = require('./devServer.config')
 const stylesheet = require('./stylesheet.config')
 
-const fs = require('fs')
-const YAML = require('yamljs')
-
-let getPluginsPorts = ''
-const TASK_YAML = path.resolve(__dirname, '../task.yaml')
-
-try {
-  const data = fs.readFileSync(TASK_YAML, 'utf-8')
-  getPluginsPorts = YAML.parse(data).apps
-  .filter(task => task.name && task.name.split('-')[0] === 'plugin')
-  .map(task => task.env ? task.env.PORT || 4000 : 4000)
-  console.log(`find ${getPluginsPorts.length} dev ports`, getPluginsPorts.join(','))
-} catch (e) {
-  console.log('find task error', e && e.message)
-}
-
 const reactHotLoaderPrependEntries = [
   'react-hot-loader/patch',
-  'webpack-dev-server/client?http://ide.test:8060',
+  'webpack-dev-server/client?http://localhost:8060',
   'webpack/hot/only-dev-server',
 ]
 
@@ -63,9 +46,6 @@ const config = merge(
       __BACKEND_URL__: str(process.env.BACKEND_URL || ''),
       __WS_URL__: str(process.env.WS_URL || ''),
       __STATIC_SERVING_URL__: str(process.env.STATIC_SERVING_URL || ''),
-      __PACKAGE_DEV__: process.env.PACKAGE_DEV,
-      __PACKAGE_SERVER__: str(process.env.PACKAGE_SERVER || process.env.HTML_BASE_URL || ''),
-      __PACKAGE_PORTS__: str(getPluginsPorts),
       __NODE_ENV__: str(process.env.NODE_ENV || ''),
     }),
   ]

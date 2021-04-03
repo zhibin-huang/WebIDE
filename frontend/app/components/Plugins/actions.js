@@ -1,32 +1,11 @@
 import { registerAction } from 'utils/actions'
 import { PluginRegistry } from 'utils/plugins'
-import { autorun, observable } from 'mobx'
+import { observable } from 'mobx'
 import config from 'config'
 import store from './store'
-import api from '../../backendAPI'
-
 
 export const PLUGIN_REGISTER_VIEW = 'PLUGIN_REGISTER_VIEW'
 export const PLUGIN_UNREGISTER_VIEW = 'PLUGIN_UNREGISTER_VIEW'
-export const PACKAGE_UPDATE_LIST = 'PACKAGE_UPDATE_LIST'
-
-export const updatePackageList = registerAction(PACKAGE_UPDATE_LIST, () => {
-  api.fetchPackageList()
-  .then((result) => {
-    store.list.replace(result.map(e => {
-      const current = store.list.find(obj => obj.name === e.name)
-      return ({ enabled: current ? current.enabled || false : false, ...e })
-    }))
-  })
-})
-
-
-export const PACKAGE_UPDATE_LOCAL = 'PACKAGE_UPDATE_LOCAL'
-
-// 往本地localstoage写一个插件的信息
-
-export const updateLocalPackage = registerAction(PACKAGE_UPDATE_LOCAL, p => p)
-
 export const PACKAGE_TOGGLE = 'PACKAGE_TOGGLE'
 
 export const togglePackage = registerAction(PACKAGE_TOGGLE,
@@ -95,61 +74,6 @@ export const togglePackage = registerAction(PACKAGE_TOGGLE,
   })
 })
 
-export const FETCH_PACKAGE = 'FETCH_PACKAGE'
-export const FETCH_PACKAGE_GROUP = 'FETCH_PACKAGE_GROUP'
-
-
-export const fetchPackageGroup = registerAction(FETCH_PACKAGE_GROUP,
-(groupName, pkgs, type, data) => ({ groupName: `group_${groupName}`, pkgs, type, data }),
-({ groupName, pkgs, type, data }) => {
-  const scriptArguments = pkgs.map((pkg => ({ pkgName: pkg.name, pkgVersion: pkg.version, target: pkg.TARGET })))
-  return api.fetchPackageScript(scriptArguments)
-  .then((script) => {
-    localStorage.setItem(groupName, script)
-    codingPackageJsonp.groups[groupName] = pkgs.map(pkg => pkg.name)
-    // Todo: refractor the toggle package model
-    return togglePackage({ pkgId: groupName, shouldEnable: !PluginRegistry.find(groupName), type, data })
-  })
-}
-)
-
-export const fetchPackage = registerAction(FETCH_PACKAGE,
-(pkg, type, data) => ({ pkg, type, data }),
-({ pkg, type, data }) => api.fetchPackageScript({ pkgName: pkg.name, pkgVersion: pkg.version, target: pkg.TARGET })
-  .then((script) => {
-    localStorage.setItem(pkg.name, script)
-    return pkg.name
-  })
-  .then(pkgId => togglePackage({ pkgId, shouldEnable: true, type, data })))
-
-
-export const PRELOAD_REQUIRED_EXTENSION = 'PRELOAD_REQUIRED_EXTENSION'
-
-
-// 插件申明加载时机，
-export const loadPackagesByType = registerAction(PRELOAD_REQUIRED_EXTENSION,
-  // type is the packages type, data is the state data , group is the batch
-  (type, data = {}, group) => ({ type, data, group }),
-  ({ type, data, group }) => {
-    const fetchPackgeListPromise = api.fetchPackageList(type)
-    return fetchPackgeListPromise.then(async (list) => {
-      if (config.isLib) {
-        const filterList = list.filter((item) => {
-          return item.name !== 'platform' && item.name !== 'Debugger' && item.name !== 'collaboration'
-        })
-        store.list.replace(filterList)
-      } else {
-        store.list.replace(list)
-      }
-      if (group) {
-        return fetchPackageGroup('required', store.list, type, data)
-      }
-      for (const pkg of filterList) {
-        await fetchPackage(pkg, type, data)
-      }
-    })
-  }
-)
 
 export const mountPackagesByType = (type) => {
   const plugins = PluginRegistry.findAllByType(type)
@@ -167,11 +91,6 @@ export const mountPackage = (id, unMount) => {
   }
 }
 
-export const hydrate = (requiredList) => {
-  requiredList.forEach((element) => {
-    fetchPackage(element).then(({ id }) => mountPackage(id))
-  })
-}
 
 export const loadPlugin = (plugin) => {
   const { Manager = (() => null), key } = plugin
@@ -180,6 +99,7 @@ export const loadPlugin = (plugin) => {
   PluginRegistry.set(key, { ...plugin, pkgId: 'inner plugin', info: plugin.info || {} })
   manager.pluginWillMount(config)
 }
+
 /**
  * @param  { position label getComponent callback } children // children is the shape of per component
 

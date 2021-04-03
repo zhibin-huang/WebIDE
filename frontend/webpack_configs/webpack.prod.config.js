@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const str = JSON.stringify
 const commonConfig = require('./common.config.js')
-
 const stylesheet = require('./stylesheet.config')
 const uglify = require('./uglify.config')
 

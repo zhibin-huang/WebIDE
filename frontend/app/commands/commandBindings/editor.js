@@ -1,5 +1,3 @@
-import store, { dispatch as $d } from '../../store'
-import api from '../../backendAPI'
 import * as Pane from '../../components/Pane/actions'
 
 export default {

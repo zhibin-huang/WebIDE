@@ -1,5 +1,4 @@
 import { registerAction } from 'utils/actions'
-import api from 'backendAPI'
 
 const selectNode = registerAction('FILETREE_SELECT_NODE',
   (nodeOrOffset, multiSelect) => ({ nodeOrOffset, multiSelect }),

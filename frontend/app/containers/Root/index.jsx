@@ -6,7 +6,6 @@ import { Provider as MobxProvider } from 'mobx-react'
 import store from '../../store' // initLifecycle_1: gives the defaultState
 import mobxStore from '../../mobxStore'
 import IDE from '../IDE'
-import { initState } from './actions'
 
 class Root extends Component {
   static proptypes = {

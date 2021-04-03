@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
-import { mountPackage, updatePackageList, fetchPackage } from './actions'
+import { mountPackage} from './actions'
 import store from './store'
 
 
@@ -10,10 +10,7 @@ function handleRequired (card) {
   if (card.enabled) {
     mountPackage(card.name, true)
     storeCard.enabled = false
-  } else {
-    fetchPackage(card).then(({ id }) => mountPackage(id))
-    storeCard.enabled = true
-  }
+  } 
 }
 
 
@@ -57,9 +54,7 @@ class ExtensionList extends Component {
   state = {
     searchKey: ''
   }
-  componentWillMount () {
-    updatePackageList()
-  }
+ 
   render () {
     const data = store.list
     return (

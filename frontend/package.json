@@ -13,7 +13,6 @@
     "npm": ">=3.0.0"
   },
   "scripts": {
-    "start-platform": "RUN_MODE=platform webpack-dev-server --port=8060 --progress --colors",
     "start": "webpack-dev-server --progress --colors",
     "clean": "rm -rf build",
     "build": "npm run clean && node_modules/.bin/webpack && npm run after-build",
@@ -24,11 +23,7 @@
     "test": "./node_modules/.bin/jest --config app/js.config.json --coverage",
     "testw": "./node_modules/.bin/jest --config app/js.config.json --watch",
     "i18n": "node .i18nGenerator.js",
-    "packageList": "node packageListServer.js",
-    "pm2": "pm2 start task.yaml",
-    "clean-dist": "rm -rf dist",
-    "build-lib": "npm run clean-dist && PACKAGE_DEV=false RUN_MODE=lib BACKEND_URL=http://ide-backend.xiayule.net WS_URL=http://ide-ws.xiayule.net STATIC_SERVING_URL=http://{space-key}-static-{access-token}.xiayule.net PACKAGE_SERVER=http://ide.xiayule.net node_modules/.bin/webpack",
-    "start-lib": "npm run clean-dist && PACKAGE_DEV=false RUN_MODE=lib NODE_ENV=dev BACKEND_URL=http://ide-backend.xiayule.net WS_URL=http://ide-ws.xiayule.net STATIC_SERVING_URL=http://{space-key}-static-{access-token}.xiayule.net PACKAGE_SERVER=http://ide.xiayule.net webpack-dev-server --progress --colors"
+    "pm2": "pm2 start task.yaml"
   },
   "keywords": [
     "coding",

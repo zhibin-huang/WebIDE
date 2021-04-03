@@ -1,8 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import cx from 'classnames'
-import { observer, inject } from 'mobx-react'
+import { observer } from 'mobx-react'
 import { observable } from 'mobx'
 import dispatchCommand from 'commands/dispatchCommand'
 import api from '../../backendAPI'
@@ -38,16 +36,6 @@ class WelcomePage extends Component {
         <h2>Recent</h2>
         <div className='block recent-block'>
           {this.renderRecentItem()}
-        </div>
-
-        <h2>Help</h2>
-        <div className='block help-block'>
-          <div className='link-item'>
-            <a href='https://coding.net/help/doc/webide/' target='blank'>Document</a>
-          </div>
-          <div className='link-item'>
-            <a href='https://coding.net/feedback' target='blank'>Feedback</a>
-          </div>
         </div>
       </div>
     )

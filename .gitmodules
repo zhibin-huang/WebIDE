@@ -1,9 +1,0 @@
-[submodule "backend"]
-	path = backend
-	url = ../WebIDE-Backend.git
-[submodule "frontend"]
-	path = frontend
-	url = ../WebIDE-Frontend.git
-[submodule "frontend-webjars"]
-	path = frontend-webjars
-	url = ../WebIDE-Frontend-Webjars.git

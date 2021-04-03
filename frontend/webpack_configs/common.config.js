@@ -4,7 +4,6 @@ const str = JSON.stringify
 const { optimize: { CommonsChunkPlugin }, DefinePlugin } = webpack
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const merge = require('webpack-merge')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const gitRevisionPlugin = new GitRevisionPlugin()
 

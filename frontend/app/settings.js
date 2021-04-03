@@ -10,17 +10,11 @@ window.themeVariables = observable.map({})
 let EditorState
 import('components/Editor/state').then(res => EditorState = res.default)
 
-let uiOptions = []
-if (config.isLib) {
-  uiOptions = [
-    { name: 'settings.appearance.uiThemeOption.dark', value: 'dark' },
-  ]
-} else  {
-  uiOptions = [
+let uiOptions = [
     { name: 'settings.appearance.uiThemeOption.baseTheme', value: 'base-theme' },
     { name: 'settings.appearance.uiThemeOption.dark', value: 'dark' },
   ]
-}
+
 export const UIThemeOptions = uiOptions
 export const SyntaxThemeOptions = ['default', 'neo', 'eclipse', 'monokai', 'material']
 

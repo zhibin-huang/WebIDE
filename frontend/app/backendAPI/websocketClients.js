@@ -3,7 +3,7 @@ import SockJS from 'sockjs-client'
 import getBackoff from 'utils/getBackoff'
 import emitter, * as E from 'utils/emitter'
 import config from 'config'
-import { autorun, runInAction } from 'mobx'
+import { runInAction } from 'mobx'
 import { notify, NOTIFY_TYPE } from '../components/Notification/actions'
 
 const log = console.log || (x => x)
@@ -12,11 +12,9 @@ const warn = console.warn || (x => x)
 const io = require(__RUN_MODE__ ? 'socket.io-client/dist/socket.io.min.js' : 'socket.io-client-legacy/dist/socket.io.slim.js')
 
 class FsSocketClient {
-  constructor () {
+  constructor() {
     if (FsSocketClient.$$singleton) return FsSocketClient.$$singleton
-    const url = config.isPlatform ?
-      `${config.wsURL}/sockjs/${config.spaceKey}`
-    : `${config.baseURL}/sockjs/`
+    const url = `${config.baseURL}/sockjs/`
     // SockJS auto connects at initiation
     this.sockJSConfigs = [url, {}, { server: `${config.spaceKey}`, transports: 'websocket' }]
     this.backoff = getBackoff({
@@ -28,7 +26,7 @@ class FsSocketClient {
     emitter.on(E.SOCKET_RETRY, this.reconnect.bind(this))
   }
 
-  connect () {
+  connect() {
     if (!this.socket || !this.stompClient) {
       this.socket = new SockJS(...this.sockJSConfigs)
       this.stompClient = Stomp.over(this.socket)
@@ -58,7 +56,7 @@ class FsSocketClient {
     this.stompClient.connect({}, success, error)
   }
 
-  reconnect () {
+  reconnect() {
     if (config.fsSocketConnected) return
     log(`try reconnect fsSocket ${this.backoff.attempts}`)
     // unset this.socket
@@ -68,7 +66,7 @@ class FsSocketClient {
       log(`Retry after ${retryDelay}ms`)
       const timer = setTimeout(
         this.connect.bind(this)
-      , retryDelay)
+        , retryDelay)
     } else {
       emitter.emit(E.SOCKET_TRIED_FAILED)
       notify({ message: i18n`global.onSocketError`, notifyType: NOTIFY_TYPE.ERROR })
@@ -77,7 +75,7 @@ class FsSocketClient {
     }
   }
 
-  close () {
+  close() {
     const self = this
     if (config.fsSocketConnected) {
       self.socket.close(1000, 123)
@@ -88,25 +86,11 @@ class FsSocketClient {
 
 
 class TtySocketClient {
-  constructor () {
+  constructor() {
     if (TtySocketClient.$$singleton) return TtySocketClient.$$singleton
-    if (config.isPlatform) {
-      const wsUrl = config.wsURL
-      const firstSlashIdx = wsUrl.indexOf('/', 8)
-      const [host, path] = firstSlashIdx === -1 ? [wsUrl, ''] : [wsUrl.substring(0, firstSlashIdx), wsUrl.substring(firstSlashIdx)]
-      this.socket = io.connect(host, {
-        forceNew: true,
-        reconnection: false,
-        autoConnect: false,     // <- will manually handle all connect/reconnect behavior
-        reconnectionDelay: 1500,
-        reconnectionDelayMax: 10000,
-        reconnectionAttempts: 5,
-        path: `${path}/tty/${config.shardingGroup}/${config.spaceKey}/connect`,
-        transports: ['websocket']
-      })
-    } else {
-      this.socket = io.connect(config.baseURL, { resource: 'coding-ide-tty1' })
-    }
+
+    this.socket = io.connect(config.baseURL, { resource: 'coding-ide-tty1' })
+
 
     this.backoff = getBackoff({
       delayMin: 1500,
@@ -121,35 +105,7 @@ class TtySocketClient {
     return this
   }
 
-  // manually handle all connect/reconnect behavior
-  connectingPromise = undefined
-  connect () {
-    if (!config.isPlatform) return
-    // Need to make sure EVERY ATTEMPT to connect has ensured `fsSocketConnected == true`
-    if (!this.socket || this.socket.connected || this.connectingPromise) return this.connectingPromise
-    let resolve, reject
-    this.connectingPromise = new Promise((rsv, rjt) => { resolve = rsv; reject = rjt })
-    const dispose = autorun(() => { if (config.fsSocketConnected) resolve(true) })
-    this.connectingPromise.then(() => {
-      dispose()
-      this.connectingPromise = undefined
-
-      // below is the actual working part of `connect()` method,
-      // all logic above is just for ensuring `fsSocketConnected == true`
-      this.socket.io.connect((err) => {
-        if (err) {
-          runInAction(() => config.ttySocketConnected = false)
-          return this.reconnect()
-        }
-        // success!
-        runInAction(() => config.ttySocketConnected = true)
-        this.backoff.reset()
-      })
-      this.socket.connect()
-    })
-  }
-
-  reconnect () {
+  reconnect() {
     log(`try reconnect ttySocket ${this.backoff.attempts}`)
     if (this.backoff.attempts <= this.maxAttempts && !this.socket.connected) {
       const timer = setTimeout(() => {
@@ -160,7 +116,7 @@ class TtySocketClient {
       this.backoff.reset()
     }
   }
-  close () {
+  close() {
     if (config.ttySocketConnected) {
       this.socket.disconnect('manual')
       TtySocketClient.$$singleton = null

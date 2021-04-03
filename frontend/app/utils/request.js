@@ -8,10 +8,6 @@ const _request = axios.create({
   baseURL: config.baseURL,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
-    ...(config.isPlatform && {
-      'X-Requested-With': 'XMLHttpRequest',
-      Accept: 'application/vnd.coding.v2+json'
-    })
   },
   mode: 'cors',
   withCredentials: true,
@@ -50,18 +46,8 @@ const promiseInterceptor = (promise) => {
   return promise
 }
 
-const requestInterceptor = request.interceptors.request.use((options) => {
-  if (config.isPlatform && config.spaceKey && config.spaceKey !== 'default') {
-    options.headers['X-Space-Key'] = config.spaceKey
-  }
-  return options
-})
-
 const responseRedirect = function (response) {
-  if (config.isPlatform && response && response.headers['requests-auth'] === '1') {
-    const authUrl = response.headers['requests-auth-url']
-    location.href = authUrl
-  }
+ 
 }
 
 const responseInterceptor = request.interceptors.response.use((response) => {
@@ -107,9 +93,6 @@ request.diff = function (url, params, options = {}) {
     params,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      ...(config.isPlatform && {
-        Accept: 'application/vnd.coding.v2.diff+json'
-      })
     },
     ...options,
   })
@@ -121,9 +104,6 @@ request.diffFilesList = function (url, params, options = {}) {
     params,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      ...(config.isPlatform && {
-        Accept: 'application/vnd.coding.v2.diff-files-list+json'
-      })
     },
     ...options,
   })
@@ -140,9 +120,6 @@ request.postJSON = function (url, data, options = {}) {
     data,
     headers: {
       'Content-Type': 'application/json',
-      ...(config.isPlatform && {
-        Accept: 'application/vnd.coding.v2+json'
-      })
     },
     ...options,
   })

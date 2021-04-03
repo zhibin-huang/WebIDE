@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
-import api from 'backendAPI'
 import { isFunction } from 'utils/is'
 import Menu from '../Menu'
 import PluginArea from '../../components/Plugins/component'
@@ -30,10 +29,6 @@ class MenuBar extends Component {
     } else {
       this.setState({ activeItemIndex: index })
     }
-  }
-
-  handleSwitch = () => {
-    api.switchVersion()
   }
 
   activatePrevMenuItem = () => {
