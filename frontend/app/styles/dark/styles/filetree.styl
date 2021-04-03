@@ -1,0 +1,31 @@
+.filetree-node.focus {
+  color: $text-color-highlight;
+  > .filetree-node-bg {
+    background-color: $tree-view-background-color-highlight;
+  }
+}
+
+.filetree-container {
+  color: $text-color;
+  background-color: #252526;
+  .filetree-node-container.highlight,
+  .filetree-node.focus {
+    background-color: $tree-view-background-color-highlight;
+  }
+}
+.filetree-node-icon, .breadcrumbs .crumb, .menu-item-container {
+  .fa-folder, .fa-folder-open {
+    color: $tree-view-folder-color;
+  }
+}
+
+.git-filetree-container {
+  .filetree-node {
+    border-color: $base-border-color;
+  }
+}
+
+.git-commit-message-container > textarea {
+  background-color: $base-background-color;
+  border-color: $base-border-color;
+}

@@ -1,0 +1,9 @@
+node_modules
+build
+.idea/
+.vscode/
+.env
+app/config.js
+*.bak
+coverage/
+task.yaml

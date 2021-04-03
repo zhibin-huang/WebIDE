@@ -1,0 +1,19 @@
+.command-palette-input {
+  margin-tb: 10px;
+}
+
+.command-palette-items {
+  i, em {font-style: normal;}
+  em {
+    font-weight: bold;
+    color: $text-color-highlight;
+  }
+
+  li {
+    padding: 10px 10px;
+    margin-lr: -10px;
+    &.selected {
+      background-color: $background-color-highlight;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+   "default": "Default",
+   "reset": "Reset",
+   "commit": "Commit",
+   "general": {
+      "main": "General Setting",
+      "language": "Language",
+      "languageOption": {
+         "english": "English",
+         "chinese": "Chinese"
+      },
+      "hideFiles": "Hide Files"
+   },
+   "editor": {
+      "main": "Editor Setting",
+      "editorconfigNote": "If .editorconfig file is found in your project's root directory, it will take charge of some of the configurations on this tab.",
+      "editorconfigNoteLink": "Open .editorconfig",
+      "fontFamily": "Font Family",
+      "charset": "Charset",
+      "indentStyle": "Indent Style",
+      "indentSize": "Indent Size",
+      "tabWidth": "Tab Width",
+      "trimTrailingWhitespace": "Trim Trailing Whitespace",
+      "insertFinalNewline": "Insert Final Newline",
+      "autoSave": "Auto Save",
+      "autoWrap": "Auto Wrap",
+      "autoCompletion": "Live Auto Completion",
+      "snippets": "Snippets"
+   },
+   "keymap": {
+    "main": "Keymap Setting",
+    "keyboardMode": "Editor Keyboard Mode"
+   },
+   "appearance": {
+      "main": "Appearance Setting",
+      "uiTheme": "UI theme",
+      "uiThemeOption": {
+         "baseTheme": "Default",
+         "dark": "Dark"
+      },
+      "syntaxTheme": "Syntax Theme",
+      "fontSize": "Editor Font Size"
+   },
+   "extension": {
+      "main": "Extension Setting",
+      "searchPlaceholder": "Search By Extension Name"
+   },
+   "tabs": {
+      "general": "General",
+      "appearance": "Appearance",
+      "editor": "Editor",
+      "keymap": "Keymap",
+      "extensions": "Extensions"
+   }
+}

@@ -1,0 +1,116 @@
+.settings-container {
+  margin: -10px;  /* to counter-part the modal padding*/
+  display: flex;
+  width: 70vw;
+  height: 80vh;
+
+  > div {
+    flex-grow: 1
+  }
+}
+
+.settings-header {
+  border-right: 1px solid #ccc;
+  width: 25%;
+
+  .tab-bar-header {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  ul.tab-bar-tabs {margin-top: -1px}
+  li.tab-bar-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    position: relative;
+    opacity: 0.5;
+    &:before {
+      absolute(left 0 top 0 bottom 0)
+      content: '';
+      background-color: $text-color-info;
+      height: 100%;
+      width: 4px;
+      opacity: 0;
+    }
+
+    &:hover {
+      opacity: 1;
+      &:before {opacity: 0.3}
+    }
+
+    &.active {
+      cursor: initial;
+      opacity: 1;
+      &:before {opacity: 1}
+    }
+  }
+}
+
+.settings-content {
+  width: 75%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  $padding-lr= 18px
+  .settings-content-container {
+    padding: 0 $padding-lr 10px;
+    flex-grow: 1;
+    overflow: auto;
+  }
+  .settings-content-controls {
+    flex-grow: 0;
+    padding: 10px $padding-lr - 2px;
+    border-top: 1px solid #eee;
+  }
+}
+
+.settings-extension-container {
+  width: 80%;
+  .search {
+    width: 100%;
+    border: 1px solid grey;
+    height: 30px;
+    padding-left: 5px;
+  }
+  .lists {
+    margin-top: 20px;
+    .card {
+      width: 100%;
+      height: 8em;
+      padding: 10px;
+      border: 1px solid grey;
+      margin-bottom: 10px;
+      position: relative;
+      .title {
+        font-size: 1.5em;
+        > span {
+          font-size: 0.8em;
+          margin-left: 10px;
+        }
+      }
+      .desc {
+        font-size: 1em;
+        margin-top: 10px;
+        font-weight: 10;
+      }
+      .author {
+        margin-top: 10px;
+        .icon {
+          width: 10px;
+        }
+        .text {
+          margin-right: 10px;
+        }
+      }
+      .buttons {
+        position: absolute;
+        display: flex;
+        padding: 10px;
+        right: 0px;
+        bottom: 0px;
+      }
+    }
+  }
+}

@@ -1,0 +1,142 @@
+{
+   "rebasePrepare": {
+      "title": "Rebase Commits",
+      "editCommit": "Edit Commit",
+      "view": "View",
+      "up": "Up",
+      "down": "Down"
+   },
+   "branchWidget": {
+      "newBranch": "New Branches",
+      "checkout": "Checkout",
+      "checkoutAsNew": "Checkout as new branch",
+      "delete": "Delete",
+      "synchronize": "Synchronize",
+      "branches": "Git Branches",
+      "remoteBranches": "Remote Branches",
+      "fetchingBranches": "Fetching Branches...",
+      "localBranches": "Local Branches"
+   },
+   "rebaseInput": {
+      "title": "Edit commit message",
+      "resumeRebase": "Resume Rebase"
+   },
+   "checkoutModal": {
+      "checkoutAsNew": "Checkout New Branch",
+      "fromBranch": "From Branch",
+      "newBranch": "New Branch",
+      "refExistStatus": "Branch ref already exists. Pick another name."
+   },
+   "newBranchModal": {
+      "titel": "Create New Branch",
+      "current": "Current Branch",
+      "newBranch": "New Branch",
+      "confirmMessage": "Branch ref already exists. Pick another name."
+   },
+   "diffFileModal": {
+      "title": "Diff File: {path}",
+      "titleWithOldRef": "Diff File: {path} - {newRef} vs {oldRef}"
+   },
+   "reset": {
+      "title": "Reset Head",
+      "type": "Reset Type",
+      "toCommit": "指定提交",
+      "currentBranch": "Current Branch"
+   },
+   "resolveConflictModal": {
+      "noConflictMessege": "No conflict detected",
+      "title": "Conflicts List"
+   },
+   "mergeFile": {
+      "title": "Merge File",
+      "local": "LOCAL",
+      "remote": "REMOTE",
+      "base": "BASE",
+      "result": "MERGE RESULT"
+   },
+   "stash": {
+      "title": "Stash Changes",
+      "currentBranch": "Current Branch",
+      "commitMessage": "Commit Message",
+      "placeholder": "Please input a commit message."
+   },
+   "mergeModal": {
+      "title": "Merge Branch",
+      "currentBranch": "Current Branch",
+      "destBranch": "Branch to merge",
+      "selectBranch": "select a branch"
+   },
+   "action": {
+      "checkoutConflictsWarning": "Checkout has not completed because of checkout conflicts",
+      "checkoutFailed": "Checkout failed",
+      "checkoutFailedError": "An Exception occurred during checkout, status: {status}",
+      "checkoutBranch": "Check out {branch}",
+      "fetchSuccess": "Get Fetch Success",
+      "deletedSuccess": "deleted branch {branch} success",
+      "commitSuccess": "Git commit success.",
+      "checkoutNotDeleted": "Nondeleted Files",
+      "checkoutFailedWithoutDeleted": "Checkout has completed, but some files could not be deleted"
+   },
+   "commit": "Commit",
+   "historyView": {
+      "compareWithLocal": "Compare with Local",
+      "listChanges": "Show All Effected Files",
+      "compare": "Compare",
+      "message": "Message",
+      "author": "Author",
+      "date": "Date",
+      "copyRevision": "Copy Revision Number",
+      "showCommit": "Show Commit",
+      "version": "Version"
+   },
+   "cancel": "Cancel",
+   "fileTree": {
+      "fileStatus": "File Status",
+      "changed": "Changed",
+      "staged": "Staged"
+   },
+   "tag": {
+      "title": "Tag",
+      "currentBranch": "Current Branch",
+      "tagName": "Tag Name",
+      "commit": "Commit",
+      "message": "Message",
+      "force": "Force",
+      "optional": "optional",
+      "errMsg": "The tag with the same name exists."
+   },
+   "commitView": {
+      "nothingCommit": "Your working directory is clean. Nothing to commit.",
+      "initMessage": "update by Coding WebIDE , https://ide.coding.net"
+   },
+   "unStash": {
+      "branch": "Branch",
+      "stashes": "Stashes",
+      "popStash": "Pop stash",
+      "view": "View",
+      "clear": "Clear",
+      "apply": "Apply",
+      "drop": "Drop",
+      "asNewBranch": "As new branch",
+      "placeholder": "Please input the branch name.",
+      "title": "Unstash Changes",
+      "reinstateIndex": "Reinstate index",
+      "currentBranch": "Current Branch"
+   },
+   "checkoutStashModal": {
+      "checkoutFailed": "Checkout failed",
+      "checkoutConfilcts": "Checkout has not completed because of checkout conflicts, do you want to stash first?",
+      "stashAndCheckout": "Stash and Checkout"
+   },
+   "rebaseStart": {
+      "branch": "Branch",
+      "interactive": "Interactive",
+      "preserveMerge": "Preserve Merges",
+      "showTags": "Show Tags",
+      "validate": "Validate",
+      "title": "Rebase Branch",
+      "onto": "Onto",
+      "showRemoteTags": "Show Remote Branches",
+      "selectBranch": "select a branch"
+   }
+}

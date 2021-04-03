@@ -1,0 +1,86 @@
+.modals-container {
+}
+
+.modal-container {
+  fixed(0);
+  display: flex;
+  justify-content: center;
+  z-index: z(modal-container);
+  &.top {
+    align-items: flex-start;
+    .modal {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  &.center {
+    align-items: center;
+    .modal {
+      margin-top: -5em;
+    }
+  }
+
+  // the backdrop
+  .backdrop {
+    background-color: transparent;
+    fixed(0);
+    z-index: z(modal-backdrop);
+  }
+
+  &.show-backdrop {
+    .backdrop {
+      background-color: rgba(0,0,0,.3);
+    }
+  }
+}
+
+.modal {
+  min-width: 600px;
+  min-height: 20px;
+  padding: 0.75em;
+  z-index: z(modal);
+  border-radius: 4px;
+  background-color: #FFF;
+  box-shadow: 0 4px 20px 1px rgba(0, 0, 0, .3);
+
+  h1 {
+    font-size: 14px;
+  }
+
+  .modal-ops {
+    text-align: right;
+    .btn {
+      margin-left: 10px;
+    }
+  }
+}
+
+.modal-content {
+  .message { margin-bottom: 0.4em; }
+  input[type="text"] { width: 100%; }
+  input[type="checkbox"] { margin-right: 6px; }
+  .header {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .message {
+    margin-top: 10px;
+    .fa {
+      margin-right: 4px;
+    }
+    .fa-info-circle {
+      color: #ff9800;  
+    }
+    &.message-info {
+      background: #ff98004a;
+      padding: 4px;
+    }
+  }
+  .filetree-container {
+    height: 60vh;
+    overflow: scroll;
+    width: 600px;
+    margin: 10px 0;
+  }
+}

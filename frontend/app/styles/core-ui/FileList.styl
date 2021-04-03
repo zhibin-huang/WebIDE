@@ -1,0 +1,32 @@
+.file-list-container {
+  height: 100%;
+  overflow: auto;
+  scrollBar();
+  .file-list-item {
+    padding: 4px 4px;
+    cursor: pointer;
+    .icon {
+      width: 16px;
+      
+    }
+    i {
+      font-style: normal;
+      width: 1em;
+      text-align: center;
+      margin-right: 5px;
+      &:before {
+        font-size: 14px;
+      }
+    }
+    .fa-times {
+      color: red;
+      visibility: hidden;
+    }
+    &.focus {
+      background-color: #e8e8e8;
+    }
+    &:hover .fa-times {
+      visibility: visible;
+    }
+  }
+}

@@ -1,0 +1,189 @@
+.ide-history {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  // font-family: 'Source Code Pro', sans-serif;
+
+  .history-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    .history-title {
+      border-bottom: 1px solid gray(80%);
+      background-color: $base-top-menu-bar-background;
+      color: gray(15%);
+      padding: 4px 10px;
+    }
+
+    .selected .public_fixedDataTableCell_cellContent {
+      background-color: $tab-highlight-bg;
+      color: $component-active-color;
+    }
+    .public_fixedDataTableCell_cellContent {
+      padding: 5px 8px;
+      cursor: pointer;
+    }
+    .public_fixedDataTable_header, .public_fixedDataTable_header .public_fixedDataTableCell_main {
+      background: #FFF;
+      font-weight: normal;
+    }
+    .fixedDataTableLayout_main {
+      border-width: 0px;
+    }
+    .public_fixedDataTableCell_main {
+      border-color: #ebebeb;
+    }
+    .public_fixedDataTable_main, .public_fixedDataTable_header, .public_fixedDataTable_hasBottomBorder {
+      border-color: #ebebeb;
+    }
+  }
+}
+
+
+.history-table {
+  display: flex;
+}
+
+#git-graph-column {
+  $header-height=27px
+
+  // absolute(left top bottom 0);
+  position: relative;
+  border-right: 1px solid rgb(235, 235, 235);
+
+  .column-header {
+    height: $header-height;
+    padding: 6px 8px;
+    border-bottom: 1px solid rgb(235, 235, 235);
+  }
+
+  .column-content {
+    absolute(left right bottom 0 top $header-height);
+    overflow: auto;
+  }
+}
+
+
+#git-log-table, #git-graph-column {
+  flex-basis: 0;
+  overflow: auto;
+}
+
+
+
+
+.git-logs-view {
+  scrollBar();
+  height: 100%;
+  overflow-y: auto;
+
+  .git-logs-table {
+    position: relative;
+    width: 100%;
+    .git-graph-wrapper {
+      absolute(top 0 left 0)
+    }
+  }
+
+  .flex-row {
+    .sha1, .date, .author {
+      color: gray(50%);
+    }
+
+    .message-text {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      padding-right: 6px;
+    }
+
+    &.selected {
+      background-color: #0d67d6;
+      .message-text {
+        color: #fff;
+      }
+      .author, .sha1, .date {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+
+    &.view-size-small {
+      display: flex;
+      align-items: center;
+      .sha1 {
+        margin-right: 10px;
+      }
+      .message {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+      }
+      .author {
+        white-space: nowrap;
+        margin-right: 10px;
+        margin-left: auto;
+      }
+      .date {
+        white-space: nowrap;
+        margin-left: auto;
+        margin-right: 8px;
+      }
+    }
+
+    &.view-size-large {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid gray(96%);
+      border-top: 1px solid transparent;
+      .avatar {
+        .avatar-img {
+          background-color: gray(70%);
+          border-radius: 100%;
+          height: 40px;
+          width: 40px;
+        }
+        margin-right: 10px;
+      }
+      .commit-data {
+        flex-grow: 1;
+        overflow: hidden;
+      }
+      .commit-data-row {
+        display: flex;
+        align-items: center;
+        line-height: 1.5;
+      }
+      .sha1 {
+        margin-right: 10px;
+      }
+      .author {
+        white-space: nowrap;
+        margin-right: 10px;
+        // margin-left: auto;
+      }
+      .date {
+        white-space: nowrap;
+        margin-left: auto;
+        margin-right: 8px;
+      }
+    }
+
+
+  }
+
+}
+
+.git-graph-ref {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 3px;
+  padding: 1px 3px;
+  margin-right: 4px;
+  font-size: 11px;
+  border-width: 1px
+  border-style: solid;
+}

@@ -1,0 +1,179 @@
+$filetree-indent = 1em;
+
+.filetree-container {
+  scrollBar();
+  noSelect();
+  height: 100%;
+  overflow: auto;
+
+  // ✝ this is where magic happens to let the max[widthOf(children)]
+  //   determine their parent's min-width
+  .filetree-node-container {
+    float: left;             // <- ✝
+    min-width: 100%;         // <- ✝
+    min-height: 100%;
+    > .filetree-node {
+      margin-left: -0.6em;
+    }
+  }
+
+  .filetree-node-children {
+    clearfix()
+    &.isFolded {display: none}
+  }
+
+  .filetree-enter {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s ease-in;
+    &.filetree-enter-active {
+      max-height: 500px;
+    }
+  }
+  // .filetree-appear {
+  //   max-height: 0;
+  //   overflow: hidden;
+  //   transition: max-height .5s ease-in;
+  //   &.filetree-appear-active {
+  //     max-height: 500px;
+  //   }
+  // }
+  .filetree-leave {
+    max-height: 500px;
+    overflow: hidden;
+    transition: max-height .3s ease-out;
+    &.filetree-leave-active {
+      max-height: 0;
+    }
+    .node-selected {
+      background: inherit !important;
+      color: inherit !important;
+    }
+  }
+
+  .filetree-node {
+    cursor: default;
+    padding: 4px 0;
+    white-space: nowrap;     // <- ✝
+    > span {
+      display: inline-block; // <- ✝
+    }
+    .filetree-node-checkbox,
+    .filetree-node-arrow,
+    .filetree-node-icon,
+    .filetree-node-label {
+      z-index: z(filetree-node-label);
+    }
+    .filetree-node-label label{
+      margin: 0;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    .fa-spinner {
+      margin-right: 2px;
+    }
+  }
+}
+
+.filetree-node-arrow {
+  width: $filetree-indent;
+  cursor: pointer;
+  text-align: center;
+  margin-right: 6px;
+  padding-left: 4px;
+}
+
+.filetree-node-icon {
+  width: $filetree-indent;
+  text-align: center;
+  i {
+    font-style: normal;
+    text-align: center;
+    position: relative;
+    &:before {
+      font-size: 14px;
+    }
+    &.image-icon {
+      padding-left: 2px;
+    }
+  }
+
+  .fa-folder-o, .fa-folder-open-o {
+    transform: translateY(1px);
+  }
+  .fa-folder, .fa-folder-open {
+    transform: translateY(1px);
+    color: $tree-view-folder-color;
+  }
+}
+
+.filetree-node-label {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+
+
+// git commit view specific styles
+.git-filetree-container {
+  noSelect();
+  height: 100%;
+  overflow: auto;
+  > .filetree-node-container > .filetree-node-children {
+    max-height: 400px;
+    overflow: auto;
+    scrollBar();
+  }
+
+  & > .filetree-node-container {
+    float: left;
+    min-width: 100%;
+  }
+
+  .filetree-node {
+    border-bottom: 1px solid gray(90);
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    cursor: default;
+    position: relative;
+    padding: 4px 0;
+
+    > span {
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+    .filetree-node-checkbox,
+    .filetree-node-arrow,
+    .filetree-node-icon,
+    .filetree-node-label {
+      z-index: z(filetree-node-label);
+    }
+    .filetree-node-label label{
+      margin: 0;
+      font-weight: normal;
+      cursor: pointer;
+    }
+    > .filetree-node-bg {
+      absolute(0);
+    }
+    &.focus > .filetree-node-bg {
+      z-index: z(filetree-node-bg);
+    }
+  }
+
+  .filetree-node-children {
+    &.isFolded {display: none}
+  }
+
+  .filetree-node-checkbox {
+    margin-right: 8px;
+    cursor: pointer;
+    i.fa {
+      width: 12px;
+      color: $text-color-info;
+      &.fa-square-o {
+        color: gray(80)
+      }
+    }
+  }
+}
