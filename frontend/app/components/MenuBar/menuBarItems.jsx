@@ -7,8 +7,7 @@ const divider = { isDivider: true }
 const menuBarItems = observable([
   {
     key: 'meta',
-    name: (<div className='menu-bar-item-logo' ></div>),
-    className: 'coding-logo',
+    name: i18n`menuBarItems.meta.main`,
     items: [
       {
         key: 'settings',

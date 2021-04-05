@@ -198,7 +198,7 @@ const fileCommands = {
   'file:save': (c) => {
     const { EditorTabState } = mobxStore
     const activeTab = EditorTabState.activeTab
-    const content = activeTab ? activeTab.editor.cm.getValue() : ''
+    const content = activeTab ? activeTab.editor.me.getValue() : ''
 
     if (!activeTab.file) {
       const createFile = createFileWithContent(content)

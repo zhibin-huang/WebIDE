@@ -1,6 +1,5 @@
 import * as actions from './actions'
 import state, { Editor } from './state'
-import FileStore from 'commons/File/store'
 
 class EditorStore {
   constructor () {

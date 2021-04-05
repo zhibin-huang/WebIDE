@@ -1,14 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
-import { when } from 'mobx'
 import CodeEditor from './components/CodeEditor'
+import { MEditor } from './components/CodeEditor'
 import MarkdownEditor from './components/MarkdownEditor'
 import ImageEditor from './components/ImageEditor'
 import UnknownEditor from './components/UnknownEditor'
-import WelcomeEditor from './components/WelcomeEditor'
 import HtmlEditor from './components/HtmlEditor'
-import config from '../../config'
 
 const EditorWrapper = observer(({ tab, active }) => {
   const { editor } = tab
@@ -22,7 +20,7 @@ const EditorWrapper = observer(({ tab, active }) => {
     case 'htmlEditor':
       return React.createElement(HtmlEditor, { editor, key, tab, active })
     case 'default':
-      return React.createElement(CodeEditor, { editor, key, tab, active })
+      return React.createElement(MEditor, { editor, key, tab, active })
     case 'editorWithPreview':
       return React.createElement(MarkdownEditor, { editor, key, tab, active })
     case 'imageEditor':

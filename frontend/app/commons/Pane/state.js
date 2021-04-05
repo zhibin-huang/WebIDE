@@ -1,4 +1,4 @@
-import { extendObservable, observable, computed } from 'mobx'
+import {observable, computed } from 'mobx'
 
 function PaneScope () {
   const state = observable({

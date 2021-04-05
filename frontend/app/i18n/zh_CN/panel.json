@@ -1,11 +1,11 @@
 {
    "bottom": {
       "terminal": "终端",
-      "gitGraph": "项目网络",
+      "gitGraph": "Git记录",
       "history": "版本历史"
    },
    "left": {
-      "project": "文件树",
+      "project": "项目目录",
       "working": "工作文件"
    }
 }

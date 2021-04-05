@@ -7,6 +7,7 @@ import EditorState, { Editor } from 'components/Editor/state'
 
 const { Tab: BaseTab, TabGroup: BaseTabGroup, state } = TabStateScope()
 
+//TODO： 关闭tab后，filelist好像没更新
 const FileListState = observable({
   tabs: new observable.map({}),
 })
@@ -44,6 +45,7 @@ class Tab extends BaseTab {
     props.editor.tabId = this.id
     if (this.editor) {
       this.editor.destroy()
+      //此Editor为状态组件，非editor实例
       this.editor = new Editor(props.editor)
     } else {
       this.editor = new Editor(props.editor)

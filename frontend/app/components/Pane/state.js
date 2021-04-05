@@ -1,5 +1,5 @@
 import uniqueId from 'lodash/uniqueId'
-import { extendObservable, observable, computed, action, autorun, autorunAsync } from 'mobx'
+import { extendObservable, observable, computed, action, autorunAsync } from 'mobx'
 import EditorTabState, { TabGroup } from 'components/Tab/state'
 import PaneScope from 'commons/Pane/state'
 
@@ -31,6 +31,7 @@ class Pane extends BasePane {
       index: 0,
     }, paneConfig)
 
+    //新建Pane状态组件，会new一个TabGroup状态组件
     this.contentType = 'tabGroup'
     const tabGroup = this.tabGroup || new TabGroup()
     this.contentId = tabGroup.id
