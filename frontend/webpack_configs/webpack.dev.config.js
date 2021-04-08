@@ -1,8 +1,7 @@
 const webpack = require('webpack')
-const path = require('path')
-const merge = require('webpack-merge')
+const {merge} = require('webpack-merge')
 const str = JSON.stringify
-const commonConfig = require('./common.config.js')
+const commonConfig = require('./webpack.common.config.js')
 const devServer = require('./devServer.config')
 const stylesheet = require('./stylesheet.config')
 
@@ -13,11 +12,10 @@ const reactHotLoaderPrependEntries = [
 ]
 
 const config = merge(
-  {
+  { mode: 'development',
     entry: {
       main: reactHotLoaderPrependEntries,
       workspaces: reactHotLoaderPrependEntries,
-      login: reactHotLoaderPrependEntries,
     }
   },
   commonConfig({ staticDir: '' }),
@@ -38,20 +36,34 @@ const config = merge(
    *
    * + means faster, - slower and o about the same time
    */
-  { devtool: 'cheap-module-eval-source-map' },
-  { plugins: [
-    new webpack.DefinePlugin({
-      __DEV__: true,
-      __RUN_MODE__: str(process.env.RUN_MODE || ''),
-      __BACKEND_URL__: str(process.env.BACKEND_URL || ''),
-      __WS_URL__: str(process.env.WS_URL || ''),
-      __STATIC_SERVING_URL__: str(process.env.STATIC_SERVING_URL || ''),
-      __NODE_ENV__: str(process.env.NODE_ENV || ''),
-    }),
-  ]
+  {
+    devtool: 'source-map',
+    //  module: {
+    //           rules: [{
+    //               test: /\.js$/,
+    //               enforce: 'pre',
+    //               loader: 'source-map-loader',
+    //               // These modules seems to have broken sourcemaps, exclude them to prevent an error flood in the logs
+    //               exclude: [/vscode-jsonrpc/, /vscode-languageclient/, /vscode-languageserver-protocol/]
+    //           }]
+    //       }
+  },
+  {
+    plugins: [
+      new webpack.DefinePlugin({
+        __DEV__: true,
+        __RUN_MODE__: str(process.env.RUN_MODE || ''),
+        __BACKEND_URL__: str(process.env.BACKEND_URL || ''),
+        __WS_URL__: str(process.env.WS_URL || ''),
+        __STATIC_SERVING_URL__: str(process.env.STATIC_SERVING_URL || ''),
+        __NODE_ENV__: str(process.env.NODE_ENV || ''),
+      }),
+
+    ]
   },
   devServer({ port: 8060 }),
-  stylesheet()
+  stylesheet(),
 )
+
 
 module.exports = config

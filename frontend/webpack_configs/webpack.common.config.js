@@ -1,12 +1,13 @@
 const path = require('path')
 const webpack = require('webpack')
 const str = JSON.stringify
-const { optimize: { CommonsChunkPlugin }, DefinePlugin } = webpack
+const { DefinePlugin } = webpack
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const gitRevisionPlugin = new GitRevisionPlugin()
 const PROJECT_ROOT = path.resolve(__dirname, '..')
+require('dotenv').config()
 
 module.exports = function (options = {}) {
   const {
@@ -15,13 +16,12 @@ module.exports = function (options = {}) {
     staticDir = 'rs',
   } = options
 
-  const publicPath = process.env.QINIU_BUCKET ? // publicPath should end with '/'
-    `${process.env.QINIU_SERVER}/` : path.join('/', staticDir, '/')
+  const publicPath = path.join('/', staticDir, '/') // publicPath should end with '/'
   return {
     entry: {
       main: [path.join(PROJECT_ROOT, 'app')],
       workspaces: [path.join(PROJECT_ROOT, 'app/workspaces_standalone')],
-      vendor: ['babel-polyfill', 'react', 'react-dom', 'redux', 'react-redux'],
+      //vendor: ['babel-polyfill', 'react', 'react-dom', 'redux', 'react-redux'],
     },
     output: {
       publicPath,
@@ -29,15 +29,17 @@ module.exports = function (options = {}) {
       filename: '[name].[chunkhash].js',
       chunkFilename: '[name].[chunkhash].chunk.js',
     },
-    node: {
-        net: 'empty',
-    },
     resolve: {
       extensions: ['*', '.js', '.jsx'],
       modules: ['node_modules', path.join(PROJECT_ROOT, 'app')],
       alias: {
         static: path.join(PROJECT_ROOT, 'static'),
         'vscode': require.resolve('monaco-languageclient/lib/vscode-compatibility')
+      },
+      fallback: {
+        net: false,
+        child_process: false,
+        path: require.resolve("path-browserify")
       }
     },
     resolveLoader: {
@@ -48,16 +50,6 @@ module.exports = function (options = {}) {
       new DefinePlugin({
         __VERSION__: str(gitRevisionPlugin.commithash() + '@' + gitRevisionPlugin.version()),
         __PUBLIC_PATH__: str(publicPath),
-      }),
-      new CommonsChunkPlugin({
-        name: 'vendor',
-        filename: 'vendor.[chunkhash].js',
-        minChunks: Infinity
-      }),
-      new CommonsChunkPlugin({
-        name: 'webpackRuntime',
-        chunks: ['vendor', 'workspaces'],
-        filename: 'webpackRuntime.[hash].js'
       }),
       new HtmlWebpackPlugin({
         title: 'Web IDE',
@@ -72,14 +64,15 @@ module.exports = function (options = {}) {
         template: path.join(PROJECT_ROOT, 'app/workspaces_standalone/index.html'),
       }),
       // https://github.com/kevlened/copy-webpack-plugin
-      new CopyWebpackPlugin([{
-        from: path.join(PROJECT_ROOT, 'node_modules/font-awesome'),
-        to: 'font-awesome',
-      }, {
-        from: path.join(PROJECT_ROOT, 'node_modules/octicons'),
-        to: 'octicons',
-      }])
-    ],
+      new CopyWebpackPlugin({
+        patterns: [{
+          from: path.join(PROJECT_ROOT, 'node_modules/font-awesome'),
+          to: 'font-awesome',
+        }, {
+          from: path.join(PROJECT_ROOT, 'node_modules/octicons'),
+          to: 'octicons',
+        }]
+      })],
     module: {
       rules: [
         { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' }

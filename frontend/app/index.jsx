@@ -6,16 +6,19 @@ import './styles/main.styl'
 import initialize from './initialize'
 import InitializeContainer from './containers/Initialize'
 import SettingState from 'components/Setting/state'
-const uiTheme = SettingState.settings.appearance.ui_theme.value
-if (uiTheme === 'base-theme') {
-  const baseTheme = require('!!style-loader/useable!css-loader!stylus-loader!./styles/base-theme/index.styl')
-  baseTheme.use()
-  window.themes = { '@current': baseTheme }
-} else {
-  const darkTheme = require('!!style-loader/useable!css-loader!stylus-loader!./styles/dark/index.styl')
-  darkTheme.use()
-  window.themes = { '@current': darkTheme }
-}
+import baseTheme from './styles/base-theme/index.styl'
+//import darkTheme from './styles/dark/index.styl'
+//const uiTheme = SettingState.settings.appearance.ui_theme.value
+window.themes = { '@current': baseTheme }
+// if (uiTheme === 'base-theme') {
+//   console.log(baseTheme)
+//   baseTheme.use()
+//   window.themes = { '@current': baseTheme }
+// } else {
+//   console.log(darkTheme)
+//   darkTheme.use()
+//   window.themes = { '@current': darkTheme }
+// }
 
 const rootElement = document.getElementById('root')
 render(<InitializeContainer />, rootElement)

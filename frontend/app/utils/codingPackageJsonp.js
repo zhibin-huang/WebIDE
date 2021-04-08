@@ -19,3 +19,5 @@ codingPackageJsonp.groups = {}
 codingPackageJsonp.current = ''
 
 window.codingPackageJsonp = codingPackageJsonp
+
+export default codingPackageJsonp

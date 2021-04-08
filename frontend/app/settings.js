@@ -5,6 +5,7 @@ import config from 'config'
 import emitter, { THEME_CHANGED } from 'utils/emitter'
 import is from 'utils/is'
 import dynamicStyle from 'utils/dynamicStyle'
+
 window.themeVariables = observable.map({})
 
 let EditorState
@@ -18,27 +19,25 @@ let uiOptions = [
 export const UIThemeOptions = uiOptions
 export const SyntaxThemeOptions = ['default', 'neo', 'eclipse', 'monokai', 'material']
 
-const changeUITheme = (nextThemeId) => {
-  if (!window.themes) window.themes = {}
-  if (UIThemeOptions.map(option => option.value).includes(nextThemeId)) {
-    import(`!!style-loader/useable!css-loader!stylus-loader!./styles/${nextThemeId}/index.styl`)
-    .then((module) => {
-      const currentTheme = window.themes['@current']
-      if (currentTheme && currentTheme.unuse) currentTheme.unuse()
-      window.themes['@current'] = window.themes[nextThemeId] = module
-      module.use()
-      window.themeVariables.replace(window.themes['@current'].locals)
-    })
-  }
+//  const changeUITheme = (nextThemeId) => {
+//   if (!window.themes) window.themes = {}
+//   if (UIThemeOptions.map(option => option.value).includes(nextThemeId)) {
+//       const currentTheme = window.themes['@current']
+//       if (currentTheme && currentTheme.unuse) currentTheme.unuse()
+//       const now = (nextThemeId === 'dark') ? darkTheme : baseTheme
+//       window.themes['@current'] = window.themes[nextThemeId] = now
+//       now.use()
+//       window.themeVariables.replace(window.themes['@current'].locals)
+//   }
 
-  const editorTheme = EditorState.options.theme
-  if (nextThemeId === 'dark' && (editorTheme === 'default' || editorTheme === 'neo' || editorTheme === 'eclipse')) {
-    settings.appearance.syntax_theme.value = 'material'
-  } else if (nextThemeId === 'base-theme' && (editorTheme === 'monokai' || editorTheme === 'material')) {
-    settings.appearance.syntax_theme.value = 'default'
-  }
-  emitter.emit(THEME_CHANGED, nextThemeId)
-}
+//   const editorTheme = EditorState.options.theme
+//   if (nextThemeId === 'dark' && (editorTheme === 'default' || editorTheme === 'neo' || editorTheme === 'eclipse')) {
+//     settings.appearance.syntax_theme.value = 'material'
+//   } else if (nextThemeId === 'base-theme' && (editorTheme === 'monokai' || editorTheme === 'material')) {
+//     settings.appearance.syntax_theme.value = 'default'
+//   }
+//   emitter.emit(THEME_CHANGED, nextThemeId)
+// }
 
 const changeSyntaxTheme = (nextSyntaxThemeId) => {
   if (EditorState) EditorState.options.theme = nextSyntaxThemeId
@@ -164,9 +163,9 @@ const settings = observable({
     ],
     ui_theme: {
       name: 'settings.appearance.uiTheme',
-      value: 'dark',
+      value: 'base-theme',
       options: UIThemeOptions,
-      reaction: changeUITheme,
+      //reaction: changeUITheme,
     },
     syntax_theme: {
       name: 'settings.appearance.syntaxTheme',

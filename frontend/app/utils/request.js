@@ -24,6 +24,8 @@ const _request = axios.create({
   }]
 })
 
+console.log("baseURL:" + config.baseURL)
+
 const request = function (options) {
   // I need to intercept the returned promise
   // axios provides no way to do it, so I need this wrapper layer

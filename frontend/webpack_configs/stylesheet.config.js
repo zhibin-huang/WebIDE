@@ -23,22 +23,39 @@ module.exports = function (paths) {
         }, {
           test: /\.styl$/,
           use: [
-            'style-loader',
+            {
+              loader: 'style-loader',
+              // options: {
+              //   injectType: 'lazyStyleTag'
+              // }
+            },
             'css-loader',
-            'stylus-loader'
+            {
+              loader: 'stylus-loader',
+              options: {
+                stylusOptions: {
+                  use: [bootstrap()]
+                }
+              }
+            }
           ]
         }, {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
+          use: [{
+            loader: 'style-loader',
+            // options: {
+            //   injectType: 'lazyStyleTag'
+            // }
+          }, 'css-loader']
         }
       ]
     },
     // https://github.com/shama/stylus-loader/issues/149
     // https://github.com/shama/stylus-loader/pull/154/files#diff-0444c5b7c3bc2c340b3654c507443b06R35
-    plugins: [
-      new (stylusLoader.OptionsPlugin)({
-        default: { use: [bootstrap()] }
-      })
-    ]
+    // plugins: [
+    //   new (stylusLoader.OptionsPlugin)({
+    //     default: { use: [bootstrap()] }
+    //   })
+    // ]
   }
 }

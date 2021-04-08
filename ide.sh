@@ -8,6 +8,7 @@ BACKEND=$BASEDIR/backend
 FRONTEND=$BASEDIR/frontend
 FRONTEND_WEBJARS=$BASEDIR/frontend-webjars
 CONTAINER=webide
+export JAVA_HOME=$(/usr/libexec/java_home -v1.8)
 
 valid_last_cmd() {
   if [ $? -ne 0 ]; then
@@ -249,7 +250,6 @@ do_run_backend() {
 
 sub_run() {
     local OPTIND opt
-
     run_usage() {
         echo "Usage: $PROG_NAME run [-p port]"
     }

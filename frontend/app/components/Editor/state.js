@@ -9,9 +9,81 @@ import TabStore from 'components/Tab/store'
 import overrideDefaultOptions from './codemirrorDefaultOptions'
 import { loadMode } from './components/CodeEditor/addons/mode'
 import { findModeByFile, findModeByMIME, findModeByName } from './components/CodeEditor/addons/mode/findMode'
-import * as monaco from 'monaco-editor-core'
+
 import { monarchLanguage, languageConf } from "./java-highlight"
-import {connectLanguageServer} from "./languageClient"
+import * as monaco from 'monaco-editor-core'
+import { MonacoLanguageClient, CloseAction, ErrorAction,
+  MonacoServices, createConnection} from 'monaco-languageclient'
+import { listen } from '@codingame/monaco-jsonrpc'
+import  ReconnectingWebSocket  from 'reconnecting-websocket'
+
+const BASR_DIR = '/Users/huangzhibin/Desktop/webide_home/workspace'
+
+ // register Monaco languages
+ monaco.languages.register({
+  id: 'java',
+  extensions: ['.java'],
+  aliases: ['JAVA'],
+});
+
+monaco.languages.onLanguage('java', () => {
+  monaco.languages.setLanguageConfiguration('java', languageConf);
+  monaco.languages.setMonarchTokensProvider('java', monarchLanguage);
+});
+
+// install Monaco language client services
+MonacoServices.install(monaco,{});
+
+function connectLanguageServer() {
+  // create the web socket
+  const url = 'ws://localhost:4000/java-lsp';
+  const webSocket = createWebSocket(url);
+
+  // listen when the web socket is opened
+  listen({
+    webSocket,
+    onConnection: connection => {
+      // create and start the language client
+      const languageClient = createLanguageClient(connection);
+      const disposable = languageClient.start();
+      console.log("languageclient started!");
+      connection.onClose(() => disposable.dispose());
+    }
+  });
+
+  function createLanguageClient(connection) {
+    return new MonacoLanguageClient({
+      name: "Java Language Client",
+      clientOptions: {
+        // use a language id as a document selector
+        documentSelector: ['java'],
+        // disable the default error handler
+        errorHandler: {
+          error: () => ErrorAction.Continue,
+          closed: () => CloseAction.DoNotRestart
+        }
+      },
+      // create a language client connection from the JSON RPC connection on demand
+      connectionProvider: {
+        get: (errorHandler, closeHandler) => {
+          return Promise.resolve(createConnection(connection, errorHandler, closeHandler))
+        }
+      }
+    });
+  }
+
+  function createWebSocket(url) {
+    const socketOptions = {
+      maxReconnectionDelay: 10000,
+      minReconnectionDelay: 1000,
+      reconnectionDelayGrowFactor: 1.3,
+      connectionTimeout: 10000,
+      maxRetries: Infinity,
+      debug: false
+    };
+    return new ReconnectingWebSocket(url, [], socketOptions);
+  }
+}
 
 const typeDetect = (title, types) => {
   // title is the filename
@@ -44,23 +116,6 @@ state.entities.observe((change) => {
   }
 })
 
-// register Monaco languages
-monaco.languages.register({
-  id: 'java',
-  extensions: ['.java'],
-  aliases: ['JAVA'],
-});
-console.log("register java languages")
-
-monaco.languages.onLanguage('java', () => {
-  console.log("setMonarchTokensProvider....")
-  monaco.languages.setLanguageConfiguration('java', languageConf);
-  monaco.languages.setMonarchTokensProvider('java', monarchLanguage);
-  console.log("setMonarchTokensProvider")
-});
-
-//connectLanguageServer()
-
 
 class Editor {
   constructor(props = {}) {
@@ -92,7 +147,7 @@ class Editor {
       const options = Object.entries(this.meOptions)
       options.forEach(([option, value]) => {
         if (this.me.getOption(option) === value) return
-        setOption({option:value})
+        setOption({ option: value })
       })
     }))
 
@@ -101,21 +156,16 @@ class Editor {
       if (content !== me.getValue()) me.setValue(content)
     }))
 
-    if(this.content){
+    if (this.content) {
       me.setValue(this.content)
     }
 
-    me.onDidChangeCursorPosition((e)=>{
+    me.onDidChangeCursorPosition((e) => {
       this.cursorPosition = {
-        ln : e.position.lineNumber,
+        ln: e.position.lineNumber,
         col: e.position.column
       }
     })
-
-  }
-
-  editorDidMount(IStandaloneCodeEditor) {
-
   }
 
   //TODO
@@ -299,7 +349,7 @@ class Editor {
   @computed get content() {
     return this.file ? this.file.content : this._content
   }
-  set content(v) { return this._content = v }
+  set content(v) {  this._content = v }
 
   @computed get revision() {
     return this.file ? this.file.revision : null
@@ -370,4 +420,4 @@ class Editor {
 }
 
 export default state
-export { state, Editor }
+export { state, Editor, connectLanguageServer }

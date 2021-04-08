@@ -1,7 +1,9 @@
 {
     "compilerOptions": {
-        "target": "ES6",
-        "allowSyntheticDefaultImports": true,
+        "target": "ES2015",
+        "module": "commonJS",
+        "checkJs": false,
+        "allowSyntheticDefaultImports": false,
         "experimentalDecorators": true,
         "jsx": "react",
         "baseUrl": "./",
@@ -10,6 +12,7 @@
         }
     },
     "exclude": [
-        "node_modules"
+        //"config.js"
+        //"node_modules"
     ]
 }

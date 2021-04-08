@@ -10,14 +10,12 @@ module.exports = function (options) {
       port: options.port || 8060,
       historyApiFallback: {
         rewrites: [
-          { from: /\/ws/, to: '/workspace.html' },
-          { from: /\/login/, to: '/login.html' }
+          { from: /\/ws/, to: '/workspace.html' }
         ]
       }
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin({ multiStep: false }),
-      new webpack.NamedModulesPlugin(),
+      new webpack.HotModuleReplacementPlugin({ multiStep: false })
     ]
   }
 }

@@ -4,7 +4,7 @@ import { isFunction, isBoolean, isString } from 'utils/is'
 import config from '../config'
 import { stepFactory } from '../utils'
 import i18n from 'utils/createI18n'
-import { loadPackagesByType, mountPackagesByType } from '../components/Plugins/actions'
+import { mountPackagesByType } from '../components/Plugins/actions'
 import CodingSDK from '../CodingSDK'
 import state from './state'
 import { persistTask } from '../mobxStore'
@@ -61,6 +61,9 @@ async function initialize () {
 
   await step(`[${stepNum++}] mount required package`, () => {
     mountPackagesByType('Required')
+    // self.MonacoEnvironment = {
+    //   getWorkerUrl: () => './editor.worker.bundle.js'
+    // }
     return true
   })
 
