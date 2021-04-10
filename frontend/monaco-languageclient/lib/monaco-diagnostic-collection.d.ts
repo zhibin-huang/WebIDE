@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor-core';
+import type * as monaco from 'monaco-editor';
 import { DiagnosticCollection, Diagnostic } from './services';
 import { DisposableCollection, Disposable } from './disposable';
 import { ProtocolToMonacoConverter } from './monaco-converter';

@@ -5,7 +5,7 @@ import Root from './containers/Root'
 import './styles/main.styl'
 import initialize from './initialize'
 import InitializeContainer from './containers/Initialize'
-import SettingState from 'components/Setting/state'
+//import SettingState from 'components/Setting/state'
 import baseTheme from './styles/base-theme/index.styl'
 //import darkTheme from './styles/dark/index.styl'
 //const uiTheme = SettingState.settings.appearance.ui_theme.value

@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor-core';
+import type * as monaco from 'monaco-editor';
 import { MonacoCommands } from './monaco-commands';
 import { MonacoLanguages } from "./monaco-languages";
 import { MonacoWorkspace } from "./monaco-workspace";

@@ -13,7 +13,7 @@ class IDE extends Component {
     this.state = { isReady: false }
   }
 
-  componentWillMount () {  // initLifecycle_3: IDE specific init
+  componentWillMount () {  // initLifecycle_2: IDE specific init
     initializeFileTree() // @fixme: this is related to the quirk in filetree state
     this.setState({ isReady: true })
   }

@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor-core';
+import type * as monaco from 'monaco-editor';
 import { MonacoToProtocolConverter, ProtocolToMonacoConverter } from './monaco-converter';
 import { Workspace, WorkspaceEdit, TextDocumentDidChangeEvent, Event, Emitter } from './services';
 import { TextDocument } from 'vscode-languageserver-textdocument';

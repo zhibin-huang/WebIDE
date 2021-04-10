@@ -9,9 +9,13 @@ import CodingSDK from '../CodingSDK'
 import state from './state'
 import { persistTask } from '../mobxStore'
 // import pluginUrls from '../../.plugins.json'
+import { monarchLanguage, languageConf } from "../components/Editor/java-highlight"
+import * as monaco from 'monaco-editor'
+import { MonacoServices } from 'monaco-languageclient'
+import { connectLanguageServer } from 'components/Editor/state'
 
 
-function checkEnable (enable) {
+function checkEnable(enable) {
   if (enable === undefined) {
     return true
   }
@@ -21,7 +25,7 @@ function checkEnable (enable) {
   return Boolean(enable)
 }
 
-async function initialize () {
+async function initialize() {
   const step = stepFactory()
   let stepNum = 1
   await step('[0] prepare data', async () => {
@@ -34,7 +38,7 @@ async function initialize () {
     return true
   })
 
-  await step('=== Run steps in stepCache ===', async() => {
+  await step('=== Run steps in stepCache ===', async () => {
     /*async function goto (key, hasNext = true) {
       if (!hasNext) {
         return true
@@ -61,9 +65,26 @@ async function initialize () {
 
   await step(`[${stepNum++}] mount required package`, () => {
     mountPackagesByType('Required')
+
     // self.MonacoEnvironment = {
     //   getWorkerUrl: () => './editor.worker.bundle.js'
     // }
+    //register Monaco languages
+    monaco.languages.register({
+      id: 'java',
+      extensions: ['.java'],
+      aliases: ['JAVA'],
+    });
+
+    monaco.languages.onLanguage('java', () => {
+      monaco.languages.setLanguageConfiguration('java', languageConf);
+      monaco.languages.setMonarchTokensProvider('java', monarchLanguage);
+    });
+
+    const rootUri = `file:///${config.baseDIR}/${config.spaceKey}/working-dir`
+    // install Monaco language client services
+    MonacoServices.install(monaco, { rootUri: rootUri });
+    connectLanguageServer()
     return true
   })
 

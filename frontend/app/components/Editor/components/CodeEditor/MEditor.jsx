@@ -4,7 +4,6 @@ import basicMixin from './mixins/basicMixin'
 import gitBlameMixin from './mixins/gitBlameMixin'
 import eslintMixin from './mixins/eslintMixin'
 import {connectLanguageServer} from 'components/Editor/state'
-import * as monaco from 'monaco-editor-core'
 
 class MEditor extends BaseCodeEditor {
   componentWillReceiveProps (newProps) {
@@ -15,7 +14,6 @@ class MEditor extends BaseCodeEditor {
     this.dom.removeChild(this.dom.children[0])
     this.dom.appendChild(this.meDOM)
     this.me.focus()
-    connectLanguageServer()
   }
 }
 // addMixinMechanism(CodeEditor, BaseCodeEditor)

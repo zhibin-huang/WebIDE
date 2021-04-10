@@ -2,7 +2,7 @@
  * Copyright (c) 2018 TypeFox GmbH (http://www.typefox.io). All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  * ------------------------------------------------------------------------------------------ */
-import type * as monaco from 'monaco-editor-core';
+import type * as monaco from 'monaco-editor';
 import { MonacoToProtocolConverter, ProtocolToMonacoConverter } from "./monaco-converter";
 import { MonacoCommands } from './monaco-commands';
 import { MonacoLanguages } from "./monaco-languages";

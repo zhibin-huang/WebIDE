@@ -11,9 +11,7 @@ class Root extends Component {
   static proptypes = {
     dispatch: PropTypes.func
   }
-  componentWillMount () {
-    // this.props.dispatch(initState()) // initLifecycle_2
-  }
+  
   render () {
     return <IDE />
   }

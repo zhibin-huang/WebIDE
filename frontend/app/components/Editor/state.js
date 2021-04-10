@@ -9,43 +9,25 @@ import TabStore from 'components/Tab/store'
 import overrideDefaultOptions from './codemirrorDefaultOptions'
 import { loadMode } from './components/CodeEditor/addons/mode'
 import { findModeByFile, findModeByMIME, findModeByName } from './components/CodeEditor/addons/mode/findMode'
-
-import { monarchLanguage, languageConf } from "./java-highlight"
-import * as monaco from 'monaco-editor-core'
-import { MonacoLanguageClient, CloseAction, ErrorAction,
-  MonacoServices, createConnection} from 'monaco-languageclient'
+import * as monaco from 'monaco-editor'
+import { MonacoLanguageClient, CloseAction, ErrorAction, createConnection } from 'monaco-languageclient'
 import { listen } from '@codingame/monaco-jsonrpc'
-import  ReconnectingWebSocket  from 'reconnecting-websocket'
-
-const BASR_DIR = '/Users/huangzhibin/Desktop/webide_home/workspace'
-
- // register Monaco languages
- monaco.languages.register({
-  id: 'java',
-  extensions: ['.java'],
-  aliases: ['JAVA'],
-});
-
-monaco.languages.onLanguage('java', () => {
-  monaco.languages.setLanguageConfiguration('java', languageConf);
-  monaco.languages.setMonarchTokensProvider('java', monarchLanguage);
-});
-
-// install Monaco language client services
-MonacoServices.install(monaco,{});
+import ReconnectingWebSocket from 'reconnecting-websocket'
+import path from 'utils/path'
+import config from 'config.js'
 
 function connectLanguageServer() {
   // create the web socket
   const url = 'ws://localhost:4000/java-lsp';
   const webSocket = createWebSocket(url);
-
+  let disposable ;
   // listen when the web socket is opened
   listen({
     webSocket,
     onConnection: connection => {
       // create and start the language client
       const languageClient = createLanguageClient(connection);
-      const disposable = languageClient.start();
+      disposable = languageClient.start();
       console.log("languageclient started!");
       connection.onClose(() => disposable.dispose());
     }
@@ -83,6 +65,8 @@ function connectLanguageServer() {
     };
     return new ReconnectingWebSocket(url, [], socketOptions);
   }
+
+  return disposable;
 }
 
 const typeDetect = (title, types) => {
@@ -122,32 +106,32 @@ class Editor {
     this.id = props.id || uniqueId('editor_')
     state.entities.set(this.id, this)
     this.update(props)
-    console.log(props.filePath)
+    console.log(this.id, props.filePath)
     if (!props.filePath || this.isCM) {
       this.createCodeMirrorInstance()
     }
     if (this.isME) {
-      this.createMonacoEditorInstance(props.filePath)
+      this.createMonacoEditorInstance()
     }
   }
 
-  createMonacoEditorInstance(filePath) {
+  createMonacoEditorInstance() {
     this.meDOM = document.createElement('div')
     Object.assign(this.meDOM.style, { width: '100%', height: '100%' })
     const me = monaco.editor.create(this.meDOM, defaultMeOptions)
-    console.log(me)
     this.me = me
     me._editor = this
-    const setOption = this.me.updateOptions.bind(this.me)
-    this.me.setOption = this.setMeOption = (option, value) => {
+
+    this.setOption = (option, value) => {
       this._meOptions.set(option, value)
     }
 
+    const setMeOption = this.me.updateOptions.bind(this.me)
     this.disposers.push(autorun(() => {
       const options = Object.entries(this.meOptions)
       options.forEach(([option, value]) => {
         if (this.me.getOption(option) === value) return
-        setOption({ option: value })
+        setMeOption({ option: value })
       })
     }))
 
@@ -157,7 +141,18 @@ class Editor {
     }))
 
     if (this.content) {
-      me.setValue(this.content)
+      if(this.filePath){
+        const rootUri = `file:///${config.baseDIR}/${config.spaceKey}/working-dir`
+        const rootUriParsed = monaco.Uri.parse(rootUri);
+        const completePath = path.join(rootUriParsed.path, this.filePath)
+        const uriParsed = monaco.Uri.parse(`file://${completePath}`)
+        let model = monaco.editor.getModel(uriParsed);
+        if (!model) {
+          model = monaco.editor.createModel(this.content, 'java', uriParsed);
+        }
+        me.setModel(model)
+      }
+      else me.setValue(this.content)
     }
 
     me.onDidChangeCursorPosition((e) => {
@@ -349,7 +344,7 @@ class Editor {
   @computed get content() {
     return this.file ? this.file.content : this._content
   }
-  set content(v) {  this._content = v }
+  set content(v) { this._content = v }
 
   @computed get revision() {
     return this.file ? this.file.revision : null
@@ -396,12 +391,23 @@ class Editor {
 
   disposers = []
   dispose() {
+    console.log("disposers dispose!")
     this.disposers.forEach(disposer => disposer && disposer())
+
   }
 
   //TODO
   destroyMonaco() {
+    // console.log("lspclient dispose!")
+    // if(this.lspDisposer) this.lspDisposer.dispose()
+    if(this.me){
+      if(this.me.getModel()){
+        this.me.getModel().dispose();
+      }
+      this.me.dispose();
+      this.me = null;
 
+    }
   }
 
   //TODO
@@ -410,10 +416,12 @@ class Editor {
       setTimeout(() => {
         if (this.tab) return
         this.dispose()
+        this.destroyMonaco()
         state.entities.delete(this.id)
       }, 1000)
     } else {
       this.dispose()
+      this.destroyMonaco()
       state.entities.delete(this.id)
     }
   }

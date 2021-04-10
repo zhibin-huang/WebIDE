@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Editor, connectLanguageServer} from 'components/Editor/state'
-import * as monaco from 'monaco-editor-core'
 
 class BaseCodeEditor extends Component {
   constructor (props) {
@@ -17,7 +16,6 @@ class BaseCodeEditor extends Component {
   componentDidMount () {
     this.dom.appendChild(this.meDOM)  
     this.me.focus()
-    connectLanguageServer()
   }
 
   render () {
@@ -29,6 +27,7 @@ class BaseCodeEditor extends Component {
   componentWillUnmount () {
     const async = true
     this.editor.destroy(async)
+    
   }
 }
 

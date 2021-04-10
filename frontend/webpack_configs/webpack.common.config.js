@@ -6,6 +6,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const gitRevisionPlugin = new GitRevisionPlugin()
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+
 const PROJECT_ROOT = path.resolve(__dirname, '..')
 require('dotenv').config()
 
@@ -72,7 +74,12 @@ module.exports = function (options = {}) {
           from: path.join(PROJECT_ROOT, 'node_modules/octicons'),
           to: 'octicons',
         }]
-      })],
+      }),
+      new MonacoWebpackPlugin({
+        languages:['java'],
+      })
+    
+    ],
     module: {
       rules: [
         { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' }

@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor-core';
+import type * as monaco from 'monaco-editor';
 import { Languages, DiagnosticCollection, CompletionItemProvider, DocumentIdentifier, HoverProvider, SignatureHelpProvider, DefinitionProvider, ReferenceProvider, DocumentHighlightProvider, DocumentSymbolProvider, CodeActionProvider, CodeLensProvider, DocumentFormattingEditProvider, DocumentRangeFormattingEditProvider, OnTypeFormattingEditProvider, RenameProvider, DocumentFilter, DocumentSelector, DocumentLinkProvider, ImplementationProvider, TypeDefinitionProvider, DocumentColorProvider, FoldingRangeProvider, SemanticTokensLegend, DocumentSemanticTokensProvider, DocumentRangeSemanticTokensProvider } from "./services";
 import { ProtocolToMonacoConverter, MonacoToProtocolConverter } from './monaco-converter';
 import { Disposable } from './disposable';

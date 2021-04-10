@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor-core';
+import type * as monaco from 'monaco-editor';
 import { Commands, Disposable } from './services';
 export declare class MonacoCommands implements Commands {
     protected readonly _monaco: typeof monaco;

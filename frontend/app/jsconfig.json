@@ -2,7 +2,7 @@
     "compilerOptions": {
         "target": "ES2015",
         "module": "commonJS",
-        "checkJs": false,
+        "checkJs": true,
         "allowSyntheticDefaultImports": false,
         "experimentalDecorators": true,
         "jsx": "react",

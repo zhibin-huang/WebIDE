@@ -1,4 +1,4 @@
-import type * as monaco from 'monaco-editor-core';
+import type * as monaco from 'monaco-editor';
 import * as ls from 'vscode-languageserver-protocol';
 import { CodeActionParams, CodeLensParams, DocumentFormattingParams, DocumentOnTypeFormattingParams, DocumentRangeFormattingParams, ReferenceParams, RenameParams, TextDocumentPositionParams, Position, TextDocumentIdentifier, CompletionItem, CompletionList, CompletionParams, CompletionContext, CompletionTriggerKind, Range, Diagnostic, CompletionItemKind, Hover, SignatureHelp, SignatureInformation, ParameterInformation, Definition, DefinitionLink, Location, DocumentHighlight, SymbolInformation, DocumentSymbolParams, CodeActionContext, DiagnosticSeverity, Command, CodeLens, FormattingOptions, TextEdit, WorkspaceEdit, DocumentLinkParams, DocumentLink, MarkedString, MarkupContent, ColorInformation, ColorPresentation, FoldingRange, DiagnosticRelatedInformation, SymbolKind, DocumentSymbol, CodeAction, SignatureHelpContext, SignatureHelpTriggerKind, SemanticTokens, InsertTextMode, AnnotatedTextEdit, ChangeAnnotation } from './services';
 export declare type RecursivePartial<T> = {
