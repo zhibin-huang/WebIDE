@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
 import { observer } from 'mobx-react'
 import { dnd } from 'utils'
 import { defaultProps } from 'utils/decorators'
@@ -22,7 +21,7 @@ class TabBar extends Component {
     closePane: PropTypes.func,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       showDropdownMenu: false,
@@ -32,7 +31,7 @@ class TabBar extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       tabGroup,
       addTab,
@@ -85,7 +84,7 @@ class TabBar extends Component {
     })
   }
 
-  renderDropdownMenu () {
+  renderDropdownMenu() {
     if (!this.state.showDropdownMenu) return null
     const dropdownMenuItems = this.makeDropdownMenuItems()
     if (!dropdownMenuItems.length) return null
@@ -98,11 +97,11 @@ class TabBar extends Component {
 
   makeDropdownMenuItems = () => {
     const baseItems = this.props.closePane && this.props.tabGroup.siblings ?
-    [{
-      name: i18n`tab.makeDropdownMenuItems.close`,
-      command: this.props.closePane,
-    }]
-    : []
+      [{
+        name: i18n`tab.makeDropdownMenuItems.close`,
+        command: this.props.closePane,
+      }]
+      : []
     const tabs = this.props.tabGroup.tabs
     const tabLabelsItem = tabs && tabs.map(tab => ({
       name: tab.title || i18n`tab.makeDropdownMenuItems.untitledTab`,

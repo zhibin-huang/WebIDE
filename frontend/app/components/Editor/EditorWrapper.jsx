@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
-import CodeEditor from './components/CodeEditor'
 import { MEditor } from './components/CodeEditor'
 import MarkdownEditor from './components/MarkdownEditor'
 import ImageEditor from './components/ImageEditor'

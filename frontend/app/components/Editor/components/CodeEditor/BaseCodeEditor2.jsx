@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Editor, connectLanguageServer} from 'components/Editor/state'
+import { Editor} from 'components/Editor/state'
 
 class BaseCodeEditor extends Component {
   constructor (props) {

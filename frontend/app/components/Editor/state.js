@@ -115,6 +115,8 @@ class Editor {
     }
   }
 
+  disposers = []
+
   createMonacoEditorInstance() {
     this.meDOM = document.createElement('div')
     Object.assign(this.meDOM.style, { width: '100%', height: '100%' })
@@ -250,7 +252,7 @@ class Editor {
   @observable selections = []
   @observable cursorPosition = { ln: 1, col: 1 }
 
-  //TODO
+
   setCursor(...args) {
     if (!args[0]) return
     const lineColExp = args[0]
@@ -389,28 +391,21 @@ class Editor {
     return this.editorType === 'default'
   }
 
-  disposers = []
   dispose() {
     console.log("disposers dispose!")
     this.disposers.forEach(disposer => disposer && disposer())
-
   }
 
-  //TODO
   destroyMonaco() {
-    // console.log("lspclient dispose!")
-    // if(this.lspDisposer) this.lspDisposer.dispose()
     if(this.me){
       if(this.me.getModel()){
         this.me.getModel().dispose();
       }
       this.me.dispose();
       this.me = null;
-
     }
   }
 
-  //TODO
   destroy(async) {
     if (async) {
       setTimeout(() => {

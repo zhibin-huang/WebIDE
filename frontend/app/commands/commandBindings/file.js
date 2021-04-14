@@ -28,24 +28,24 @@ const nodeToParentDirPath = (node) => {
   return `${pathSplitted.join('/')}/`
 }
 
-function createFolderAtPath (path) {
+function createFolderAtPath(path) {
   return api.createFolder(path)
-  .then((data) => {
-    if (data.code < 0) {
-      Modal.updateModal({ statusMessage: data.msg }).then(createFolderAtPath)
-    } else {
-      Modal.dismissModal()
-    }
-  })
-  .then(() => path)
+    .then((data) => {
+      if (data.code < 0) {
+        Modal.updateModal({ statusMessage: data.msg }).then(createFolderAtPath)
+      } else {
+        Modal.dismissModal()
+      }
+    })
+    .then(() => path)
     // if error, try again.
-  .catch(err =>
-    Modal.updateModal({ statusMessage: err.msg }).then(createFolderAtPath)
-  )
+    .catch(err =>
+      Modal.updateModal({ statusMessage: err.msg }).then(createFolderAtPath)
+    )
 }
 
 
-export function openFile (obj, callback) {
+export function openFile(obj, callback) {
   if (!obj.path) return
   // 做一些encoding的调度
   if (FileState.initData.get('_init')) {
@@ -61,7 +61,7 @@ export function openFile (obj, callback) {
   }
 }
 
-export function openFileWithEncoding ({ path, editor = {}, others = {}, allGroup = false, encoding, callback }) {
+export function openFileWithEncoding({ path, editor = {}, others = {}, allGroup = false, encoding, callback }) {
   const { encoding: currentEncoding } = FileStore.get(path) || {}
   return api.readFile(path, encoding || currentEncoding)
     .then((data) => {
@@ -96,15 +96,15 @@ export function openFileWithEncoding ({ path, editor = {}, others = {}, allGroup
     })
 }
 
-function createTab ({ icon, type }) {
+function createTab({ icon, type }) {
   TabStore.createTab({
     icon,
     type,
   })
 }
 
-function createFileWithContent (content) {
-  return function createFileAtPath (path) {
+function createFileWithContent(content) {
+  return function createFileAtPath(path) {
     if (content) {
       return api.createFile(path, content)
         .then((res) => {
@@ -183,7 +183,7 @@ const fileCommands = {
       defaultValue,
       selectionRange: [path.length, defaultValue.length]
     })
-    .then(createFile)
+      .then(createFile)
   },
   'file:new_folder': (c) => {
     const node = c.context

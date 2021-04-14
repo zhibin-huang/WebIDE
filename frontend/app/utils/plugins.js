@@ -23,5 +23,3 @@ export const PluginRegistry = {
     return Object.values(this._plugins).filter(value => value.loadType === loadType)
   }
 }
-// for test
-window.PluginRegistry = PluginRegistry

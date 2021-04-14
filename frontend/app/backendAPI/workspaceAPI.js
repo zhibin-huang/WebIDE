@@ -1,6 +1,7 @@
 import config from '../config'
 import { request } from '../utils'
-import { FsSocketClient, TtySocketClient } from './websocketClients'
+import { FsSocketClient} from './websocketClients'
+//TtySocketClient } from './websocketClients'
 
 let connectedResolve
 export const fsSocketConnectedPromise = new Promise((rs, rj) => connectedResolve = rs)
@@ -36,10 +37,10 @@ export function closeWebsocketClient () {
   fsSocketClient.close()
 }
 
-export function closeTtySocketClient () {
-  const ttySocketClient = new TtySocketClient()
-  ttySocketClient.close()
-}
+// export function closeTtySocketClient () {
+//   const ttySocketClient = new TtySocketClient()
+//   ttySocketClient.close()
+// }
 
 export function getSettings () {
   return request.get(`/workspaces/${config.spaceKey}/settings?base64=false`).then(({ content = {} }) => JSON.parse(content))
@@ -53,9 +54,9 @@ export function requestCollaborator () {
   return request.post(`/workspaces/${config.spaceKey}/collaborator/request`)
 }
 
-export function execShellCommand (command) {
-  return request.post(`/tty/${config.spaceKey}/exec`, { command })
-}
+// export function execShellCommand (command) {
+//   return request.post(`/tty/${config.spaceKey}/exec`, { command })
+// }
 
 export function getWorkspaceList () {
   return request.get('/workspaces?page=0&size=5&sort=lastModifiedDate,desc')

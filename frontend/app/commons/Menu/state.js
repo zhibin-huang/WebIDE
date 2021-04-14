@@ -1,4 +1,3 @@
-import React from 'react'
 import { observable, extendShallowObservable } from 'mobx'
 import keyMapConfig, { modifierKeysMap } from 'commands/keymaps'
 

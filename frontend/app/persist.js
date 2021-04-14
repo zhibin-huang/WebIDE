@@ -23,9 +23,9 @@ function persistStore (store, transform) {
       mainStore.config({ storeName: config.spaceKey })
     } else if (mainStore._config.storeName) {
       if (config.hasRehydrated) {
-        mainStore.setItem(`${config.spaceKey}.${config.globalKey}`, transformedStore)
+        mainStore.setItem(`${config.spaceKey}`, transformedStore)
       } else {
-        mainStore.getItem(`${config.spaceKey}.${config.globalKey}`).then((store) => {
+        mainStore.getItem(`${config.spaceKey}`).then((store) => {
           if (store) {
             autoRehydrate(store)
           }
@@ -59,5 +59,4 @@ function autoRehydrate (store) {
   })
 }
 
-window.clearPersist = clearPersist
 export default persistStore

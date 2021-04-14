@@ -1,7 +1,6 @@
 import _ from 'lodash'
-import { createTransformer, toJS, extendObservable, observable, computed, action } from 'mobx'
+import { extendObservable, observable, computed, action } from 'mobx'
 import config from 'config'
-import { syncFile } from './actions'
 
 const ROOT_PATH = ''
 const nodeSorter = (a, b) => {

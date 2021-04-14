@@ -17,8 +17,8 @@ class SidePanelContainer extends Component {
       view: child,
       active: child.props.active
     }))
-    pluginRegister(mapChildrenToRegister, (label, child) => {
-      label.status.set('active', child.active)
+    pluginRegister(mapChildrenToRegister, (pluginState, child) => {
+      pluginState.status.set('active', child.active)
     })
   }
   getChildren () {
@@ -38,6 +38,9 @@ class SidePanelContainer extends Component {
           />
         )}
       />
+      // <div  style={{ height: '100%' }}>
+      //     {this.getChildren()}
+      // </div>
     )
   }
 }

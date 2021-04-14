@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { loadPlugin } from 'components/Plugins/actions.js'
 import { observer } from 'mobx-react'
 import config from 'config'
 import i18n from 'utils/createI18n'
@@ -21,9 +20,6 @@ const WORKING_STATE = {
 
 @observer
 class Initialize extends Component {
-  componentWillMount () {
-    loadPlugin(require('../../plugin/index.js').default)
-  }
   handleRequest = () => {
     api.requestCollaborator()
     state.errorCode = 403

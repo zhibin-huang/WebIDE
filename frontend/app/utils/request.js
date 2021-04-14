@@ -10,7 +10,7 @@ const _request = axios.create({
     'Content-Type': 'application/x-www-form-urlencoded',
   },
   mode: 'cors',
-  withCredentials: true,
+  withCredentials: false,
   // only applicable for request methods 'PUT', 'POST', and 'PATCH'
   transformRequest: [function (data, headers) {
     switch (headers['Content-Type']) {
@@ -24,7 +24,6 @@ const _request = axios.create({
   }]
 })
 
-console.log("baseURL:" + config.baseURL)
 
 const request = function (options) {
   // I need to intercept the returned promise
@@ -128,5 +127,4 @@ request.postJSON = function (url, data, options = {}) {
 }
 
 request.axios = axios
-
 export default request

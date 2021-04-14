@@ -1,5 +1,4 @@
 import { extendObservable, autorun, createTransformer, toJS as mobxToJS } from 'mobx'
-import localforage from 'localforage'
 import PanelState from './components/Panel/state'
 import PaneState from './components/Pane/state'
 import EditorTabState from './components/Tab/state'
@@ -7,12 +6,7 @@ import FileTreeState from './components/FileTree/state'
 import SettingState from './components/Setting/state'
 import FileState from './commons/File/state'
 import persistStore from './persist'
-import PluginsState from './components/Plugins/store'
 
-
-const mainStore = localforage.createInstance({
-  name: 'mainProject'
-})
 
 const store = {
   PanelState,
@@ -21,7 +15,6 @@ const store = {
   FileTreeState,
   SettingState,
   FileState,
-  PluginsState
 }
 
 const toJS = (store) => {
@@ -42,7 +35,6 @@ export const transform = createTransformer(store => ({
   FileTreeState: toJS(store.FileTreeState),
   FileState: toJS(store.FileState),
   SettingState: toJS(store.SettingState),
-  PluginsState: toJS(store.PluginsState)
 }))
 
 export const persistTask = () => persistStore(store, transform)
@@ -54,7 +46,5 @@ autorun(() => {
   }
 })
 
-export { mainStore }
 export default store
-window.mobxStore = store
 

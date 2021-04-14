@@ -4,12 +4,12 @@ import TopBar from '../TopBar'
 import StatusBar from '../StatusBar'
 import PanesContainer from '../Pane'
 import GitGraph from 'components/Git/GitGraph'
-import TerminalContainer from '../Terminal'
+//import TerminalContainer from '../Terminal'
 import FileTree from '../FileTree'
 import SideBar from './SideBar/SideBar'
 import { SidePanelContainer, SidePanelView } from './SideBar/SidePanel'
 import FileList from '../Tab/fileList'
-import config from '../../config'
+import Recommendation from '../Recommendation'
 
 
 const PanelContent = ({ panel }) => {
@@ -35,7 +35,12 @@ const PanelContent = ({ panel }) => {
       return <SideBar side={panel.id.toLowerCase().replace('bar_', '')} />
 
     case 'PANEL_RIGHT':
-      return <SidePanelContainer side='right' />
+      return (<SidePanelContainer side='right' >
+                  <SidePanelView key='recommendation' label={{text: '代码片段推荐'}}>
+                    <Recommendation/>
+                  </SidePanelView>
+              </SidePanelContainer>
+      )
 
     case 'PANEL_LEFT':
       return (
@@ -56,9 +61,9 @@ const PanelContent = ({ panel }) => {
       }
       return (
         <SidePanelContainer side='bottom'>
-          <SidePanelView key='terminal' label={labels.terminal} active={config.isLib} >
+          {/* <SidePanelView key='terminal' label={labels.terminal} active={config.isLib} >
             <TerminalContainer />
-          </SidePanelView>
+          </SidePanelView> */}
 
           <SidePanelView key='gitGraph' label={labels.gitGraph} >
             <GitGraph />

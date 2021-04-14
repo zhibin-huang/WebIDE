@@ -1,14 +1,10 @@
 /* eslint-disable no-await-in-loop */
-import React from 'react'
-import { isFunction, isBoolean, isString } from 'utils/is'
+import { isFunction } from 'utils/is'
 import config from '../config'
 import { stepFactory } from '../utils'
 import i18n from 'utils/createI18n'
-import { mountPackagesByType } from '../components/Plugins/actions'
-import CodingSDK from '../CodingSDK'
 import state from './state'
 import { persistTask } from '../mobxStore'
-// import pluginUrls from '../../.plugins.json'
 import { monarchLanguage, languageConf } from "../components/Editor/java-highlight"
 import * as monaco from 'monaco-editor'
 import { MonacoServices } from 'monaco-languageclient'
@@ -29,30 +25,13 @@ async function initialize() {
   const step = stepFactory()
   let stepNum = 1
   await step('[0] prepare data', async () => {
-    window.CodingSDK = CodingSDK
-    window.React = React
     window.i18n = i18n
     window.extension = f => null
     window.refs = {}
-    window.config = config
     return true
   })
 
   await step('=== Run steps in stepCache ===', async () => {
-    /*async function goto (key, hasNext = true) {
-      if (!hasNext) {
-        return true
-      }
-      const nextKey = await step(`[${stepNum++}] ${state.get(key).desc}`, state.get(key).func)
-      if (nextKey === undefined || isBoolean(nextKey)) {
-        const next = closestTo(state.keys(), key)
-        return nextKey && goto(next, !!next)
-      }
-      if (isString(nextKey)) {
-        return goto(nextKey)
-      }
-    }
-    return goto(state.keys()[0])*/
     for (const value of state.values()) {
       if (checkEnable(value.enable)) {
         await step(`[${stepNum++}] ${value.desc}`, value.func)
@@ -63,12 +42,7 @@ async function initialize() {
   })
 
 
-  await step(`[${stepNum++}] mount required package`, () => {
-    mountPackagesByType('Required')
-
-    // self.MonacoEnvironment = {
-    //   getWorkerUrl: () => './editor.worker.bundle.js'
-    // }
+  await step(`[${stepNum++}] initialize monaco and lsp service`, () => {
     //register Monaco languages
     monaco.languages.register({
       id: 'java',

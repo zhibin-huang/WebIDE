@@ -1,4 +1,3 @@
-import React from 'react'
 import api from 'backendAPI'
 import i18n from '../../utils/createI18n'
 import { observable } from 'mobx'
@@ -40,23 +39,25 @@ const menuBarItems = observable([
         command: 'file:save'
       }
     ]
-  }, {
-    key: 'edit',
-    name: i18n`menuBarItems.edit.main`,
-    items: [
-      {
-        key: 'format',
-        name: i18n`menuBarItems.edit.format`,
-        icon: '',
-        command: 'edit:toggle_format',
-      }, {
-        key: 'comment',
-        name: i18n`menuBarItems.edit.comment`,
-        icon: '',
-        command: 'edit:toggle_comment',
-      }
-    ]
-  }, {
+  }, 
+  // {
+  //   key: 'edit',
+  //   name: i18n`menuBarItems.edit.main`,
+  //   items: [
+  //     {
+  //       key: 'format',
+  //       name: i18n`menuBarItems.edit.format`,
+  //       icon: '',
+  //       command: 'edit:toggle_format',
+  //     }, {
+  //       key: 'comment',
+  //       name: i18n`menuBarItems.edit.comment`,
+  //       icon: '',
+  //       command: 'edit:toggle_comment',
+  //     }
+  //   ]
+  // },
+   {
     key: 'git',
     name: i18n`menuBarItems.git.main`,
     onOpen: onGitMenuOpen,
@@ -153,25 +154,26 @@ const menuBarItems = observable([
         getIsDisabled,
       }
     ]
-  }, {
-    key: 'tools',
-    name: i18n`menuBarItems.tools.main`,
-    items: [
-      {
-        key: 'terminal',
-        name: i18n`menuBarItems.tools.terminal`,
+   },
+  // {
+  //   key: 'tools',
+  //   name: i18n`menuBarItems.tools.main`,
+  //   items: [
+  //     {
+  //       key: 'terminal',
+  //       name: i18n`menuBarItems.tools.terminal`,
 
-        icon: 'octicon octicon-terminal',
-        items: [
-          {
-            name: i18n`menuBarItems.tools.newTerminal`,
-            icon: 'octicon octicon-terminal',
-            command: 'tools:terminal:new_terminal'
-          }
-        ]
-      }
-    ]
-  }
+  //       icon: 'octicon octicon-terminal',
+  //       items: [
+  //         {
+  //           name: i18n`menuBarItems.tools.newTerminal`,
+  //           icon: 'octicon octicon-terminal',
+  //           command: 'tools:terminal:new_terminal'
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // }
 ])
 
 const isRebasing = ['REBASING', 'REBASING_REBASING',
