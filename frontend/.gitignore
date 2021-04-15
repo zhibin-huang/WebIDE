@@ -1,9 +1,6 @@
-node_modules
-build
-.idea/
-.vscode/
-.env
+node_modules/
+build/
+/.env
 app/config.js
-*.bak
+.DS_Store
 coverage/
-task.yaml

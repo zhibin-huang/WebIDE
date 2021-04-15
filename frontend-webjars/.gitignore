@@ -1,10 +1,2 @@
-.idea/
-*.iml
-*.orig
 target/
-**/*.env
-*.db
-*.ipr
-*.iws
-
-
+.DS_Store

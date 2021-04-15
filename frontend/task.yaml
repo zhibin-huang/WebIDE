@@ -1,0 +1,6 @@
+apps:
+- script   : npm
+  name     : 'main-project'
+  args: start
+  exec_mode: fork_mode
+  exec_interpreter: node

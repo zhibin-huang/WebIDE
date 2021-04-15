@@ -21,6 +21,10 @@ class Recommendation extends Component {
         this.meditor = monaco.editor.create(this.htmlDOM, {
             readOnly: true,
             language: 'java',
+            glyphMargin: false,
+            minimap: {
+                enabled: false
+            },
             automaticLayout: true
         })
     }
