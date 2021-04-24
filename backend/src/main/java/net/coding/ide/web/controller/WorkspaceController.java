@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.controller;
 
 import com.google.common.collect.Lists;
@@ -19,15 +15,16 @@ import net.coding.ide.service.GitManager;
 import net.coding.ide.service.WorkspaceManager;
 import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -53,9 +50,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
-/**
- * Created by vangie on 14/11/10.
- */
+
 @Slf4j
 @RestController
 @RequestMapping(produces = APPLICATION_JSON_VALUE)
@@ -83,62 +78,45 @@ public class WorkspaceController {
     @RequestMapping(value = "/workspaces/{spaceKey}/setup", method = POST)
     public WorkspaceDTO setup(@PathVariable String spaceKey,
                               HttpSession session) throws IOException {
-
         log.debug("setup workspace for spaceKey => {}", spaceKey);
-
         Workspace ws = wsMgr.setup(spaceKey);
-
         addWsToSession(session, spaceKey);
-
         log.debug("WorkspaceController create session id => {}", session.getId());
-
         return mapper.map(ws, WorkspaceDTO.class);
     }
 
     @RequestMapping(value = "/workspaces", method = POST)
     public WorkspaceDTO clone(@RequestParam String url,
                               HttpSession session) {
-
         log.debug("Import workspace for url => {}", url);
-
         Workspace ws = wsMgr.createFromUrl(url);
-
         String spaceKey = ws.getSpaceKey();
-
         addWsToSession(session, spaceKey);
-
         log.debug("WorkspaceController create session id => {}", session.getId());
-
         return mapper.map(ws, WorkspaceDTO.class);
     }
 
     @RequestMapping(value = "/workspaces/{spaceKey}", method = GET)
-    public WorkspaceDTO queryWorkspace(@PathVariable("spaceKey") String spaceKey) {;
-
+    public WorkspaceDTO queryWorkspace(@PathVariable("spaceKey") String spaceKey) {
         WorkspaceEntity workspaceEntity = wsMgr.getWorkspaceEntity(spaceKey);
-
         if (workspaceEntity == null) {
             throw new WorkspaceMissingException(format("Workspace %s is not found.", spaceKey));
         }
-
         return mapper.map(workspaceEntity, WorkspaceDTO.class);
     }
 
     @RequestMapping(value = "/workspaces/{spaceKey}", method = DELETE)
     public ResponseEntity delete(@PathVariable String spaceKey) throws Exception {
         wsMgr.delete(spaceKey);
-
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(value = "/workspaces/{spaceKey}/settings", method = GET)
     public FileDTO getSettings(@PathVariable("spaceKey") Workspace ws,
                                @RequestParam(defaultValue = "false") boolean base64) throws IOException {
-
         if (!ws.exists(SETTINGS_PATH)) {
             ws.write(SETTINGS_PATH, "{}", false, true, true);
         }
-
         return FileDTO.of(SETTINGS_PATH,
                 ws.read(SETTINGS_PATH, base64),
                 base64);
@@ -153,7 +131,6 @@ public class WorkspaceController {
                                @RequestParam(defaultValue = "false") boolean addIgnore) throws IOException {
 
         ws.write(SETTINGS_PATH, content, base64, override, createParent);
-
         if (addIgnore) {
             if (!ws.exists(".gitignore")) {
                 ws.create(".gitignore");
@@ -165,7 +142,6 @@ public class WorkspaceController {
                 ws.write(".gitignore", ignoreFile, false, true, true);
             }
         }
-
         return FileDTO.of(SETTINGS_PATH,
                 ws.read(SETTINGS_PATH, base64),
                 base64);

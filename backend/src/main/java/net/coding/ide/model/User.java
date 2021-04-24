@@ -1,14 +1,8 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.model;
 
 import lombok.Data;
 
-/**
- * Created by tan on 16/4/25.
- */
+
 @Data
 public class User {
 

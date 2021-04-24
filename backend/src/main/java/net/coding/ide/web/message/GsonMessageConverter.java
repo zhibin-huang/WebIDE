@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.message;
 
 import com.google.common.collect.Lists;
@@ -21,9 +17,6 @@ import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.List;
 
-/**
- * Created by vangie on 15/2/12.
- */
 public class GsonMessageConverter extends AbstractMessageConverter {
 
     public static final Charset DEFAULT_CHARSET = Charset.forName("UTF-8");

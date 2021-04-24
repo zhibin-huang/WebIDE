@@ -1,18 +1,11 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.model;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.eclipse.jgit.api.RebaseResult;
 
 import java.util.List;
 
-/**
- * Created by tan on 16-4-8.
- */
+
 @Data
 public class RebaseResponse {
 

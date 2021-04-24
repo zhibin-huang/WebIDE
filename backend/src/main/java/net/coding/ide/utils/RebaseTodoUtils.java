@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.utils;
 
 import net.coding.ide.model.RebaseResponse;
@@ -11,9 +7,7 @@ import org.eclipse.jgit.lib.RebaseTodoLine;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tan on 16-4-8.
- */
+
 public class RebaseTodoUtils {
 
     public static List<RebaseResponse.RebaseTodoLine> loadFrom(List<RebaseTodoLine> lines) {

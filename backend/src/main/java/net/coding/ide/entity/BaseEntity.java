@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.entity;
 
 import lombok.EqualsAndHashCode;
@@ -17,9 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by vangie on 14/12/4.
- */
 @ToString
 @EqualsAndHashCode
 @MappedSuperclass

@@ -16,10 +16,6 @@ export function setupWorkspace () {
   return request.post(`/workspaces/${config.spaceKey}/setup`)
 }
 
-export function createWorkspace (options) {
-  return request.post('/workspaces', options)
-}
-
 export function connectWebsocketClient () {
   return new Promise((resolve) => {
     const fsSocketClient = new FsSocketClient()

@@ -1,8 +1,3 @@
-
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.message;
 
 import com.google.gson.JsonElement;

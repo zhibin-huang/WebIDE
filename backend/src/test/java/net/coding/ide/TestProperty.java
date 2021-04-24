@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide;
 
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.controller;
 
 import com.google.gson.JsonObject;
@@ -19,9 +15,6 @@ import java.util.stream.Collectors;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-/**
- * Created by vangie on 15/12/23.
- */
 
 @RestController
 public class ProjectController {

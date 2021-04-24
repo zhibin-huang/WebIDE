@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.utils;
 
 import com.google.common.collect.Lists;
@@ -10,12 +6,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
-import net.coding.ide.service.KeyManagerImpl;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
@@ -33,9 +26,7 @@ import static com.google.common.io.BaseEncoding.base16;
 import static com.google.common.io.BaseEncoding.base64;
 import static java.lang.String.format;
 
-/**
- * Created by tan on 16-2-26.
- */
+
 @Slf4j
 public class KeyUtils {
     /**

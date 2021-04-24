@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.utils;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -10,9 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.Random;
 import java.util.UUID;
 
-/**
- * Created by phy on 2014/12/3.
- */
 @Component
 public class ShortKeyGenerator implements RandomGenerator {
 

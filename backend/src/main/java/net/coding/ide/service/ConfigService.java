@@ -1,14 +1,8 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import net.coding.ide.entity.ConfigEntity;
 
-/**
- * Created by vangie on 15/4/8.
- */
+
 public interface ConfigService {
 
     String getName(String key);

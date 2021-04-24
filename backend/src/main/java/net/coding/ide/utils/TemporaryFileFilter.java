@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.utils;
 
 import com.google.common.base.Predicate;
@@ -12,9 +8,7 @@ import net.coding.ide.model.FileInfo;
 import java.util.List;
 import java.util.regex.Pattern;
 
-/**
- * Created by mingshun on 15-8-26.
- */
+
 public class TemporaryFileFilter {
     private static final Pattern TEMPORARY_FILE_PATTERNS[] = {
             Pattern.compile("^\\..+\\.sw[a-z]$"),

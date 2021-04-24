@@ -1,14 +1,8 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.repository;
 
 import net.coding.ide.entity.ProjectEntity;
 import net.coding.ide.entity.WorkspaceEntity;
 import net.coding.ide.entity.WorkspaceEntity.WsWorkingStatus;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

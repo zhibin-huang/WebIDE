@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.message;
 
 import org.springframework.http.server.ServerHttpRequest;
@@ -15,9 +11,6 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-/**
- * Created by vangie on 15/5/24.
- */
 public class SpaceKeyHandshakeInterceptor implements HandshakeInterceptor {
 
     @Override

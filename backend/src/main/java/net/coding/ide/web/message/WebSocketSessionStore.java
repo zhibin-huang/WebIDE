@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.message;
 
 import org.springframework.stereotype.Component;
@@ -10,9 +6,6 @@ import org.springframework.web.socket.WebSocketSession;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Created by vangie on 15/2/28.
- */
 @Component
 public class WebSocketSessionStore {
 

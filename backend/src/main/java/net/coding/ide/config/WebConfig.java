@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.config;
 
 import com.fatboyindustrial.gsonjodatime.Converters;
@@ -23,9 +19,7 @@ import springfox.documentation.spring.web.json.Json;
 
 import java.util.List;
 
-/**
- * Created by vangie on 14/11/12.
- */
+
 @Configuration
 @EnableSpringDataWebSupport
 @ComponentScan(basePackages = "net.coding.ide.web")

@@ -1,12 +1,5 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.model;
 
-/**
- * Created by tan on 16-4-8.
- */
 public enum RebaseOperation {
     /**
      * Continues after a conflict resolution

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.controller;
 
 import net.coding.ide.dto.KeyDTO;
@@ -19,9 +15,6 @@ import java.io.IOException;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
-/**
- * Created by vangie on 15/7/21.
- */
 
 @RestController
 @RequestMapping(value = "/user", produces = APPLICATION_JSON_VALUE)

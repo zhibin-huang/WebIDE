@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import com.google.common.cache.Cache;
@@ -24,19 +20,15 @@ import net.coding.ide.model.exception.*;
 import net.coding.ide.repository.ProjectRepository;
 import net.coding.ide.repository.WorkspaceRepository;
 import net.coding.ide.utils.FileUtil;
-import net.coding.ide.utils.ProjectUtil;
 import net.coding.ide.utils.RandomGenerator;
 import net.coding.ide.utils.TemporaryFileFilter;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.event.EventListener;
@@ -50,7 +42,6 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -61,9 +52,7 @@ import static java.lang.String.format;
 import static net.coding.ide.entity.WorkspaceEntity.WsWorkingStatus.*;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
-/**
- * Created by vangie on 14/11/11.
- */
+
 @Slf4j
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -146,47 +135,30 @@ public class WorkspaceManagerImpl extends BaseService implements WorkspaceManage
     }
 
     private ProjectEntity doCreateProject(String gitUrl) {
-
         if (!checkGitUrl(gitUrl)) {
             throw new TransportProtocolUnsupportedException("Unsupported git transfer protocol");
         }
-
         ProjectEntity projectEntity = prjRepo.findByUrl(gitUrl);
-
         if (projectEntity != null) {
             return projectEntity;
         }
-
         projectEntity = new ProjectEntity();
-
         projectEntity.setUrl(gitUrl);
         setProjectName(projectEntity, gitUrl);
-
         projectEntity.setOwnerName(username);
-        projectEntity.setIconUrl(ProjectUtil.randomIcon());
-
         projectEntity = prjRepo.save(projectEntity);
-
         return projectEntity;
     }
 
     @Override
     public Workspace createFromUrl(String gitUrl) {
-
         ProjectEntity projectEntity = createProject(gitUrl.trim());
-
         WorkspaceEntity wsEntity = createExternalWorkspaceEntity(projectEntity);
-
         String spaceKey = wsEntity.getSpaceKey();
-
         File baseDir = getBaseDir(spaceKey);
-
         Workspace ws = new Workspace(wsEntity, baseDir);
-
         initWorkspace(ws);
-
         wsCache.put(spaceKey, ws);
-
         return ws;
     }
 
@@ -196,19 +168,16 @@ public class WorkspaceManagerImpl extends BaseService implements WorkspaceManage
 
     private WorkspaceEntity doCreateExternalWorkspaceEntity(final ProjectEntity project) {
         WorkspaceEntity ws = wsRepo.findNotDeletedByProject(project);
-
         if (ws == null) {
             String spaceKey;
             do {
                 spaceKey = randomGene.generate(project.getUrl());
             } while (wsRepo.isSpaceKeyExist(spaceKey));
-
             WorkspaceEntity wsEntity = new WorkspaceEntity();
             wsEntity.setProject(project);
             wsEntity.setSpaceKey(spaceKey);
             wsEntity.setWorkingStatus(Offline);
             wsRepo.save(wsEntity);
-
             return wsEntity;
         } else {
             return ws;
@@ -238,24 +207,18 @@ public class WorkspaceManagerImpl extends BaseService implements WorkspaceManage
             return true;
         } else {
             File dir = new File(url);
-
             return dir.exists() && dir.isDirectory();
         }
     }
 
     @Override
     public void delete(String spaceKey) {
-
         if (isDeleted(spaceKey)) {
             throw new WorkspaceDeletedException(format("Workspace %s is already deleted!", spaceKey));
         }
-
         File baseDir = getBaseDir(spaceKey);
-
         publisher.publishEvent(new WorkspaceDeleteEvent(this, spaceKey));
-
         wsCache.invalidate(spaceKey);
-
         Workspace.purge(baseDir);
     }
 

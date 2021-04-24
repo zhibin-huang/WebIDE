@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import net.coding.ide.entity.ConfigEntity;
@@ -14,9 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by vangie on 15/4/8.
- */
+
 @Service
 public class ConfigServiceImpl extends BaseService implements ConfigService {
 

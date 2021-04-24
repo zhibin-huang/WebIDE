@@ -15,9 +15,7 @@ import java.io.IOException;
 import static net.coding.ide.utils.RebaseStateUtils.getRebaseFile;
 import static org.eclipse.jgit.lib.RebaseTodoLine.Action.EDIT;
 
-/**
- * Created by tan on 28/03/2017.
- */
+
 public class EditActionHandler implements RebaseActionHandler {
 
     @Override

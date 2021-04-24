@@ -15,9 +15,7 @@ import java.io.IOException;
 import static net.coding.ide.utils.RebaseStateUtils.createFile;
 import static net.coding.ide.utils.RebaseStateUtils.getRebaseFile;
 
-/**
- * Created by tan on 28/03/2017.
- */
+
 public class SquashActionHandler implements RebaseActionHandler {
 
     @Override

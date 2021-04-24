@@ -1,15 +1,9 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.model;
 
 import lombok.Data;
 import lombok.NonNull;
 
-/**
- * Created by mingshun on 7/23/15.
- */
+
 @Data
 public class FileSearchResultEntry {
 

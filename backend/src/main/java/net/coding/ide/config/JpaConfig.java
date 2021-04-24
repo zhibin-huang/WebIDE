@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.config;
 
 import com.zaxxer.hikari.HikariDataSource;
@@ -20,9 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-/**
- * Created by vangie on 14/12/4.
- */
+
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories("net.coding.ide.repository")

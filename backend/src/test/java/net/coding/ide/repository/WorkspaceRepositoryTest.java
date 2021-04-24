@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.repository;
 
 import net.coding.ide.annotation.RepositoryTest;
@@ -19,9 +15,6 @@ import static net.coding.ide.entity.WorkspaceEntity.WsWorkingStatus.Offline;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by vangie on 14/12/5.
- */
 @RunWith(SpringRunner.class)
 @RepositoryTest
 public class WorkspaceRepositoryTest {

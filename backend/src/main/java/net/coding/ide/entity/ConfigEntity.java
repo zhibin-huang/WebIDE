@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.entity;
 
 import lombok.Data;
@@ -12,9 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-/**
- * Created by vangie on 15/4/7.
- */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity

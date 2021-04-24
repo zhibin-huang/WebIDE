@@ -1,19 +1,9 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.utils;
-
-
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-/**
- * Created by phy on 2015/3/7.
- */
 
 public class Debouncer <T> implements Callback<T>{
     private final ScheduledExecutorService sched = Executors.newScheduledThreadPool(1);

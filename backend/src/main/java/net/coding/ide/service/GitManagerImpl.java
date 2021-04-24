@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import com.google.common.base.Strings;
@@ -22,9 +18,9 @@ import net.coding.ide.git.rebase.RebaseActionHandler;
 import net.coding.ide.git.rebase.RewordActionHandler;
 import net.coding.ide.git.rebase.SquashActionHandler;
 import net.coding.ide.model.*;
-import net.coding.ide.model.ListStashResponse.Stash;
 import net.coding.ide.model.PersonIdent;
 import net.coding.ide.model.RepositoryState;
+import net.coding.ide.model.ListStashResponse.Stash;
 import net.coding.ide.model.exception.GitCommitMessageNeedEditException;
 import net.coding.ide.model.exception.GitInvalidPathException;
 import net.coding.ide.model.exception.GitInvalidRefException;
@@ -50,22 +46,20 @@ import org.eclipse.jgit.revwalk.*;
 import org.eclipse.jgit.revwalk.filter.*;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.storage.file.WindowCacheConfig;
-import org.eclipse.jgit.transport.*;
+import org.eclipse.jgit.transport.CredentialsProvider;
+import org.eclipse.jgit.transport.PushResult;
+import org.eclipse.jgit.transport.RefSpec;
+import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
 import org.eclipse.jgit.treewalk.TreeWalk;
 import org.eclipse.jgit.treewalk.filter.PathFilter;
-import org.eclipse.jgit.util.IO;
 import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.*;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -73,7 +67,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
@@ -88,18 +81,15 @@ import java.util.stream.StreamSupport;
 
 import static java.lang.String.format;
 import static net.coding.ide.git.rebase.RebaseActionHandler.DONE;
+import static net.coding.ide.git.rebase.RebaseActionHandler.handler;
 import static net.coding.ide.utils.RebaseStateUtils.getRebaseFile;
 import static net.coding.ide.utils.RebaseStateUtils.getRebasePath;
 import static net.coding.ide.utils.RebaseTodoUtils.parseLines;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static net.coding.ide.git.rebase.RebaseActionHandler.handler;
-import static org.eclipse.jgit.lib.ConfigConstants.*;
 import static org.eclipse.jgit.lib.RefDatabase.ALL;
 
-/**
- * Created by vangie on 14/12/29.
- */
+
 @Slf4j
 @Service
 public class GitManagerImpl implements GitManager, ApplicationEventPublisherAware {

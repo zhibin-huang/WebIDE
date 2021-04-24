@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import com.google.common.cache.Cache;
@@ -47,9 +43,7 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.when;
 
-/**
- * Created by phy on 2014/12/8.
- */
+
 public class WorkspaceManagerTest extends BaseServiceTest {
 
     @Rule

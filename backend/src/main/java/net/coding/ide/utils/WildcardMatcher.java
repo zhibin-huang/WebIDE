@@ -1,15 +1,8 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by mingshun on 7/24/15.
- */
 public class WildcardMatcher {
     private static final String metaCharacters = "(){}[]-^$.?*+|\\";
 

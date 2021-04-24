@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.entity;
 
 import lombok.Data;
@@ -9,14 +5,8 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
-import static javax.persistence.EnumType.STRING;
-
-/**
- * Created by vangie on 14/12/10.
- */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity

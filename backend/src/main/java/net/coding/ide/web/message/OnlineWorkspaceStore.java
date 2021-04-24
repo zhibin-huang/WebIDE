@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.message;
 
 import com.google.common.collect.HashMultimap;
@@ -10,9 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
-/**
- * Created by vangie on 15/2/5.
- */
 @Component
 public class OnlineWorkspaceStore {
 

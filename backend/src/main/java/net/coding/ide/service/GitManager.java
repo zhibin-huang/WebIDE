@@ -1,13 +1,8 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import net.coding.ide.model.*;
 import net.coding.ide.model.exception.GitOperationException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.revwalk.filter.RevFilter;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
@@ -15,11 +10,8 @@ import java.io.InputStream;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Map;
 
-/**
- * Created by vangie on 14/12/29.
- */
+
 public interface GitManager {
 
     GitStatus status(Workspace ws, Path path) throws Exception;

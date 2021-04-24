@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import com.google.common.cache.LoadingCache;
@@ -65,9 +61,6 @@ import static net.coding.ide.utils.RepositoryHelper.createTestBranch;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by vangie on 14/12/29.
- */
 public class GitManagerTest extends BaseServiceTest {
 
     @InjectMocks

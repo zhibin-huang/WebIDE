@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.config;
 
 import org.springframework.context.annotation.Bean;
@@ -20,9 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import static springfox.documentation.builders.RequestHandlerSelectors.withClassAnnotation;
 
-/**
- * Created by tan on 16/8/25.
- */
+
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

@@ -2,9 +2,7 @@ package net.coding.ide.model;
 
 import lombok.Data;
 
-/**
- * Created by tan on 2016/9/21.
- */
+
 @Data
 public class GitLog {
 

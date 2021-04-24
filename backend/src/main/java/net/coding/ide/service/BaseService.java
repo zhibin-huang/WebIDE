@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +8,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.PostConstruct;
 
-/**
- * Created by vangie on 15/5/20.
- */
+
 public class BaseService {
 
     protected TransactionTemplate transactionTemplate;

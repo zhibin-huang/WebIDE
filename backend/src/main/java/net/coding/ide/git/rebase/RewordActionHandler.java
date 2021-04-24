@@ -16,9 +16,7 @@ import java.util.List;
 
 import static net.coding.ide.utils.RebaseStateUtils.getRebasePath;
 
-/**
- * Created by tan on 28/03/2017.
- */
+
 public class RewordActionHandler implements RebaseActionHandler {
 
     @Override

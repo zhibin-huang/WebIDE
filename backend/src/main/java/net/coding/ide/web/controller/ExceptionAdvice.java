@@ -1,10 +1,5 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.controller;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonBooleanFormatVisitor;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.coding.ide.model.exception.*;
@@ -30,9 +25,6 @@ import java.io.UnsupportedEncodingException;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.*;
 
-/**
- * Created by vangie on 15/1/26.
- */
 @ControllerAdvice
 public class ExceptionAdvice {
 

@@ -107,10 +107,10 @@ class Editor {
     state.entities.set(this.id, this)
     this.update(props)
     console.log(this.id, props.filePath)
-    if (!props.filePath || this.isCM) {
+    if (this.isCM) {
       this.createCodeMirrorInstance()
     }
-    if (this.isME) {
+    else if (this.isME) {
       this.createMonacoEditorInstance()
     }
   }

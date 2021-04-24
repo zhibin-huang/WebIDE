@@ -11,8 +11,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by tan on 28/03/2017.
- *
  * @see RebaseCommand.RebaseState
  */
 public class RebaseStateUtils {

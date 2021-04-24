@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,9 +8,6 @@ import javax.persistence.*;
 
 import static javax.persistence.EnumType.STRING;
 
-/**
- * Created by vangie on 14/12/4.
- */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity

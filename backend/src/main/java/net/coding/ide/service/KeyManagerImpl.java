@@ -1,15 +1,9 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import com.google.common.io.Files;
 import lombok.extern.slf4j.Slf4j;
 import net.coding.ide.model.Key;
 import net.coding.ide.model.Workspace;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,9 +27,6 @@ import static net.coding.ide.utils.KeyUtils.fingerprint;
 import static net.coding.ide.utils.KeyUtils.keyToString;
 import static org.apache.commons.lang.SystemUtils.IS_OS_WINDOWS;
 
-/**
- * Created by vangie on 14/12/24.
- */
 @Slf4j
 @Service
 public class KeyManagerImpl extends BaseService implements KeyManager {

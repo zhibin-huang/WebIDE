@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import net.coding.ide.dto.FileDTO;
@@ -11,15 +7,11 @@ import net.coding.ide.model.FileSearchResultEntry;
 import net.coding.ide.model.Workspace;
 import net.coding.ide.model.exception.GitCloneAuthFailException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by vangie on 14/11/11.
- */
+
 public interface WorkspaceManager {
 
     Workspace setup(String spaceKey);

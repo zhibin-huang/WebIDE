@@ -1,6 +1,7 @@
 package net.coding.ide.service;
 
-import com.google.common.collect.*;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import org.springframework.stereotype.Component;
 
 import static com.google.common.collect.Multimaps.synchronizedSetMultimap;
@@ -16,10 +17,6 @@ public class WatchedPathStore {
 
     public void remove(String spaceKey, String path) {
         watchedPath.remove(spaceKey, path);
-    }
-
-    public void clear(String spaceKey) {
-        watchedPath.removeAll(spaceKey);
     }
 
     public boolean hasWatched(String spaceKey, String path) {

@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.web.controller;
 
 import net.coding.ide.entity.WorkspaceEntity;
@@ -15,9 +11,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 
 import java.beans.PropertyEditorSupport;
 
-/**
- * Created by vangie on 15/3/7.
- */
+
 @ControllerAdvice
 public class WorkspaceAdvice {
 

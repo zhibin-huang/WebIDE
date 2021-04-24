@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.model;
 
 import lombok.Data;
@@ -9,9 +5,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tan on 16-3-17.
- */
 @Data
 public class ListStashResponse {
 

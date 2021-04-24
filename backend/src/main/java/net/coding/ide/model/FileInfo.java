@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.model;
 
 
@@ -10,9 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.joda.time.DateTime;
 
 
-/**
- * Created by vangie on 14/11/11.
- */
+
 @Data
 @EqualsAndHashCode(of = {"path", "isDir"})
 public class FileInfo {

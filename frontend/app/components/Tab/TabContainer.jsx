@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
 import { TabBar, TabContent, TabContentItem } from 'commons/Tab'
 import Editor from 'components/Editor'
-import { TablessCodeEditor } from 'components/Editor/components/CodeEditor'
 import i18n from 'utils/createI18n'
 import WelcomePage from './WelcomePage'
 
@@ -53,15 +52,11 @@ class TabContainer extends Component {
           closePane={closePane}
         />
         <TabContent tabGroup={tabGroup} >
-          {tabGroup.tabs.length ? tabGroup.tabs.map(tab =>
+          {tabGroup.tabs.map(tab =>
             <TabContentItem key={tab.id} tab={tab} >
               {this.renderContent(tab)}
             </TabContentItem>
-          )
-          : <TabContentItem tab={{ isActive: true }}>
-              <TablessCodeEditor tabGroupId={tabGroup.id} />
-            </TabContentItem>
-          }
+          )}
         </TabContent>
       </div>
     )

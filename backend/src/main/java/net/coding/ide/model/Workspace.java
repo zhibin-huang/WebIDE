@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.model;
 
 import com.google.common.collect.Lists;
@@ -32,9 +28,7 @@ import java.util.Map;
 import static com.google.common.io.Files.toByteArray;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
-/**
- * Created by vangie on 14/11/10.
- */
+
 public class Workspace {
 
     @Getter
@@ -212,15 +206,12 @@ public class Workspace {
         if (path == null) {
             path = "/";
         }
-
         if (!path.startsWith("/")) {
             path = "/" + path;
         }
         // let the path start with "./".
         path = "." + path;
-
         Path normalizePath = workingDir.resolve(path).normalize();
-
         if (normalizePath.equals(workingDir.normalize())) {
             //处理根目录的时候，后面要加个 "/." ，否则，根目录的 FileInfo.getName() 值是 "working-dir",而不是 ".";而 "working-dir"对用户应该是不可见的。
             return Paths.get(normalizePath + "/.").toAbsolutePath();

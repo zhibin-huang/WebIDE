@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.utils;
 
 import com.google.common.collect.Maps;
@@ -11,9 +7,7 @@ import javax.activation.MimetypesFileTypeMap;
 import java.io.File;
 import java.util.Map;
 
-/**
- * Created by phy on 2015/1/27.
- */
+
 public abstract class FileUtil{
     private static MimetypesFileTypeMap mfm = new MimetypesFileTypeMap();
 

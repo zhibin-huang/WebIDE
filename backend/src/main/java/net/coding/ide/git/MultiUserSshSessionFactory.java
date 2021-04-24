@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.git;
 
 import com.jcraft.jsch.JSch;
@@ -23,7 +19,6 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Created by vangie on 14/12/30.
  *
  * @see JschConfigSessionFactory
  */

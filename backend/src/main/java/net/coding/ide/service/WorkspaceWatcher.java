@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2014-2016 CODING.
- */
-
 package net.coding.ide.service;
 
 import com.google.common.collect.Lists;
@@ -26,9 +22,7 @@ import static java.nio.file.Files.isDirectory;
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 import static java.nio.file.StandardWatchEventKinds.*;
 
-/**
- * Created by phy on 2015/1/30.
- */
+
 @Slf4j
 public class WorkspaceWatcher extends Thread {
     private volatile boolean stopWatching = false;

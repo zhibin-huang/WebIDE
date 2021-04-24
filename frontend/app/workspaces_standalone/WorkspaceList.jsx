@@ -52,15 +52,15 @@ class WorkspaceList extends Component {
       <div className='workspace-list'>
         <div className='create-workspace-container'>
           <div>
-            <h3>Create Workspace</h3>
-            <p>1. Ensure you have add the public key to your account.
-              {this.state.showPublicKey ? <a href='#' onClick={e => this.setState({showPublicKey: false})}> Hide public key</a>
-                : <a href='#' onClick={e => this.setState({showPublicKey: true})}> Show public key</a>}
+            <h3>创建工作空间</h3>
+            <p>1. 确保你已经把公钥添加到你的Git账户里。
+              {this.state.showPublicKey ? <a href='#' onClick={e => this.setState({showPublicKey: false})}> 隐藏公钥</a>
+                : <a href='#' onClick={e => this.setState({showPublicKey: true})}> 显示公钥</a>}
             </p>
             {this.state.showPublicKey ? <div>
               <div className='pre'>{publicKey}</div>
             </div> : null }
-            <p>2. Clone from a git repo. (Only SSH is supported.)</p>
+            <p>2. 从Git仓库克隆。 (只支持SSH链接)</p>
           </div>
           <div className='create-workspace-controls'>
             <input type='text'
@@ -68,29 +68,30 @@ class WorkspaceList extends Component {
               placeholder='git@github.com:username/project.git'
               ref={n => this.gitUrlInput = n} />
             { isCreating
-              ? <button className='btn btn-default' disabled='true'>Creating</button>
+              ? <button className='btn btn-default' disabled='true'>创建中</button>
               : <button className='btn btn-default'
                   onClick={e => createWorkspace(this.gitUrlInput.value)}>
-                  Create
+                  创建
                 </button>
             }
           </div>
           { (isCreating || this.state.hasCreated) && !errMsg ? <p className="creating-workspace-process">
-            Creating workspace...{this.state.percent}%</p> : null}
+            创建工作空间中...{this.state.percent}%</p> : null}
           { errMsg ? <p className='creating-workspace-indicator-error'>Error: {errMsg}</p> : null }
         </div>
         <div className='workspace-list-container'>
+          <h3>进入工作空间</h3>
           { workspaces.map(ws =>
             <div key={ws.spaceKey} className='workspace'>
               <div className='workspace-name'>{ws.projectName}</div>
               <div className='workspace-action'>
                 <a className='btn btn-default'
                   href={`/ws/${ws.spaceKey}`}
-                  onClick={e => openWorkspace(ws)}>Open</a>
+                  onClick={e => openWorkspace(ws)}>打开</a>
                 <button className='btn btn-danger'
                   style={{marginLeft: '4px'}}
                   onClick={e => deleteWorkspace(ws.spaceKey)} >
-                  Delete
+                  删除
                 </button>
               </div>
             </div>
