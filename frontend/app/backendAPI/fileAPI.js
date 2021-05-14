@@ -1,4 +1,5 @@
-import { request, qs } from '../utils'
+import request from '../utils/request'
+import qs from "../utils/qs";
 import config from '../config'
 
 

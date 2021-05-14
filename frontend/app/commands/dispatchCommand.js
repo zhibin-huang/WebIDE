@@ -1,4 +1,4 @@
-import { emitter } from 'utils'
+import emitter from 'utils/emitter'
 import { isArray } from 'utils/is'
 
 let _context = null

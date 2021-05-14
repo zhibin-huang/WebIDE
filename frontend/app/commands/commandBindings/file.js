@@ -1,5 +1,5 @@
 import mobxStore from '../../mobxStore'
-import { path as pathUtil } from '../../utils'
+import pathUtil from 'utils/path'
 import api from '../../backendAPI'
 import * as Modal from '../../components/Modal/actions'
 import TabStore from 'components/Tab/store'
@@ -8,7 +8,7 @@ const FileState = FileStore.getState()
 import { notify } from '../../components/Notification/actions'
 import i18n from 'utils/createI18n'
 import icons from 'file-icons-js'
-import { toJS, when } from 'mobx'
+import { when } from 'mobx'
 import emitter, { FILE_HIGHLIGHT } from 'utils/emitter'
 
 const nodeToNearestDirPath = (node) => {

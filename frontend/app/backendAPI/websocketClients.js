@@ -9,8 +9,6 @@ import { notify, NOTIFY_TYPE } from '../components/Notification/actions'
 const log = console.log || (x => x)
 const warn = console.warn || (x => x)
 
-const io = require(__RUN_MODE__ ? 'socket.io-client/dist/socket.io.min.js' : 'socket.io-client-legacy/dist/socket.io.slim.js')
-
 class FsSocketClient {
   constructor() {
     if (FsSocketClient.$$singleton) return FsSocketClient.$$singleton
@@ -24,6 +22,8 @@ class FsSocketClient {
     this.maxAttempts = 7
     FsSocketClient.$$singleton = this
     emitter.on(E.SOCKET_RETRY, this.reconnect.bind(this))
+    this.errorCallback = undefined
+    this.successCallback = undefined
   }
 
   connect() {
@@ -64,9 +64,6 @@ class FsSocketClient {
     if (this.backoff.attempts <= this.maxAttempts) {
       const retryDelay = this.backoff.duration()
       log(`Retry after ${retryDelay}ms`)
-      const timer = setTimeout(
-        this.connect.bind(this)
-        , retryDelay)
     } else {
       emitter.emit(E.SOCKET_TRIED_FAILED)
       notify({ message: i18n`global.onSocketError`, notifyType: NOTIFY_TYPE.ERROR })
@@ -85,43 +82,4 @@ class FsSocketClient {
 }
 
 
-// class TtySocketClient {
-//   constructor() {
-//     if (TtySocketClient.$$singleton) return TtySocketClient.$$singleton
-
-//     this.socket = io.connect(config.baseURL, { resource: 'coding-ide-tty1' })
-
-
-//     this.backoff = getBackoff({
-//       delayMin: 1500,
-//       delayMax: 10000,
-//     })
-//     this.maxAttempts = 5
-
-//     TtySocketClient.$$singleton = this
-//     emitter.on(E.SOCKET_RETRY, () => {
-//       this.reconnect()
-//     })
-//     return this
-//   }
-
-//   reconnect() {
-//     log(`try reconnect ttySocket ${this.backoff.attempts}`)
-//     if (this.backoff.attempts <= this.maxAttempts && !this.socket.connected) {
-//       const timer = setTimeout(() => {
-//         this.connect()
-//       }, this.backoff.duration())
-//     } else {
-//       warn(`TTY reconnection fail after ${this.backoff.attempts} attempts`)
-//       this.backoff.reset()
-//     }
-//   }
-//   close() {
-//     if (config.ttySocketConnected) {
-//       this.socket.disconnect('manual')
-//       TtySocketClient.$$singleton = null
-//     }
-//   }
-// }
-
-export { FsSocketClient} //TtySocketClient }
+export {FsSocketClient}

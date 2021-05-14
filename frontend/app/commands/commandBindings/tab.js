@@ -1,4 +1,3 @@
-import { dispatch as $d } from '../../store'
 import store from 'mobxStore'
 import * as Tab from 'components/Tab/actions'
 import * as PaneActions from 'components/Pane/actions'

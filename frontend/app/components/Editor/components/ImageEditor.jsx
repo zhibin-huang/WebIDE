@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import config from 'config'
-import { request } from 'utils'
+import request from 'utils/request'
 
 const previewPic = 'https://dn-coding-net-production-static.qbox.me/static/5d487aa5c207cf1ca5a36524acb953f1.gif'
 class ImageEditor extends Component {

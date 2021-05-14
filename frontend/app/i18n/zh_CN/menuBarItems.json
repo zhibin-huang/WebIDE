@@ -6,13 +6,7 @@
       "main": "文件",
       "newFile": "新建文件",
       "newFolder": "新建文件夹",
-      "save": "保存",
-      "commit": "commit"
-   },
-   "edit": {
-      "main": "编辑",
-      "format": "格式化代码",
-      "comment": "切换注释"
+      "save": "保存"
    },
    "git": {
       "rebase": "变基",
@@ -26,15 +20,9 @@
       "resolveConflicts": "解决冲突",
       "skipCommit": "跳过提交",
       "commit": "提交",
-      "main": "版本",
+      "main": "版本控制",
       "push": "推送",
       "tag": "标签",
       "mergeBranch": "合并分支"
-   },
-   "tools": {
-      "main": "工具",
-      "terminal": "终端",
-      "newTerminal": "新建"
-   },
-   "switch": "切换到 v1 版本"
+   }
 }

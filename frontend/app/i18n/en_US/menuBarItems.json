@@ -31,10 +31,5 @@
       "tag": "Tag",
       "mergeBranch": "Merge Branch"
    },
-   "tools": {
-      "main": "Tools",
-      "terminal": "Terminal",
-      "newTerminal": "New Terminal"
-   },
    "switch": "Switch to v1"
 }

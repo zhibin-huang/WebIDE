@@ -1,8 +1,6 @@
 {
    "bottom": {
-      "terminal": "终端",
-      "gitGraph": "Git记录",
-      "history": "版本历史"
+      "gitGraph": "Git记录"
    },
    "left": {
       "project": "项目目录",

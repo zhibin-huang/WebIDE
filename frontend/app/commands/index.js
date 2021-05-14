@@ -1,4 +1,4 @@
-import { emitter } from 'utils'
+import emitter from 'utils/emitter'
 import Keymapper from './lib/keymapper'
 import keymaps from './keymaps'
 import commandBindings from './commandBindings'

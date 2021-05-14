@@ -1,8 +1,7 @@
 import isObject from 'lodash/isObject'
-import { observable, reaction, extendObservable, computed, action } from 'mobx'
+import { observable, reaction, extendObservable } from 'mobx'
 import editorConfig from 'utils/editorConfig'
 import config from 'config'
-import emitter, { THEME_CHANGED } from 'utils/emitter'
 import is from 'utils/is'
 import dynamicStyle from 'utils/dynamicStyle'
 
@@ -11,10 +10,9 @@ window.themeVariables = observable.map({})
 let EditorState
 import('components/Editor/state').then(res => EditorState = res.default)
 
-let uiOptions = [
+const uiOptions = [
     { name: 'settings.appearance.uiThemeOption.baseTheme', value: 'base-theme' },
-    { name: 'settings.appearance.uiThemeOption.dark', value: 'dark' },
-  ]
+]
 
 export const UIThemeOptions = uiOptions
 export const SyntaxThemeOptions = ['default', 'neo', 'eclipse', 'monokai', 'material']

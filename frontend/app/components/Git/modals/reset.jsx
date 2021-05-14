@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { dispatchCommand } from '../../../commands'
-import cx from 'classnames'
 import { connect } from 'react-redux'
 import i18n from 'utils/createI18n'
 

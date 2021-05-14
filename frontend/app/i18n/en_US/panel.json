@@ -1,8 +1,6 @@
 {
    "bottom": {
-      "terminal": "Terminal",
-      "gitGraph": "Git Logs",
-      "history": "History"
+      "gitGraph": "Git Logs"
    },
    "left": {
       "project": "Project",

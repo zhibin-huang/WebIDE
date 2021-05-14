@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Editor } from 'components/Editor/state'
-import { emitter, E } from 'utils'
+import emitter, * as E  from 'utils/emitter'
 
 class BaseCodeEditor extends Component {
   constructor (props) {

@@ -6,9 +6,7 @@ import {
   createTransformer,
   extendObservable,
   observable,
-  reaction,
   computed,
-  action,
 } from 'mobx'
 
 const { state, TreeNode } = TreeNodeScope()
@@ -51,9 +49,8 @@ extendObservable(state, {
 class FileTreeNode extends TreeNode {
   static nodeSorter = nodeSorter
   constructor (props) {
-    const path = props.file ? props.file.path : props.path
-    super({ ...props, id: path })
-    this.path = path
+    super({ ...props, id: (props.file ? props.file.path : props.path) })
+    this.path = (props.file ? props.file.path : props.path)
     this.isLoaded = false
     if (this.path === ROOT_PATH) {
       this.isFolded = false

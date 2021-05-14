@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { setSelectionRange } from 'utils'
-import { dismissModal } from '../actions'
+import setSelectionRange from 'utils/setSelectionRange'
 
 class Prompt extends Component {
   constructor (props) {

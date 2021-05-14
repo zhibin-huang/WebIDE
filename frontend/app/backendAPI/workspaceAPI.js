@@ -1,5 +1,5 @@
 import config from '../config'
-import { request } from '../utils'
+import request from '../utils/request'
 import { FsSocketClient} from './websocketClients'
 //TtySocketClient } from './websocketClients'
 

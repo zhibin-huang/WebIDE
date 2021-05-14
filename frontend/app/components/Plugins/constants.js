@@ -18,6 +18,3 @@ export const CONTAINERS = {
   UTILITIES: 'CONTAINERS.UTILITIES'
 }
 
-export const TERMINAL = {
-  ENV: 'TERMINAL.ENV'
-}

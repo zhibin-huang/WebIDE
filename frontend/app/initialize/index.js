@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { isFunction } from 'utils/is'
 import config from '../config'
-import { stepFactory } from '../utils'
+import stepFactory from '../utils/stepFactory'
 import i18n from 'utils/createI18n'
 import state from './state'
 import { persistTask } from '../mobxStore'

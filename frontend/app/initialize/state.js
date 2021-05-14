@@ -1,7 +1,7 @@
 import { extendObservable, observable } from 'mobx'
 import config from '../config'
 import api from '../backendAPI'
-import { qs } from '../utils'
+import qs from '../utils/qs'
 import initializeState from '../containers/Initialize/state'
 
 const urlPath = window.location.pathname

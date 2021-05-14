@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { inject } from 'mobx-react'
-import { emitter, E } from 'utils'
+import emitter, * as E from 'utils/emitter'
+
 import cx from 'classnames'
 import i18n from 'utils/createI18n'
 import config from '../../config'

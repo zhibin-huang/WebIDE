@@ -8,8 +8,7 @@
     <artifactId>backend</artifactId>
     <version>0.1.1-SNAPSHOT</version>
 
-    <name>Coding IDE Backend</name>
-    <url>http://ide.coding.net</url>
+    <name>Web IDE Backend</name>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

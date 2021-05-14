@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import cx from 'classnames'
-import { emitter, E } from 'utils'
+import emitter from 'utils/emitter'
+import * as E from 'utils/emitter'
 
 const debounced = _.debounce(func => func(), 50)
 function emitPanelResizedEvent () {

@@ -3,4 +3,3 @@ build/
 /.env
 app/config.js
 .DS_Store
-coverage/

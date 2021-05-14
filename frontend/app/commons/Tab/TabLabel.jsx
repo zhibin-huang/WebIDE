@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 import { observer } from 'mobx-react'
-import { dnd } from 'utils'
+import dnd from 'utils/dnd'
 import { defaultProps } from 'utils/decorators'
 
 let TabLabel = observer(({ tab, removeTab, activateTab, openContextMenu }) => {

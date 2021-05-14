@@ -23,7 +23,6 @@ module.exports = function (options = {}) {
     entry: {
       main: [path.join(PROJECT_ROOT, 'app')],
       workspaces: [path.join(PROJECT_ROOT, 'app/workspaces_standalone')],
-      //vendor: ['babel-polyfill', 'react', 'react-dom', 'redux', 'react-redux'],
     },
     output: {
       publicPath,

@@ -1,6 +1,6 @@
 import qs from 'qs'
 import mobxStore from 'mobxStore'
-import { createAction, handleActions, registerAction } from 'utils/actions'
+import { createAction, registerAction } from 'utils/actions'
 import state, { Tab, TabGroup } from './state'
 import { openFile } from '../../commands/commandBindings/file'
 import dispatchCommand from 'commands/dispatchCommand'

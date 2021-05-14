@@ -4,7 +4,6 @@ import TopBar from '../TopBar'
 import StatusBar from '../StatusBar'
 import PanesContainer from '../Pane'
 import GitGraph from 'components/Git/GitGraph'
-//import TerminalContainer from '../Terminal'
 import FileTree from '../FileTree'
 import SideBar from './SideBar/SideBar'
 import { SidePanelContainer, SidePanelView } from './SideBar/SidePanel'
@@ -55,16 +54,10 @@ const PanelContent = ({ panel }) => {
       )
     case 'PANEL_BOTTOM':
       const labels = {
-        terminal: { text: i18n`panel.bottom.terminal`, icon: 'octicon octicon-terminal', weight: 2 },
         gitGraph: { text: i18n`panel.bottom.gitGraph`, icon: 'octicon octicon-git-commit' },
-        gitHistory: { text: i18n`panel.bottom.history`, icon: 'octicon octicon-history' },
       }
       return (
         <SidePanelContainer side='bottom'>
-          {/* <SidePanelView key='terminal' label={labels.terminal} active={config.isLib} >
-            <TerminalContainer />
-          </SidePanelView> */}
-
           <SidePanelView key='gitGraph' label={labels.gitGraph} >
             <GitGraph />
           </SidePanelView>

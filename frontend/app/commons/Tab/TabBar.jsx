@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
-import { dnd } from 'utils'
+import dnd from 'utils/dnd'
 import { defaultProps } from 'utils/decorators'
 import TabLabel from './TabLabel'
 import Menu from 'components/Menu'

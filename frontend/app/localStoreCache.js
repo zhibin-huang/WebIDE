@@ -9,7 +9,6 @@ const stateDomainsToCache = [
   // 'TabState',
   // 'EditorState',
   // 'ModalState',
-  // 'TerminalState',
   // 'GitState',
   // 'NotificationState',
   // 'WorkspaceState',

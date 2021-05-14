@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
-import { composeReducers } from './utils'
-import { dispatch as emitterDispatch, emitterMiddleware } from 'utils/actions'
+import composeReducers  from './utils/composeReducers'
+import { emitterMiddleware } from 'utils/actions'
 import thunkMiddleware from 'redux-thunk'
 
 import GitReducer from './components/Git/reducer'

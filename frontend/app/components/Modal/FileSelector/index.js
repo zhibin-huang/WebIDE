@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { observable, computed, action } from 'mobx'
 import { observer } from 'mobx-react'
-import { setSelectionRange } from '../../../utils'
 import { dispatchCommand } from '../../../commands'
 import { TreeNode as FileTreeNode } from 'commons/Tree'
 import FileTreeState from '../../FileTree/state'

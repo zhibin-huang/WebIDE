@@ -1,5 +1,6 @@
 import { registerAction } from 'utils/actions'
-import { emitter, E } from 'utils'
+import emitter from 'utils/emitter'
+import * as E from 'utils/emitter'
 import panelState from '../state'
 import pluginState from '../../Plugins/store'
 import { SIDEBAR } from '../../Plugins/constants'
@@ -24,10 +25,6 @@ const _toggleSidePanelView = (viewId, shouldShow) => {
   if (shouldShow || !targetPlugin.status.get('active')) {
     pluginState.plugins.forEach((plugin) => {
       if (plugin === targetPlugin) {
-        if (viewId === 'SIDEBAR.BOTTOM.terminal') {
-          emitter.emit(E.TERMINAL_SHOW)
-        }
-
         plugin.status.set('active', true)
       } else if (plugin.position === targetPlugin.position) {
         plugin.status.set('active', false)

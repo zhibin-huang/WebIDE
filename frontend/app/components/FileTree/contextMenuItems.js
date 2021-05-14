@@ -45,15 +45,15 @@ const items = [
     getIsHidden: ctx => !ctx.isDir,
 
   },
-  divider,
-  {
-    name: i18n`fileTree.contextMenu.gitBlame`,
-    icon: 'fa',
-    command: (c) => {
-      gitBlameNode(c)
-    },
-    id: 'filetree_menu_gitBlame',
-  }
+  // divider,
+  // {
+  //   name: i18n`fileTree.contextMenu.gitBlame`,
+  //   icon: 'fa',
+  //   command: (c) => {
+  //     gitBlameNode(c)
+  //   },
+  //   id: 'filetree_menu_gitBlame',
+  // }
 ]
 
 export default items
