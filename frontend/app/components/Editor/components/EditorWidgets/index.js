@@ -1,3 +1,3 @@
-import EditorWidgets from './EditorWidgets'
+import EditorWidgets from './EditorWidgets';
 
-export default EditorWidgets
+export default EditorWidgets;

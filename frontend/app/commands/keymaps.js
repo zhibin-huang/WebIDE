@@ -1,16 +1,16 @@
 // Unavailable shortcuts: shift / ctrl + (q|n|w|t|↹)
-const os = (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()
-export const isMac = (os === 'mac')
+const os = (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase();
+export const isMac = (os === 'mac');
 
-let keymaps
-let modifierKeysMap
+let keymaps;
+let modifierKeysMap;
 if (isMac) {
   keymaps = {
     'alt+n': 'file:new_file',
     'alt+shift+n': 'file:new_folder',
     'cmd+s': 'file:save',
     'cmd+ctrl+c': 'git:commit',
-    'esc': 'modal:dismiss',
+    esc: 'modal:dismiss',
     'cmd+shift+p': 'global:command_palette',
     'cmd+p': 'global:file_palette',
     'cmd+alt+1': 'editor:split_pane_1',
@@ -24,20 +24,20 @@ if (isMac) {
     'ctrl+g': 'editor:goto',
     'alt+l': 'edit:toggle_format',
     'cmd+/': 'edit:toggle_comment',
-  }
+  };
   modifierKeysMap = {
     ctrl: '⌃',
     alt: '⌥',
     cmd: '⌘',
     shift: '⇧',
-  }
+  };
 } else {
   keymaps = {
     'alt+n': 'file:new_file',
     'alt+shift+n': 'file:new_folder',
     'ctrl+s': 'file:save',
     'ctrl+alt+c': 'git:commit',
-    'esc': 'modal:dismiss',
+    esc: 'modal:dismiss',
     'ctrl+shift+p': 'global:command_palette',
     'ctrl+p': 'global:file_palette',
     'ctrl+alt+1': 'editor:split_pane_1',
@@ -51,17 +51,17 @@ if (isMac) {
     'ctrl+g': 'editor:goto',
     'alt+l': 'edit:toggle_format',
     'ctrl+/': 'edit:toggle_comment',
-  }
+  };
   modifierKeysMap = {
     ctrl: 'Ctrl',
     alt: 'Alt',
     cmd: 'Cmd',
     shift: 'Shift',
-  }
+  };
 }
 
-export default keymaps
+export default keymaps;
 
 export {
-  modifierKeysMap
-}
+  modifierKeysMap,
+};

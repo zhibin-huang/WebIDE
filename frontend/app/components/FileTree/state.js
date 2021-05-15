@@ -1,81 +1,82 @@
-import is from 'utils/is'
-import { TreeNodeScope } from 'commons/Tree'
-import { FileState } from 'commons/File'
+import is from 'utils/is';
+import { TreeNodeScope } from 'commons/Tree';
+import { FileState } from 'commons/File';
 import {
   toJS,
   createTransformer,
   extendObservable,
   observable,
   computed,
-} from 'mobx'
+} from 'mobx';
 
-const { state, TreeNode } = TreeNodeScope()
+const { state, TreeNode } = TreeNodeScope();
 const nodeSorter = (a, b) => {
   // node.isDir comes first
   // then sort by node.path alphabetically
-  if (a.isDir && !b.isDir) return -1
-  if (!a.isDir && b.isDir) return 1
-  if (a.path < b.path) return -1
-  if (a.path > b.path) return 1
-  return 0
-}
+  if (a.isDir && !b.isDir) return -1;
+  if (!a.isDir && b.isDir) return 1;
+  if (a.path < b.path) return -1;
+  if (a.path > b.path) return 1;
+  return 0;
+};
 
-const stateToJS = createTransformer(state => ({
-  entities: state.entities.values().map(node => toJS(node)),
-  focusedNodes: state.focusedNodes.map(node => toJS(node)),
-}))
+const stateToJS = createTransformer((state) => ({
+  entities: state.entities.values().map((node) => toJS(node)),
+  focusedNodes: state.focusedNodes.map((node) => toJS(node)),
+}));
 
-const ROOT_PATH = ''
+const ROOT_PATH = '';
 extendObservable(state, {
   shrinkPath: {
     enabled: false,
     delimiter: '.',
     directories: [],
   },
-  get focusedNodes () {
-    return this.entities.values().filter(node => node.isFocused).sort(nodeSorter)
+  get focusedNodes() {
+    return this.entities.values().filter((node) => node.isFocused).sort(nodeSorter);
   },
-  get gitStatus () {
-    return this.entities.values().filter(node => !node.isDir && node.gitStatus !== 'CLEAN')
+  get gitStatus() {
+    return this.entities.values().filter((node) => !node.isDir && node.gitStatus !== 'CLEAN');
   },
-  get root () {
-    return this.entities.get(ROOT_PATH)
+  get root() {
+    return this.entities.get(ROOT_PATH);
   },
-  toJS () {
-    return stateToJS(this)
-  }
-})
+  toJS() {
+    return stateToJS(this);
+  },
+});
 
 class FileTreeNode extends TreeNode {
   static nodeSorter = nodeSorter
-  constructor (props) {
-    super({ ...props, id: (props.file ? props.file.path : props.path) })
-    this.path = (props.file ? props.file.path : props.path)
-    this.isLoaded = false
+
+  constructor(props) {
+    super({ ...props, id: (props.file ? props.file.path : props.path) });
+    this.path = (props.file ? props.file.path : props.path);
+    this.isLoaded = false;
     if (this.path === ROOT_PATH) {
-      this.isFolded = false
-      this._parentId = state.shadowRoot.id
-      this.index = 0
+      this.isFolded = false;
+      this._parentId = state.shadowRoot.id;
+      this.index = 0;
     }
   }
 
   /* override base class */
-  @computed get name () {
+  @computed get name() {
     return this._name ? this._name
-    : state.shrinkPath.enabled && is.string(this._parentId) ? this.shrinkPathName
-    : this.file ? this.file.name
-    : ''
+      : state.shrinkPath.enabled && is.string(this._parentId) ? this.shrinkPathName
+        : this.file ? this.file.name
+          : '';
   }
 
-  @computed get isDir () {
-    return this.file ? this.file.isDir : false
+  @computed get isDir() {
+    return this.file ? this.file.isDir : false;
   }
 
-  @computed get parentId () {
+  @computed get parentId() {
     // prioritize corresponding file's tree node
-    if (this._parentId !== undefined) return this._parentId
+    if (this._parentId !== undefined) return this._parentId;
     if (this.file && this.file.parent) {
-      return this.file.parent.path
+      return this.file.parent.path;
     }
   }
   /* end override */
@@ -83,36 +84,36 @@ class FileTreeNode extends TreeNode {
   /* extend base class */
   @observable path = null
 
-  @computed get shrinkPathName () {
-    const parentPath = this.parentId
-    const relativePath = this.path.replace(`${parentPath}/`, '')
-    return relativePath.replace(/\//g, state.shrinkPath.delimiter)
+  @computed get shrinkPathName() {
+    const parentPath = this.parentId;
+    const relativePath = this.path.replace(`${parentPath}/`, '');
+    return relativePath.replace(/\//g, state.shrinkPath.delimiter);
   }
 
-  @computed get file () {
-    return FileState.entities.get(this.path)
+  @computed get file() {
+    return FileState.entities.get(this.path);
   }
 
   // simply get one's children
-  @computed get children () {
+  @computed get children() {
     return state.entities.values()
-      .filter(node => node.parent === this)
-      .sort(this.constructor.nodeSorter)
+      .filter((node) => node.parent === this)
+      .sort(this.constructor.nodeSorter);
   }
 
-  @computed get gitStatus () {
-    if (this.file) return this.file.gitStatus
+  @computed get gitStatus() {
+    if (this.file) return this.file.gitStatus;
   }
 
-  @computed get contentType () {
-    if (this.file) return this.file.contentType
+  @computed get contentType() {
+    if (this.file) return this.file.contentType;
   }
 
-  @computed get size () {
-    if (this.file) return this.file.size
+  @computed get size() {
+    if (this.file) return this.file.size;
   }
   /* end extend */
 }
 
-export default state
-export { FileTreeNode, TreeNode }
+export default state;
+export { FileTreeNode, TreeNode };

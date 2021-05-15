@@ -1,4 +1,2 @@
-import modeInfos from './modeInfos'
-import loadMode from './loadMode'
-
-export { modeInfos, loadMode }
+export modeInfos from './modeInfos';
+export loadMode from './loadMode';

@@ -1,4 +1,4 @@
-import { observable, computed } from 'mobx'
+import { observable, computed } from 'mobx';
 
 /*
  * This decorator enforce a pattern that's widely used in this project,
@@ -15,26 +15,25 @@ import { observable, computed } from 'mobx'
  *  you can specify publicKey explicitly by calling:
  *  @protectedObservable('publicFoo') _foo = 'bar'
  */
-function _protectedObservableDecorator (target, privateKey, descriptor, publicKey) {
-  if (!publicKey) publicKey = privateKey.replace(/^_/, '')
+function _protectedObservableDecorator(target, privateKey, descriptor, publicKey) {
+  if (!publicKey) publicKey = privateKey.replace(/^_/, '');
 
   const computedDescriptor = computed(target, publicKey, {
-    get () { return this[privateKey] },
-    set (v) { return this[privateKey] = v },
-  })
+    get() { return this[privateKey]; },
+    set(v) { return this[privateKey] = v; },
+  });
 
-  Object.defineProperty(target, publicKey, computedDescriptor)
+  Object.defineProperty(target, publicKey, computedDescriptor);
 
-  return observable(target, privateKey, descriptor)
+  return observable(target, privateKey, descriptor);
 }
 
-function protectedObservable (optionalPublicKey) {
+function protectedObservable(optionalPublicKey) {
   if (typeof optionalPublicKey === 'string') {
-    return function protectedObservableDecorator (target, key, descriptor) {
-      return _protectedObservableDecorator(target, key, descriptor, optionalPublicKey)
-    }
-  } else {
-    return _protectedObservableDecorator.apply(null, arguments)
+    return function protectedObservableDecorator(target, key, descriptor) {
+      return _protectedObservableDecorator(target, key, descriptor, optionalPublicKey);
+    };
   }
+  return _protectedObservableDecorator.apply(null, arguments);
 }
-export default protectedObservable
+export default protectedObservable;

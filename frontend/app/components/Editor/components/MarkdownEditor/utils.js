@@ -5,7 +5,7 @@ function findByTextContent(needle, haystack, precise) {
   // precise: Boolean, true - searches for that precise string, surrounded by
   //                          word-breaks,
   //                   false - searches for the string occurring anywhere
-  var elems;
+  let elems;
 
   // no haystack we quit here, to avoid having to search
   // the entire document:
@@ -14,7 +14,7 @@ function findByTextContent(needle, haystack, precise) {
   }
   // if haystack is a string, we pass it to document.querySelectorAll(),
   // and turn the results into an Array:
-  else if ('string' == typeof haystack) {
+  if (typeof haystack === 'string') {
     elems = [].slice.call(document.querySelectorAll(haystack), 0);
   }
   // if haystack has a length property, we convert it to an Array
@@ -23,19 +23,18 @@ function findByTextContent(needle, haystack, precise) {
     elems = [].slice.call(haystack, 0);
   }
 
-  // work out whether we're looking at innerText (IE), or textContent 
+  // work out whether we're looking at innerText (IE), or textContent
   // (in most other browsers)
   // var textProp = 'textContent' in document ? 'textContent' : 'innerText',
-  var textProp = 'outerHTML',
-    // creating a regex depending on whether we want a precise match, or not:
-    reg = precise === true ? new RegExp('\\b' + needle + '\\b') : new RegExp(needle),
-    // iterating over the elems array:
-    found = elems.filter(function(el) {
-      // returning the elements in which the text is, or includes,
-      // the needle to be found:
-      return reg.test(el[textProp]);
-    });
-  return found.length ? found : false;;
+  const textProp = 'outerHTML';
+  // creating a regex depending on whether we want a precise match, or not:
+  const reg = precise === true ? new RegExp(`\\b${needle}\\b`) : new RegExp(needle);
+  // iterating over the elems array:
+  const found = elems.filter((el) =>
+  // returning the elements in which the text is, or includes,
+  // the needle to be found:
+    reg.test(el[textProp]));
+  return found.length ? found : false;
 }
 
-export default findByTextContent
+export default findByTextContent;

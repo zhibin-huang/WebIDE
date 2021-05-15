@@ -1,21 +1,21 @@
-import Mousetrap from 'mousetrap'
-import { normalizeKeys } from './helpers'
+import Mousetrap from 'mousetrap';
+import { normalizeKeys } from './helpers';
 
-Mousetrap.prototype.stopCallback = function () { return false }
+Mousetrap.prototype.stopCallback = function () { return false; };
 
 class Keymapper {
-  constructor ({ dispatchCommand }) {
-    this.dispatchCommand = dispatchCommand
+  constructor({ dispatchCommand }) {
+    this.dispatchCommand = dispatchCommand;
   }
 
-  loadKeymaps (keymaps) {
+  loadKeymaps(keymaps) {
     Object.entries(keymaps).map(([keycombo, commandType]) => {
       Mousetrap.bind(normalizeKeys(keycombo), (e) => {
-        this.dispatchCommand(commandType)
-        e.preventDefault(); e.stopPropagation()
-      })
-    })
+        this.dispatchCommand(commandType);
+        e.preventDefault(); e.stopPropagation();
+      });
+    });
   }
 }
 
-export default Keymapper
+export default Keymapper;

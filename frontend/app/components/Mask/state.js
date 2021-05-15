@@ -1,8 +1,8 @@
-import { observable } from 'mobx'
+import { observable } from 'mobx';
 
 const state = observable({
   operating: false,
   operatingMessage: '',
-})
+});
 
-export default state
+export default state;

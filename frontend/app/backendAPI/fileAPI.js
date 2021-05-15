@@ -1,39 +1,37 @@
-import request from '../utils/request'
-import qs from "../utils/qs";
-import config from '../config'
+import request from '../utils/request';
+import qs from '../utils/qs';
+import config from '../config';
 
-
-export function fetchPath (path, order, group) {
+export function fetchPath(path) {
   return request.get(`/workspaces/${config.spaceKey}/files`, {
     path,
     order: true,
-    group: true
-  })
+    group: true,
+  });
 }
 
-export function downloadFile (path, shouldPacked) {
-  const packOrRaw = shouldPacked ? 'pack' : 'raw'
-  let url = `${config.baseURL}/workspaces/${config.spaceKey}/${packOrRaw}`
+export function downloadFile(path, shouldPacked) {
+  const packOrRaw = shouldPacked ? 'pack' : 'raw';
+  let url = `${config.baseURL}/workspaces/${config.spaceKey}/${packOrRaw}`;
   url += `?${qs.stringify({
     path,
-    inline: false
-  })}`
-  window.open(url, '_blank')
+    inline: false,
+  })}`;
+  window.open(url, '_blank');
 }
 
-export function uploadFile (path, file, option) {
-  const formdata = new FormData()
-  formdata.append('path', path)
-  formdata.append('files', file, file.name)
+export function uploadFile(path, file, option) {
+  const formdata = new FormData();
+  formdata.append('path', path);
+  formdata.append('files', file, file.name);
   request.upload(`${config.baseURL}/workspaces/${config.spaceKey}/upload`, formdata, {
-    onUploadProgress: option.onUploadProgress
-  }).catch((res) => {
-    option.onUploadFailed()
-  })
+    onUploadProgress: option.onUploadProgress,
+  }).catch(() => {
+    option.onUploadFailed();
+  });
 }
 
-
-export function writeFile (path, content, base64) {
+export function writeFile(path, content, base64) {
   return request({
     method: 'PUT',
     url: `/workspaces/${config.spaceKey}/files`,
@@ -42,71 +40,71 @@ export function writeFile (path, content, base64) {
       content,
       base64: base64 || false,
       override: true,
-      createParent: true
-    }
-  })
+      createParent: true,
+    },
+  });
 }
 
-export function readFile (path, encoding) {
-  const url = `/workspaces/${config.spaceKey}/file/read`
+export function readFile(path, encoding) {
+  const url = `/workspaces/${config.spaceKey}/file/read`;
 
   return request.get(url, {
     path,
     base64: false,
-    encoding
-  })
+    encoding,
+  });
 }
 
-export function createFile (path) {
+export function createFile(path) {
   return request({
     method: 'POST',
     url: `/workspaces/${config.spaceKey}/files`,
     data: {
-      path
-    }
-  })
+      path,
+    },
+  });
 }
 
-export function createFolder (path) {
+export function createFolder(path) {
   return request({
     method: 'POST',
     url: `/workspaces/${config.spaceKey}/mkdir`,
     data: {
-      path
-    }
-  })
+      path,
+    },
+  });
 }
 
-export function moveFile (from, to, force = false) {
+export function moveFile(from, to, force = false) {
   return request({
     method: 'POST',
     url: `/workspaces/${config.spaceKey}/move`,
     data: {
       from,
       to,
-      force
-    }
-  })
+      force,
+    },
+  });
 }
 
-export function deleteFile (path) {
+export function deleteFile(path) {
   return request({
     method: 'DELETE',
     url: `/workspaces/${config.spaceKey}/files`,
     params: {
       path,
-      recursive: true
-    }
-  })
+      recursive: true,
+    },
+  });
 }
 
-export function searchFile (value, includeNonProjectItems = false) {
+export function searchFile(value, includeNonProjectItems = false) {
   return request({
     method: 'POST',
     url: `/workspaces/${config.spaceKey}/search`,
     data: {
       keyword: value,
-      includeNonProjectItems
-    }
-  })
+      includeNonProjectItems,
+    },
+  });
 }

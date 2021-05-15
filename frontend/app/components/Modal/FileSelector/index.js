@@ -1,43 +1,45 @@
-import React, { Component } from 'react'
-import { observer } from 'mobx-react'
-import { dispatchCommand } from '../../../commands'
-import { TreeNode as FileTreeNode } from 'commons/Tree'
-import FileTreeState from '../../FileTree/state'
-import * as FileTreeActions from '../../FileTree/actions'
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { TreeNode as FileTreeNode } from 'commons/Tree';
+import { dispatchCommand } from '../../../commands';
+import FileTreeState from '../../FileTree/state';
+import * as FileTreeActions from '../../FileTree/actions';
 
 @observer
 class FileSelector extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
   }
 
-  render () {
-    const {meta, content} = this.props
-    const { title, onlyDir } = content
-    const { selectNode, openNode } = FileTreeActions
-    const rootNode = FileTreeState.root
+  render() {
+    const { meta, content } = this.props;
+    const { title, onlyDir } = content;
+    const { selectNode, openNode } = FileTreeActions;
+    const rootNode = FileTreeState.root;
     // const curNode = FileTreeState.focusedNodes[0]
     return (
-      <div className='modal-content'>
-        <div className='header'>{title}</div>
-        <div className='filetree-container'
+      <div className="modal-content">
+        <div className="header">{title}</div>
+        <div
+          className="filetree-container"
           tabIndex={1}
           onKeyDown={this.onKeyDown}
         >
-          <FileTreeNode node={rootNode}
+          <FileTreeNode
+            node={rootNode}
             selectNode={selectNode}
             openNode={openNode}
             onlyDir={onlyDir}
           />
         </div>
 
-        <div className='footer modal-ops'>
-          <button className='btn btn-default' onClick={e => dispatchCommand('modal:dismiss')}>{i18n`modal.cancelButton`}</button>
-          <button className='btn btn-primary' onClick={e => meta.resolve(FileTreeState.focusedNodes[0])} disabled={!FileTreeState.focusedNodes[0]}>{content.okText || i18n`modal.okButton`}</button>        
+        <div className="footer modal-ops">
+          <button className="btn btn-default" onClick={(e) => dispatchCommand('modal:dismiss')}>{i18n`modal.cancelButton`}</button>
+          <button className="btn btn-primary" onClick={(e) => meta.resolve(FileTreeState.focusedNodes[0])} disabled={!FileTreeState.focusedNodes[0]}>{content.okText || i18n`modal.okButton`}</button>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default FileSelector
+export default FileSelector;

@@ -1,6 +1,6 @@
-import _ from 'lodash'
-import { Map, Record } from 'immutable'
-import { handleActions } from 'redux-actions'
+import _ from 'lodash';
+import { Map, Record } from 'immutable';
+import { handleActions } from 'redux-actions';
 import {
   GIT_STATUS,
   GIT_STATUS_FOLD_NODE,
@@ -23,7 +23,7 @@ import {
   GIT_HISTORY,
   GIT_HISTORY_CONTEXT_MENU_CLOSE,
   GIT_HISTORY_CONTEXT_MENU_OPEN,
-} from './actions'
+} from './actions';
 
 const _state = {
   isWorkingDirClean: true,
@@ -31,7 +31,7 @@ const _state = {
   commitMessage: '',
   branches: {
     current: 'master',
-    failed: '' // 没有切换成功的
+    failed: '', // 没有切换成功的
   },
   tags: [],
   stash: {
@@ -45,14 +45,14 @@ const _state = {
     newBranchName: '',
   },
   rebase: {
-    state: ''
+    state: '',
   },
   commitDiff: {
     title: '',
     ref: null,
     oldRef: null,
     filesMap: Map(),
-    files: []
+    files: [],
   },
   history: {
     data: [],
@@ -63,9 +63,9 @@ const _state = {
       isActive: false,
       pos: { x: 0, y: 0 },
       contextNode: null,
-    }
-  }
-}
+    },
+  },
+};
 
 const FileTreeNode = Record({
   name: '',
@@ -79,8 +79,8 @@ const FileTreeNode = Record({
   isRoot: false,
   children: null,
   leafNodes: null,
-  parent: null
-})
+  parent: null,
+});
 
 const treeifyFiles = (files) => {
   let rootNode = new FileTreeNode({
@@ -90,34 +90,34 @@ const treeifyFiles = (files) => {
     isDir: true,
     isFocused: false,
     children: [],
-    leafNodes: []
-  })
-  let _nodes = Map()
-  _nodes = _nodes.set(rootNode.path, rootNode)
+    leafNodes: [],
+  });
+  let _nodes = Map();
+  _nodes = _nodes.set(rootNode.path, rootNode);
 
   rootNode = files.reduce((rootNode, file) => {
-    const pathComps = file.name.split('/')
+    const pathComps = file.name.split('/');
 
     pathComps.reduce((parentNode, pathComp, idx) => {
       const currentPath = parentNode.path
         + (parentNode.path.endsWith('/') ? '' : '/')
-        + pathComp
+        + pathComp;
 
-      let node = _nodes.get(currentPath)
+      let node = _nodes.get(currentPath);
 
       const commonNodeProps = {
         name: pathComp,
         path: currentPath,
         parent: parentNode.path,
-        depth: parentNode.depth + 1
-      }
+        depth: parentNode.depth + 1,
+      };
       if (idx === pathComps.length - 1) {
         if (!node) {
           node = new FileTreeNode({
             ...commonNodeProps,
             isDir: false,
-            status: file.status
-          })
+            status: file.status,
+          });
         }
       } else if (!node) {
         node = new FileTreeNode({
@@ -125,201 +125,197 @@ const treeifyFiles = (files) => {
           isDir: true,
           children: [],
           leafNodes: [],
-        })
+        });
       }
 
       // record of direct children
       if (!parentNode.children.includes(node.path)) {
-        parentNode.children.push(node.path)
+        parentNode.children.push(node.path);
       }
       // also keep a record of leaf nodes at each internal dir nodes
       if (parentNode.isDir && !parentNode.leafNodes.includes(`/${file.name}`)) {
-        parentNode.leafNodes.push(`/${file.name}`)
+        parentNode.leafNodes.push(`/${file.name}`);
       }
 
-      _nodes = _nodes.set(node.path, node)
-      return node
-    }, rootNode)
+      _nodes = _nodes.set(node.path, node);
+      return node;
+    }, rootNode);
 
-    return rootNode
-  }, rootNode)
+    return rootNode;
+  }, rootNode);
 
-  return _nodes
-}
+  return _nodes;
+};
 
 export default handleActions({
   [GIT_STATUS]: (state, action) => {
-    const statusFiles = treeifyFiles(action.payload.files)
-    const isWorkingDirClean = action.payload.isClean
-    return { ...state, statusFiles, isWorkingDirClean }
+    const statusFiles = treeifyFiles(action.payload.files);
+    const isWorkingDirClean = action.payload.isClean;
+    return { ...state, statusFiles, isWorkingDirClean };
   },
 
   [GIT_STATUS_FOLD_NODE]: (state, action) => {
-    const { node, isFolded, deep } = action.payload
-    if (!node.isDir) return state
+    const { node, isFolded, deep } = action.payload;
+    if (!node.isDir) return state;
 
-    state.statusFiles = state.statusFiles.set(node.path, node.set('isFolded', isFolded))
+    state.statusFiles = state.statusFiles.set(node.path, node.set('isFolded', isFolded));
     if (deep) {
       node.children.forEach((childNodePath) => {
-        const childNode = state.statusFiles.get(childNodePath)
+        const childNode = state.statusFiles.get(childNodePath);
         if (childNode.isDir) {
-          state.statusFiles = state.statusFiles.set(childNodePath, childNode.set('isFolded', isFolded))
+          state.statusFiles = state.statusFiles.set(childNodePath, childNode.set('isFolded', isFolded));
         }
-      })
+      });
     }
-    return { ...state }
+    return { ...state };
   },
 
   [GIT_STATUS_SELECT_NODE]: (state, action) => {
-    const node = action.payload
+    const node = action.payload;
     const statusFiles = state.statusFiles.map((_node) => {
       if (_node.path === node.path) {
-        return _node.set('isFocused', true)
-      } else if (_node.isFocused) {
-        return _node.set('isFocused', false)
+        return _node.set('isFocused', true);
+      } if (_node.isFocused) {
+        return _node.set('isFocused', false);
       }
-      return _node
-    })
-    return { ...state, statusFiles }
+      return _node;
+    });
+    return { ...state, statusFiles };
   },
 
   [GIT_STATUS_STAGE_NODE]: (state, action) => {
-    const node = action.payload
-    let statusFiles = state.statusFiles
+    const node = action.payload;
+    let { statusFiles } = state;
     if (!node.isDir) {
       statusFiles = state.statusFiles.set(node.path,
-        node.set('isStaged', !node.isStaged)
-      )
+        node.set('isStaged', !node.isStaged));
     } else {
-      const stagedLeafNodes = node.leafNodes.filter(leafNodePath =>
-        state.statusFiles.get(leafNodePath).get('isStaged')
-      )
-      const allLeafNodesStaged = (stagedLeafNodes.length === node.leafNodes.length)
+      const stagedLeafNodes = node.leafNodes.filter((leafNodePath) => state.statusFiles.get(leafNodePath).get('isStaged'));
+      const allLeafNodesStaged = (stagedLeafNodes.length === node.leafNodes.length);
 
       statusFiles = state.statusFiles.withMutations((statusFiles) => {
         node.leafNodes.forEach((leafNodePath) => {
-          const leafNode = statusFiles.get(leafNodePath)
-          statusFiles.set(leafNodePath, leafNode.set('isStaged', !allLeafNodesStaged))
-        })
-        return statusFiles
-      })
+          const leafNode = statusFiles.get(leafNodePath);
+          statusFiles.set(leafNodePath, leafNode.set('isStaged', !allLeafNodesStaged));
+        });
+        return statusFiles;
+      });
     }
-    return { ...state, statusFiles }
+    return { ...state, statusFiles };
   },
-
 
   [GIT_UPDATE_COMMIT_MESSAGE]: (state, action) => ({ ...state, commitMessage: action.payload }),
 
   [GIT_BRANCH]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.branches = action.payload.branches
-    return state
+    state = _.cloneDeep(state);
+    state.branches = action.payload.branches;
+    return state;
   },
 
   [GIT_TAGS]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.tags = action.payload.tags
-    return state
+    state = _.cloneDeep(state);
+    state.tags = action.payload.tags;
+    return state;
   },
 
   [GIT_CHECKOUT]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.branches.current = action.payload.branch
-    return state
+    state = _.cloneDeep(state);
+    state.branches.current = action.payload.branch;
+    return state;
   },
 
   [GIT_CHECKOUT_FAILED]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.branches.failed = action.payload.branch
-    return state
+    state = _.cloneDeep(state);
+    state.branches.failed = action.payload.branch;
+    return state;
   },
 
   [GIT_CURRENT_BRANCH]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.branches.current = action.payload.name
-    return state
+    state = _.cloneDeep(state);
+    state.branches.current = action.payload.name;
+    return state;
   },
   [GIT_UPDATE_STASH_MESSAGE]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.stash.stashMessage = action.payload
-    return state
+    state = _.cloneDeep(state);
+    state.stash.stashMessage = action.payload;
+    return state;
   },
   [GIT_UPDATE_UNSTASH_IS_POP]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.unstash.isPop = action.payload
-    return state
+    state = _.cloneDeep(state);
+    state.unstash.isPop = action.payload;
+    return state;
   },
   [GIT_UPDATE_UNSTASH_IS_REINSTATE]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.unstash.isReinstate = action.payload
-    return state
+    state = _.cloneDeep(state);
+    state.unstash.isReinstate = action.payload;
+    return state;
   },
   [GIT_UPDATE_UNSTASH_BRANCH_NAME]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.unstash.newBranchName = action.payload
-    return state
+    state = _.cloneDeep(state);
+    state.unstash.newBranchName = action.payload;
+    return state;
   },
   [GIT_UPDATE_STASH_LIST]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.unstash.stashList = action.payload
+    state = _.cloneDeep(state);
+    state.unstash.stashList = action.payload;
     if (state.unstash.stashList.length == 0) {
-      state.unstash.selectedStash = null
+      state.unstash.selectedStash = null;
     } else if (!state.unstash.selectedStash) {
-      state.unstash.selectedStash = state.unstash.stashList[0]
+      state.unstash.selectedStash = state.unstash.stashList[0];
     }
-    return state
+    return state;
   },
   [GIT_SELECT_STASH]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.unstash.selectedStash = action.payload
-    return state
+    state = _.cloneDeep(state);
+    state.unstash.selectedStash = action.payload;
+    return state;
   },
   [GIT_REBASE_STATE]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.rebase.state = action.payload
-    return state
+    state = _.cloneDeep(state);
+    state.rebase.state = action.payload;
+    return state;
   },
   [GIT_COMMIT_DIFF]: (state, action) => {
-    state = _.cloneDeep(state)
-    state.commitDiff.title = action.payload.title
-    state.commitDiff.ref = action.payload.ref
-    state.commitDiff.oldRef = action.payload.oldRef
-    state.commitDiff.files = action.payload.files
-    state.commitDiff.filesMap = treeifyFiles(action.payload.files)
-    return state
+    state = _.cloneDeep(state);
+    state.commitDiff.title = action.payload.title;
+    state.commitDiff.ref = action.payload.ref;
+    state.commitDiff.oldRef = action.payload.oldRef;
+    state.commitDiff.files = action.payload.files;
+    state.commitDiff.filesMap = treeifyFiles(action.payload.files);
+    return state;
   },
   [GIT_HISTORY]: (state, action) => {
-    state = _.cloneDeep(state)
-    let data = null
+    state = _.cloneDeep(state);
+    let data = null;
     if (action.payload.reset) {
-      data = action.payload.res
+      data = action.payload.res;
     } else {
-      data = state.history.data.concat(action.payload.res)
+      data = state.history.data.concat(action.payload.res);
     }
     state.history = {
       ...state.history,
       data,
-      isEnd: action.payload.res.length < state.history.size
-    }
-    return state
+      isEnd: action.payload.res.length < state.history.size,
+    };
+    return state;
   },
   [GIT_HISTORY_CONTEXT_MENU_OPEN]: (state, action) => {
-    state = _.cloneDeep(state)
+    state = _.cloneDeep(state);
     state.history = {
       ...state.history,
-      contextMenu: action.payload
-    }
-    return state
+      contextMenu: action.payload,
+    };
+    return state;
   },
   [GIT_HISTORY_CONTEXT_MENU_CLOSE]: (state, action) => {
-    state = _.cloneDeep(state)
+    state = _.cloneDeep(state);
     state.history = {
       ...state.history,
       contextMenu: {
         ...state.history.contextMenu,
-        isActive: false
-      }
-    }
-    return state
-  }
-}, _state)
+        isActive: false,
+      },
+    };
+    return state;
+  },
+}, _state);

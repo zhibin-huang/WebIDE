@@ -1,86 +1,84 @@
-import _ from 'lodash'
-import React, { Component } from 'react'
-import api from '../../../backendAPI'
-import cx from 'classnames'
-import dispatchCommand from 'commands/dispatchCommand'
+import _ from 'lodash';
+import React, { Component } from 'react';
+import cx from 'classnames';
+import dispatchCommand from 'commands/dispatchCommand';
+import api from '../../../backendAPI';
 
-const debounced = _.debounce(function (func) { func() }, 1000)
+const debounced = _.debounce((func) => { func(); }, 1000);
 
 class FilePalette extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       items: [],
       inputValue: '',
       selectedItemIndex: 0,
-      includeNonProjectItems: false
-    }
-    this.handleExcludeChange = this.handleExcludeChange.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.renderItem = this.renderItem.bind(this)
-    this.searchFiles = this.searchFiles.bind(this)
-    this.openFile = this.openFile.bind(this)
+      includeNonProjectItems: false,
+    };
+    this.handleExcludeChange = this.handleExcludeChange.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.renderItem = this.renderItem.bind(this);
+    this.searchFiles = this.searchFiles.bind(this);
+    this.openFile = this.openFile.bind(this);
   }
 
-  handleExcludeChange (e) {
+  handleExcludeChange(e) {
     this.setState({
-      includeNonProjectItems: e.target.checked
-    })
-    debounced(this.searchFiles)
+      includeNonProjectItems: e.target.checked,
+    });
+    debounced(this.searchFiles);
   }
 
-  handleInputChange (e) {
+  handleInputChange(e) {
     this.setState({
-      inputValue: e.target.value
-    })
-    debounced(this.searchFiles)
+      inputValue: e.target.value,
+    });
+    debounced(this.searchFiles);
   }
 
-  searchFiles () {
-    const value = this.state.inputValue
+  searchFiles() {
+    const value = this.state.inputValue;
     api.searchFile(value, this.state.includeNonProjectItems)
-    .then((res) => {
-      this.setState({
-        items: res
-      })
-    })
+      .then((res) => {
+        this.setState({
+          items: res,
+        });
+      });
   }
 
-  openFile (itemIdx) {
-    let node
+  openFile(itemIdx) {
+    let node;
     if (itemIdx) {
-      node = this.state.items[itemIdx]
+      node = this.state.items[itemIdx];
     } else {
-      node = this.state.items[this.state.selectedItemIndex]
+      node = this.state.items[this.state.selectedItemIndex];
     }
     if (!node) {
-      return
+      return;
     }
-    let splitPattern = /\/(.*\/)?(.*)/
-    let matches = node.path.match(splitPattern)
-    let directory
+    const splitPattern = /\/(.*\/)?(.*)/;
+    const matches = node.path.match(splitPattern);
+    let directory;
     if (matches[1]) {
-      directory = "#{config.projectName}/#{_.trimEnd(matches[1], '/')}"
+      directory = "#{config.projectName}/#{_.trimEnd(matches[1], '/')}";
     }
 
-    let filename = matches[2]
+    const filename = matches[2];
 
-    dispatchCommand('file:open_file', node.path)
-    dispatchCommand('modal:dismiss')
+    dispatchCommand('file:open_file', node.path);
+    dispatchCommand('modal:dismiss');
   }
 
-  renderItem (item, itemIdx) {
-    if (this.state.inputValue === '') return <i>{item.path}</i>
-    const that = this
-    var itemElements = item.path.split('').map( (char, idx) => {
-      return (this.state.inputValue.toLowerCase().indexOf(char) > -1 || this.state.inputValue.toUpperCase().indexOf(char) > -1)
-        ? <em key={idx}>{char}</em>
-        : <i key={idx}>{char}</i>
-    })
-    return itemElements
+  renderItem(item, itemIdx) {
+    if (this.state.inputValue === '') return <i>{item.path}</i>;
+    const that = this;
+    const itemElements = item.path.split('').map((char, idx) => ((this.state.inputValue.toLowerCase().indexOf(char) > -1 || this.state.inputValue.toUpperCase().indexOf(char) > -1)
+      ? <em key={idx}>{char}</em>
+      : <i key={idx}>{char}</i>));
+    return itemElements;
   }
 
-  render () {
+  render() {
     return (
       <div className="modal-content">
         <input
@@ -100,35 +98,39 @@ class FilePalette extends Component {
           Include non-project items
         </label>
 
-        <ul className='command-palette-items'>
-          {this.state.items.map( (item, itemIdx) =>
-            <li className={cx({selected: itemIdx == this.state.selectedItemIndex})}
-              onClick={e=>this.openFile(itemIdx)}
-              key={itemIdx} >{ this.renderItem(item, itemIdx) }</li>
-          )}
+        <ul className="command-palette-items">
+          {this.state.items.map((item, itemIdx) => (
+            <li
+              className={cx({ selected: itemIdx == this.state.selectedItemIndex })}
+              onClick={(e) => this.openFile(itemIdx)}
+              key={itemIdx}
+            >
+{ this.renderItem(item, itemIdx) }
+            </li>
+          ))}
         </ul>
       </div>
-    )
+    );
   }
 
-  _onKeyDown = e => {
-    var idx = this.state.selectedItemIndex
-    var len = this.state.items.length
+  _onKeyDown = (e) => {
+    let idx = this.state.selectedItemIndex;
+    const len = this.state.items.length;
 
     switch (e.keyCode) {
       case 13: /* enter */
-        this.openFile()
-        break
+        this.openFile();
+        break;
       case 40: /* down */
-        if (++idx == len) idx = len - 1
-        this.setState({selectedItemIndex:idx})
-        break
+        if (++idx == len) idx = len - 1;
+        this.setState({ selectedItemIndex: idx });
+        break;
       case 38: /* up */
-        if (--idx < 0) idx = 0
-        this.setState({selectedItemIndex:idx})
-        break
+        if (--idx < 0) idx = 0;
+        this.setState({ selectedItemIndex: idx });
+        break;
     }
   }
 }
 
-export default FilePalette
+export default FilePalette;

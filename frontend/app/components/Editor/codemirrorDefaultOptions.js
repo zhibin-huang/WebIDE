@@ -1,19 +1,18 @@
-const os = (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()
-export const isMac = (os === 'mac')
-const mod = isMac ? 'Cmd' : 'Ctrl'
+const os = (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase();
+export const isMac = (os === 'mac');
+const mod = isMac ? 'Cmd' : 'Ctrl';
 // const keyComment = `${mod}-/`
 
-const extraKeys = {}
+const extraKeys = {};
 
-extraKeys['Tab'] = function betterTab (cm) {
+extraKeys.Tab = function betterTab(cm) {
   if (cm.somethingSelected()) {
-    cm.indentSelection('add')
+    cm.indentSelection('add');
   } else {
-    cm.replaceSelection(cm.getOption('indentWithTabs') ? '\t' :
-      Array(cm.getOption('indentUnit') + 1).join(' '), 'end', '+input'
-    )
+    cm.replaceSelection(cm.getOption('indentWithTabs') ? '\t'
+      : Array(cm.getOption('indentUnit') + 1).join(' '), 'end', '+input');
   }
-}
+};
 
 // extraKeys[keyComment] = function commentSelection (cm) {
 //   const range = { from: cm.getCursor(true), to: cm.getCursor(false) }
@@ -51,6 +50,6 @@ const options = {
   insertFinalNewline: undefined,
   smartIndent: false,
   extraKeys,
-}
+};
 
-export default options
+export default options;

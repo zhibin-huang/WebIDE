@@ -1,0 +1,27 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "babelOptions": {
+            "configFile": "/Users/huangzhibin/code-recommendation/WebIDE/frontend/babel.config.json"
+        }
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        
+    }
+}

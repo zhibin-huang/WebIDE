@@ -4,7 +4,7 @@
  * @param {function} errorHandler - will be passed the error message / or the return value of error callback
  * @returns {function} step - step function, see below
  */
-function stepFactory ({
+function stepFactory({
   descriptionHandler = (...args) => console.log(...args),
   successHandler = (...args) => console.log(...args),
   errorHandler = (...args) => console.error(...args),
@@ -30,39 +30,40 @@ function stepFactory ({
    * if it returns a promise, then the promise should resolve to boolean at final step
    * if error is throw from the promise, it's seen as an error state
    */
-  function step (description, fn) {
-    let successCallback, errorCallback
+  function step(description, fn) {
+    let successCallback; let
+      errorCallback;
     if (!step.allSuccess) {
       return ({
-        success () { return this },
-        error () { return this }
-      })
+        success() { return this; },
+        error() { return this; },
+      });
     }
-    descriptionHandler(description)
+    descriptionHandler(description);
     const promise = Promise.resolve(fn())
-    .then((isSuccess) => {
-      if (!isSuccess) throw Error('error')
-      successCallback && successHandler(successCallback())
-    })
-    .catch((err) => {
-      step.allSuccess = false
-      errorCallback && errorHandler(errorCallback())
-    })
+      .then((isSuccess) => {
+        if (!isSuccess) throw Error('error');
+        successCallback && successHandler(successCallback());
+      })
+      .catch((err) => {
+        step.allSuccess = false;
+        errorCallback && errorHandler(errorCallback());
+      });
 
     promise.success = function (cb) {
-      successCallback = typeof cb === 'function' ? cb : (() => cb)
-      return this
-    }
+      successCallback = typeof cb === 'function' ? cb : (() => cb);
+      return this;
+    };
     promise.error = function (cb) {
-      errorCallback = typeof cb === 'function' ? cb : (() => cb)
-      return this
-    }
+      errorCallback = typeof cb === 'function' ? cb : (() => cb);
+      return this;
+    };
 
-    return promise
+    return promise;
   }
 
-  step.allSuccess = true
-  return step
+  step.allSuccess = true;
+  return step;
 }
 
-export default stepFactory
+export default stepFactory;

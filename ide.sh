@@ -22,7 +22,6 @@ sub_help(){
   echo "Subcommands:"
   echo "  build [-t tag]"
   echo "  run [-p port]"
-  echo "  docker [build|run|attach|stop|logs|exec]"
   echo ""
   echo "For help with each subcommand run:"
   echo "$PROG_NAME <subcommand> -h | --help"
@@ -109,136 +108,7 @@ error_exit() {
   exit 1
 }
 
-valid_container_exist() {
-  RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
 
-  if [ $? -eq 1 ]; then
-    echo "UNKNOWN - container $CONTAINER does not exist."
-    exit 3
-  fi
-}
-
-assert_container_is_running() {
-  RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
-
-  if [ $? -eq 1 ]; then
-    echo "UNKNOWN - $CONTAINER does not exist."
-    exit 3
-  fi
-
-  if [ "$RUNNING" == "false" ]; then
-    echo "CRITICAL - $CONTAINER is not running."
-    exit 2
-  fi
-}
-
-container_exist() {
-  RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
-
-  if [ $? -eq 0 ]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
-container_is_running() {
-  RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
-
-  if [ $? -eq 1 ]; then
-    return 1
-  fi
-
-  if [ "$RUNNING" == "true" ]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
-
-sub_docker() {
-
-    local OPTIND opt
-
-    check_docker() {
-      if ! docker ps > /dev/null 2>&1; then
-        output=$(docker ps)
-        error_exit "Error - Docker not installed properly: \n${output}"
-      fi
-    }
-
-    docker_usage() {
-      echo "Usage: $PROG_NAME docker [build|run|attach|stop|logs|exec]"
-    }
-
-    check_docker
-
-    # process options
-    while getopts ":t:" opt; do
-      case $opt in
-        t)
-          EXTRA_VARS="-t ${OPTARG}"
-          ;;
-        \?)
-          docker_usage
-          exit 1
-          ;;
-      esac
-    done
-
-    case $1 in
-    "-h" | "--help")
-      docker_usage
-      ;;
-    "build")
-      docker build $EXTRA_VARS -t webide/webide .
-      ;;
-    "run")
-      RUNNING=$(docker inspect --format="{{ .State.Running }}" $CONTAINER 2> /dev/null)
-
-      if ! container_exist ; then
-
-        echo "creating container $CONTAINER"
-        docker create -p 8080:8080 --env-file config -v coding-ide-home:/root/.coding-ide --name webide -h webide  webide/webide
-        valid_last_cmd
-      elif [ "$RUNNING" == "true" ]; then
-        echo "CRITICAL - $CONTAINER is running."
-        exit 2
-      fi
-
-      echo "starting container $CONTAINER"
-      docker start webide
-      valid_last_cmd
-      docker attach --sig-proxy=false webide
-      ;;
-    "stop")
-      assert_container_is_running
-      docker stop webide
-      ;;
-    "attach")
-      assert_container_is_running
-      docker attach --sig-proxy=false webide
-      ;;
-    "logs")
-      assert_container_is_running
-      docker logs -f webide
-      ;;
-    "remove")
-      if container_is_running ; then
-        echo "stoping webide..."
-        docker stop webide
-      fi
-      echo "removing webide..."
-      docker rm webide
-      echo "done..."
-      ;;
-    "exec")
-      assert_container_is_running
-      docker exec -it webide bash
-      ;;
-    esac
-}
 
 do_run_backend() {
   if [ ! -f $BACKEND/target/ide-backend.jar ]; then

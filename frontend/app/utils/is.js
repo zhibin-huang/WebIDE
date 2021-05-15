@@ -1,36 +1,36 @@
-import isNull from 'lodash/isNull'
-import isUndefined from 'lodash/isUndefined'
-import isString from 'lodash/isString'
-import isBoolean from 'lodash/isBoolean'
-import isFunction from 'lodash/isFunction'
-import isArray from 'lodash/isArray'
-import isPlainObject from 'lodash/isPlainObject'
-import isNaN from 'lodash/isNaN'
-import _isNumber from 'lodash/isNumber'
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
+import isString from 'lodash/isString';
+import isBoolean from 'lodash/isBoolean';
+import isFunction from 'lodash/isFunction';
+import isArray from 'lodash/isArray';
+import isPlainObject from 'lodash/isPlainObject';
+import isNaN from 'lodash/isNaN';
+import _isNumber from 'lodash/isNumber';
 
-const isNumber = n => {
-  if (isNaN(n)) return false
-  return _isNumber(n)
-}
+const isNumber = (n) => {
+  if (isNaN(n)) return false;
+  return _isNumber(n);
+};
 
-function is (type) {
-  if (isUndefined(type)) return isUndefined
-  if (isNull(type)) return isNull
+function is(type) {
+  if (isUndefined(type)) return isUndefined;
+  if (isNull(type)) return isNull;
   switch (type) {
     case String:
-      return isString
+      return isString;
     case Number:
-      return isNumber
+      return isNumber;
     case Boolean:
-      return isBoolean
+      return isBoolean;
     case Function:
-      return isFunction
+      return isFunction;
     case Array:
-      return isArray
+      return isArray;
     case Object:
-      return isPlainObject
+      return isPlainObject;
     default:
-      return undefined
+      return undefined;
   }
 }
 
@@ -44,7 +44,7 @@ export default Object.assign(is, {
   array: isArray,
   pojo: isPlainObject,
   plainObject: isPlainObject,
-})
+});
 
 export {
   isNull,
@@ -55,4 +55,4 @@ export {
   isFunction,
   isArray,
   isPlainObject,
-}
+};

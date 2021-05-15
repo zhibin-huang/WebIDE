@@ -1,16 +1,15 @@
-import { observable, action } from 'mobx'
-import { registerAction } from 'utils/actions'
-import { isPlainObject } from 'utils/is'
-import settings from 'settings'
-import i18n from 'utils/createI18n'
+import { observable, action } from 'mobx';
+import { registerAction } from 'utils/actions';
+import { isPlainObject } from 'utils/is';
+import settings from 'settings';
+import i18n from 'utils/createI18n';
 
-const getSettingValueHelper = store => Object.keys(store).filter(e => e !== '_keys').reduce((p, v) => {
-  p[v] = isPlainObject(store[v]) ? store[v].value : store[v]
-  return p
-}, {})
+const getSettingValueHelper = (store) => Object.keys(store).filter((e) => e !== '_keys').reduce((p, v) => {
+  p[v] = isPlainObject(store[v]) ? store[v].value : store[v];
+  return p;
+}, {});
 
-export const SETTING_STORE_HYDRATE = 'SETTING_STORE_HYDRATE'
-
+export const SETTING_STORE_HYDRATE = 'SETTING_STORE_HYDRATE';
 
 const state = observable({
   activeTabId: 'GENERAL',
@@ -20,31 +19,31 @@ const state = observable({
     APPEARANCE: i18n`settings.tabs.appearance`,
     EDITOR: i18n`settings.tabs.editor`,
   },
-  get activeTab () {
-    return settings[this.activeTabId.toLowerCase()]
+  get activeTab() {
+    return settings[this.activeTabId.toLowerCase()];
   },
   settings,
   activateTab: action((tabId) => {
-    state.activeTabId = tabId
+    state.activeTabId = tabId;
   }),
-  toJS () {
+  toJS() {
     return {
       editor: getSettingValueHelper(settings.editor),
       general: getSettingValueHelper(settings.general),
       appearance: getSettingValueHelper(settings.appearance),
-    }
+    };
   },
-})
+});
 
 export const hydrate = registerAction(SETTING_STORE_HYDRATE, (json) => {
   Object.keys(json).forEach((tabItem) => {
     Object.keys(json[tabItem]).forEach((item) => {
-      const stateRef = state.settings[tabItem][item]
+      const stateRef = state.settings[tabItem][item];
       if (stateRef && stateRef.value) {
-        stateRef.value = json[tabItem][item]
+        stateRef.value = json[tabItem][item];
       }
-    })
-  })
-})
+    });
+  });
+});
 
-export default state
+export default state;

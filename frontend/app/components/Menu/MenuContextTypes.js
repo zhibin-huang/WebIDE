@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 export default {
   subscribe: PropTypes.func,
@@ -8,4 +8,4 @@ export default {
   deactivateTopLevelMenu: PropTypes.func,
   activatePrevTopLevelMenuItem: PropTypes.func,
   activateNextTopLevelMenuItem: PropTypes.func,
-}
+};

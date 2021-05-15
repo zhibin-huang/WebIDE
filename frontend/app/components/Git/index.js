@@ -1,4 +1,4 @@
-import GitBranchWidget from './GitBranchWidget'
-import GitCommitView from './GitCommitView'
+import GitBranchWidget from './GitBranchWidget';
+import GitCommitView from './GitCommitView';
 
-export { GitBranchWidget, GitCommitView }
+export { GitBranchWidget, GitCommitView };

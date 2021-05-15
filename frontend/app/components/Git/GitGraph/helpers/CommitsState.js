@@ -1,119 +1,126 @@
-import RandColors from './RandColors'
-import chroma from './chroma'
+import RandColors from './RandColors';
+import chroma from './chroma';
 
 class Commit {
-  constructor (props, state) {
-    this.state = state
+  constructor(props, state) {
+    this.state = state;
     // do not reconstruct! if found in commits, just return it.
-    const commit = this.state.commits.get(props.id)
-    if (commit) return commit
-    this.id = props.id
-    this.parentIds = props.parentIds
-    this.author = props.author
-    this.date = props.date
-    this.message = props.message
+    const commit = this.state.commits.get(props.id);
+    if (commit) return commit;
+    this.id = props.id;
+    this.parentIds = props.parentIds;
+    this.author = props.author;
+    this.date = props.date;
+    this.message = props.message;
   }
 
   id = ''
+
   parentIds = []
+
   author = { name: '', email: '' }
+
   date = 0
+
   message = ''
+
   laneId = ''
 
-  isBaseOfMerge (child) {
-    return child.parentIds.indexOf(this.id) === 0
+  isBaseOfMerge(child) {
+    return child.parentIds.indexOf(this.id) === 0;
   }
 
-  relationToChild (child) {
+  relationToChild(child) {
     // we decide what type of relation it is from this commit to specific child
-    let relationType
+    let relationType;
     // case 1: child and commit on same lane
-    if (child.laneId === this.laneId) relationType = 'NORMAL'
+    if (child.laneId === this.laneId) relationType = 'NORMAL';
     // case 2: child has only one parent
-    else if (child.parentIds.length === 1) relationType = 'DIVERGED'
+    else if (child.parentIds.length === 1) relationType = 'DIVERGED';
     // case 3: child has multi-parents, but commit is base of merge
     // this case almost always emerge only at a PR merge
-    else if (this.isBaseOfMerge(child)) relationType = 'DIVERGED'
-    else relationType = 'MERGED'
+    else if (this.isBaseOfMerge(child)) relationType = 'DIVERGED';
+    else relationType = 'MERGED';
 
-    return relationType
+    return relationType;
   }
 
-  get lane () {
-    return this.state.lanes.get(this.laneId)
+  get lane() {
+    return this.state.lanes.get(this.laneId);
   }
 
-  get shortId () {
-    return this.id.slice(0, 7)
+  get shortId() {
+    return this.id.slice(0, 7);
   }
 
-  get parents () {
-    return this.parentIds.map(id => this.state.commits.get(id))
+  get parents() {
+    return this.parentIds.map((id) => this.state.commits.get(id));
   }
 
-  get children () {
-    const childrenIndex = this.state.childrenIndexes.get(this.id)
-    if (!childrenIndex) return []
-    return childrenIndex.map(childId => this.state.commits.get(childId))
+  get children() {
+    const childrenIndex = this.state.childrenIndexes.get(this.id);
+    if (!childrenIndex) return [];
+    return childrenIndex.map((childId) => this.state.commits.get(childId));
   }
 
-  get index () {
-    return Array.from(this.state.commits.values()).indexOf(this)
+  get index() {
+    return Array.from(this.state.commits.values()).indexOf(this);
   }
 
-  get isLeaf () {
-    return (this.children.length === 0)
+  get isLeaf() {
+    return (this.children.length === 0);
   }
 
-  get isBranched () {
-    return (this.children.length > 1)
+  get isBranched() {
+    return (this.children.length > 1);
   }
 
-  get isMerged () {
-    return (this.parentIds.length > 1)
+  get isMerged() {
+    return (this.parentIds.length > 1);
   }
 
-  get isRoot () {
-    return (this.parentIds.length === 0)
+  get isRoot() {
+    return (this.parentIds.length === 0);
   }
 
-  get isSpecial () {
-    return (this.isLeaf || this.isMerged || this.isBranched || this.isRoot)
+  get isSpecial() {
+    return (this.isLeaf || this.isMerged || this.isBranched || this.isRoot);
   }
 
-  get refs () {
-    return Array.from(this.state.refs.entries()).reduce((acc, [ref, id]) =>
-      (id === this.id ? acc.concat(ref) : acc)
-    , [])
+  get refs() {
+    return Array.from(this.state.refs.entries()).reduce((acc, [ref, id]) => (id === this.id ? acc.concat(ref) : acc),
+      []);
   }
 }
 
 export default class CommitsState {
   commits = new Map()
+
   lanes = new Map()
+
   refs = new Map()
+
   childrenIndexes = new Map()
 
-  constructor (opts) {
-    this.randColors = new RandColors()
-    this.livingLaneIdsAtIndex = [[]]
+  constructor(opts) {
+    this.randColors = new RandColors();
+    this.livingLaneIdsAtIndex = [[]];
 
-    const rawCommits = opts.rawCommits
-    if (opts.refs) this.refs = opts.refs
+    const { rawCommits } = opts;
+    if (opts.refs) this.refs = opts.refs;
 
     rawCommits.forEach((rawCommit) => {
-      const commit = new Commit(rawCommit, this)
-      this.push(commit)
-    })
+      const commit = new Commit(rawCommit, this);
+      this.push(commit);
+    });
   }
 
-  assignNewLane (commit) {
-    const self = this
-    const color = this.randColors.get()
-    const hue = chroma.rgb2lch(...chroma.hex2rgb(color))[2]
-    const backgroundColor = chroma.rgb2hex(...chroma.lch2rgb(96, 15, hue))
-    const borderColor = chroma.rgb2hex(...chroma.lch2rgb(70, 50, hue))
+  assignNewLane(commit) {
+    const self = this;
+    const color = this.randColors.get();
+    const hue = chroma.rgb2lch(...chroma.hex2rgb(color))[2];
+    const backgroundColor = chroma.rgb2hex(...chroma.lch2rgb(96, 15, hue));
+    const borderColor = chroma.rgb2hex(...chroma.lch2rgb(70, 50, hue));
     const newLane = {
       id: commit.id,
       start: commit.id,
@@ -121,62 +128,63 @@ export default class CommitsState {
       color,
       backgroundColor,
       borderColor,
-      get col () {
-        if (typeof this._col === 'number') return this._col
-        const startCommit = self.commits.get(this.id)
-        const livingLaneIds = self.livingLaneIdsAtIndex[startCommit.index]
-        return this._col = livingLaneIds.indexOf(this.id)
-      }
-    }
-    this.lanes.set(newLane.id, newLane)
-    commit.laneId = newLane.id
+      get col() {
+        if (typeof this._col === 'number') return this._col;
+        const startCommit = self.commits.get(this.id);
+        const livingLaneIds = self.livingLaneIdsAtIndex[startCommit.index];
+        return this._col = livingLaneIds.indexOf(this.id);
+      },
+    };
+    this.lanes.set(newLane.id, newLane);
+    commit.laneId = newLane.id;
 
     // fill in the missing records in livingLaneIdsAtIndex from current index to children
-    commit.children.forEach(child => {
-      const relationType = commit.relationToChild(child)
-      const laneId = relationType === 'MERGED' ? commit.laneId : child.laneId
+    commit.children.forEach((child) => {
+      const relationType = commit.relationToChild(child);
+      const laneId = relationType === 'MERGED' ? commit.laneId : child.laneId;
 
-      const childIndex = child.index
+      const childIndex = child.index;
       for (let i = commit.index - 1; i >= childIndex; i--) {
-        if (self.getCol(i, laneId) === -1) self.livingLaneIdsAtIndex[i].push(laneId)
+        if (self.getCol(i, laneId) === -1) self.livingLaneIdsAtIndex[i].push(laneId);
       }
-    })
+    });
   }
 
-  markEndOfLane (commit) {
-    const lane = this.lanes.get(commit.laneId)
-    lane.end = commit.id
-    lane.endTime = commit.date
+  markEndOfLane(commit) {
+    const lane = this.lanes.get(commit.laneId);
+    lane.end = commit.id;
+    lane.endTime = commit.date;
   }
 
-  makeChildrenIndexes (childId, parentId) {
-    let childrenIndex = this.childrenIndexes.get(parentId)
+  makeChildrenIndexes(childId, parentId) {
+    let childrenIndex = this.childrenIndexes.get(parentId);
     if (!childrenIndex) {
-      childrenIndex = []
-      this.childrenIndexes.set(parentId, childrenIndex)
+      childrenIndex = [];
+      this.childrenIndexes.set(parentId, childrenIndex);
     }
-    if (!childrenIndex.includes(childId)) childrenIndex.push(childId)
+    if (!childrenIndex.includes(childId)) childrenIndex.push(childId);
   }
 
   getCol = (commitOrIndex, laneId) => {
-    let index, commit
+    let index; let
+      commit;
     if (typeof commitOrIndex === 'object') {
-      commit = commitOrIndex
-      index = commit.index
-      laneId = commit.laneId
+      commit = commitOrIndex;
+      index = commit.index;
+      laneId = commit.laneId;
     } else {
-      index = commitOrIndex
+      index = commitOrIndex;
     }
-    return this.livingLaneIdsAtIndex[index].indexOf(laneId)
+    return this.livingLaneIdsAtIndex[index].indexOf(laneId);
   }
 
-  push (commit) {
-    if (this.commits.has(commit.id)) return
-    this.commits.set(commit.id, commit)
+  push(commit) {
+    if (this.commits.has(commit.id)) return;
+    this.commits.set(commit.id, commit);
 
-    commit.parentIds.forEach(parentId => {
-      this.makeChildrenIndexes(commit.id, parentId)
-    })
+    commit.parentIds.forEach((parentId) => {
+      this.makeChildrenIndexes(commit.id, parentId);
+    });
 
     /* eslint-disable */
     switch (commit.children.length) {

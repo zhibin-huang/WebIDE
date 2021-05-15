@@ -1,8 +1,8 @@
-import { observable, computed } from 'mobx'
+import { observable, computed } from 'mobx';
 
 const state = observable({
   errorInfo: '',
   errorCode: null,
   status: '',
-})
-export default state
+});
+export default state;

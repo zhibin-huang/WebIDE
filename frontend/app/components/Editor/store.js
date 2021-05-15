@@ -1,23 +1,23 @@
-import * as actions from './actions'
-import state, { Editor } from './state'
+import * as actions from './actions';
+import state, { Editor } from './state';
 
 class EditorStore {
-  constructor () {
-    Object.assign(this, actions)
+  constructor() {
+    Object.assign(this, actions);
   }
 
-  getState () { return state }
+  getState() { return state; }
 
-  get (key) { return state.entities.get(key) }
+  get(key) { return state.entities.get(key); }
 
-  isValid (instance) {
-    return (instance instanceof Editor && state.entities.has(instance.id))
+  isValid(instance) {
+    return (instance instanceof Editor && state.entities.has(instance.id));
   }
 
-  create (config) {
-    return new Editor(config)
+  create(config) {
+    return new Editor(config);
   }
 }
 
-const store = new EditorStore()
-export default store
+const store = new EditorStore();
+export default store;

@@ -1,4 +1,2 @@
-import chroma from './chroma'
-import RandColors from './RandColors'
-
-export { chroma, RandColors }
+export chroma from './chroma';
+export RandColors from './RandColors';

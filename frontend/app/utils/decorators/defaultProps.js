@@ -1,21 +1,20 @@
-import React from 'react'
+import React from 'react';
 
-function getDisplayName (WrappedComponent) {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component'
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
 
-export default function defaultProps (propsMapper) {
-  return function decorator (WrappedComponent) {
-    const displayName = getDisplayName(WrappedComponent)
+export default function defaultProps(propsMapper) {
+  return function decorator(WrappedComponent) {
+    const displayName = getDisplayName(WrappedComponent);
 
-    function WrapperComponent (props) {
-      const mergedProps = { ...propsMapper(props), ...props }
-      return React.createElement(WrappedComponent, mergedProps)
+    function WrapperComponent(props) {
+      const mergedProps = { ...propsMapper(props), ...props };
+      return React.createElement(WrappedComponent, mergedProps);
     }
 
-    WrapperComponent.displayName = displayName
-    WrapperComponent.WrappedComponent = WrappedComponent
-    return WrapperComponent
-  }
+    WrapperComponent.displayName = displayName;
+    WrapperComponent.WrappedComponent = WrappedComponent;
+    return WrapperComponent;
+  };
 }
-

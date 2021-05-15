@@ -1,7 +1,7 @@
 // import React, { Component } from 'react'
 // import cx from 'classnames'
-import { observable } from 'mobx'
-import { observer, inject } from 'mobx-react'
+import { observable } from 'mobx';
+import { observer, inject } from 'mobx-react';
 
 import {
   Prompt,
@@ -28,8 +28,7 @@ import {
   GitCheckoutStashView,
   FileSelectorView,
   Form,
-} from './index'
-
+} from './index';
 
 const modalCache = observable.map({
   Form,
@@ -56,8 +55,8 @@ const modalCache = observable.map({
   Settings: SettingsView,
   FileSelectorView,
   GitDiffFile: GitDiffFileView,
-})
+});
 
-window.modalCache = modalCache
+window.modalCache = modalCache;
 
-export default modalCache
+export default modalCache;

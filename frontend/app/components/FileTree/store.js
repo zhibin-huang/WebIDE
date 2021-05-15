@@ -1,16 +1,15 @@
-import * as actions from './actions'
-import state from './state'
+import * as actions from './actions';
+import state from './state';
 
 class FileTreeStore {
-  constructor () {
-    Object.assign(this, actions)
+  constructor() {
+    Object.assign(this, actions);
   }
 
-  getState () { return state }
+  getState() { return state; }
 
-  get (key) { return state.entities.get(key) }
-
+  get(key) { return state.entities.get(key); }
 }
 
-const store = new FileTreeStore()
-export default store
+const store = new FileTreeStore();
+export default store;

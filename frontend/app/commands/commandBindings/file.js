@@ -1,85 +1,85 @@
-import mobxStore from '../../mobxStore'
-import pathUtil from 'utils/path'
-import api from '../../backendAPI'
-import * as Modal from '../../components/Modal/actions'
-import TabStore from 'components/Tab/store'
-import FileStore from 'commons/File/store'
-const FileState = FileStore.getState()
-import { notify } from '../../components/Notification/actions'
-import i18n from 'utils/createI18n'
-import icons from 'file-icons-js'
-import { when } from 'mobx'
-import emitter, { FILE_HIGHLIGHT } from 'utils/emitter'
+import pathUtil from 'utils/path';
+import mobxStore from '../../mobxStore';
+import TabStore from 'components/Tab/store';
+import FileStore from 'commons/File/store';
+import i18n from 'utils/createI18n';
+import icons from 'file-icons-js';
+import { when } from 'mobx';
+import emitter, { FILE_HIGHLIGHT } from 'utils/emitter';
+import { notify } from '../../components/Notification/actions';
+import * as Modal from '../../components/Modal/actions';
+import api from '../../backendAPI';
+
+const FileState = FileStore.getState();
 
 const nodeToNearestDirPath = (node) => {
-  if (!node) node = { isDir: true, path: '/' } // fake a root node if !node
+  if (!node) node = { isDir: true, path: '/' }; // fake a root node if !node
   if (node.isDir) {
-    var path = node.path
+    var { path } = node;
   } else {
-    var path = node.parent.path
+    var { path } = node.parent;
   }
-  if (path != '/') path += '/'
-  return path
-}
+  if (path != '/') path += '/';
+  return path;
+};
 
 const nodeToParentDirPath = (node) => {
-  const pathSplitted = node.path.split('/')
-  if (pathSplitted.pop() == '') { pathSplitted.pop() }
-  return `${pathSplitted.join('/')}/`
-}
+  const pathSplitted = node.path.split('/');
+  if (pathSplitted.pop() == '') { pathSplitted.pop(); }
+  return `${pathSplitted.join('/')}/`;
+};
 
 function createFolderAtPath(path) {
   return api.createFolder(path)
     .then((data) => {
       if (data.code < 0) {
-        Modal.updateModal({ statusMessage: data.msg }).then(createFolderAtPath)
+        Modal.updateModal({ statusMessage: data.msg }).then(createFolderAtPath);
       } else {
-        Modal.dismissModal()
+        Modal.dismissModal();
       }
     })
     .then(() => path)
     // if error, try again.
-    .catch(err =>
-      Modal.updateModal({ statusMessage: err.msg }).then(createFolderAtPath)
-    )
+    .catch((err) => Modal.updateModal({ statusMessage: err.msg }).then(createFolderAtPath));
 }
 
-
 export function openFile(obj, callback) {
-  if (!obj.path) return
+  if (!obj.path) return;
   // 做一些encoding的调度
   if (FileState.initData.get('_init')) {
     when(() => !FileState.initData.get('_init'), () => {
-      const { encoding } = FileState.initData.get(obj.path) || {}
-      openFileWithEncoding({ ...obj, encoding, callback })
-      FileState.initData.set(obj.path, {})
-    })
+      const { encoding } = FileState.initData.get(obj.path) || {};
+      openFileWithEncoding({ ...obj, encoding, callback });
+      FileState.initData.set(obj.path, {});
+    });
   } else {
-    const { encoding } = FileState.initData.get(obj.path) || {}
-    openFileWithEncoding({ ...obj, encoding, callback })
-    FileState.initData.set(obj.path, {})
+    const { encoding } = FileState.initData.get(obj.path) || {};
+    openFileWithEncoding({ ...obj, encoding, callback });
+    FileState.initData.set(obj.path, {});
   }
 }
 
-export function openFileWithEncoding({ path, editor = {}, others = {}, allGroup = false, encoding, callback }) {
-  const { encoding: currentEncoding } = FileStore.get(path) || {}
+export function openFileWithEncoding({
+  path, editor = {}, others = {}, allGroup = false, encoding, callback,
+}) {
+  const { encoding: currentEncoding } = FileStore.get(path) || {};
   return api.readFile(path, encoding || currentEncoding)
     .then((data) => {
-      FileStore.loadNodeData(data)
-      return data
+      FileStore.loadNodeData(data);
+      return data;
     })
     .then(() => {
-      const activeTabGroup = TabStore.getState().activeTabGroup
+      const { activeTabGroup } = TabStore.getState();
       const existingTabs = TabStore.findTab(
-        tab => tab.file && tab.file.path === path && (tab.tabGroup === activeTabGroup || allGroup)
-      )
+        (tab) => tab.file && tab.file.path === path && (tab.tabGroup === activeTabGroup || allGroup),
+      );
       if (existingTabs.length) {
-        const existingTab = existingTabs[0]
+        const existingTab = existingTabs[0];
         if (editor.gitBlame) {
-          existingTab.editor.gitBlame = editor.gitBlame
+          existingTab.editor.gitBlame = editor.gitBlame;
         }
-        existingTab.activate()
-        if (callback) callback()
+        existingTab.activate();
+        if (callback) callback();
       } else {
         TabStore.createTab({
           icon: icons.getClassWithColor(path.split('/').pop()) || 'fa fa-file-text-o',
@@ -87,20 +87,13 @@ export function openFileWithEncoding({ path, editor = {}, others = {}, allGroup 
             ...editor,
             filePath: path,
           },
-          ...others
-        })
+          ...others,
+        });
         if (callback) {
-          callback()
+          callback();
         }
       }
-    })
-}
-
-function createTab({ icon, type }) {
-  TabStore.createTab({
-    icon,
-    type,
-  })
+    });
 }
 
 function createFileWithContent(content) {
@@ -109,106 +102,106 @@ function createFileWithContent(content) {
       return api.createFile(path, content)
         .then((res) => {
           if (res.msg) {
-            throw new Error(res.msg)
+            throw new Error(res.msg);
           } else {
-            Modal.dismissModal()
+            Modal.dismissModal();
           }
         })
         .then(() => api.writeFile(path, content))
         .then(() => {
           api.readFile(path).then((data) => {
-            const { EditorTabState } = mobxStore
-            const activeTab = EditorTabState.activeTab
-            FileStore.loadNodeData(data)
+            const { EditorTabState } = mobxStore;
+            const { activeTab } = EditorTabState;
+            FileStore.loadNodeData(data);
             TabStore.updateTab({
               icon: (path && icons.getClassWithColor(path.split('/').pop())) || 'fa fa-file-text-o',
               id: activeTab.id,
               editor: { filePath: path },
-            })
-          })
+            });
+          });
         })
         .catch((res) => {
-          Modal.updateModal({ statusMessage: res.response ? res.response.data.msg : res.message }).then(createFileAtPath)
-        })
+          Modal.updateModal({ statusMessage: res.response ? res.response.data.msg : res.message }).then(createFileAtPath);
+        });
     }
     return api.createFile(path, content)
       .then((res) => {
         if (res.msg) {
-          throw new Error(res.msg)
+          throw new Error(res.msg);
         } else {
-          Modal.dismissModal()
+          Modal.dismissModal();
         }
       })
       .then(() => {
-        openFile({ path })
+        openFile({ path });
       })
       // if error, try again.
       .catch((res) => {
-        Modal.updateModal({ statusMessage: res.response ? res.response.data.msg : res.message }).then(createFileAtPath)
-      })
-  }
+        Modal.updateModal({ statusMessage: res.response ? res.response.data.msg : res.message }).then(createFileAtPath);
+      });
+  };
 }
 
 const fileCommands = {
   'file:open_file': (c) => { // 在当前 tabgroup 中优先打开已有的 tab
     if (typeof c.data === 'string') {
-      openFile({ path: c.data })
+      openFile({ path: c.data });
     } else {
-      openFile(c.data)
+      openFile(c.data);
     }
   },
   'file:open_exist_file': (c) => { // 在所有 tabgroup 中优先打开已有的 tab
     if (typeof c.data === 'string') {
-      openFile({ path: c.data, allGroup: true })
+      openFile({ path: c.data, allGroup: true });
     } else {
-      openFile(c.data)
+      openFile(c.data);
     }
   },
   'file:highlight_line': (c) => {
-    console.log('file:highlight_line', c)
-    const { path, lineNumber } = c.data
+    console.log('file:highlight_line', c);
+    const { path, lineNumber } = c.data;
     openFile({ path, allGroup: true }, () => {
-      emitter.emit(FILE_HIGHLIGHT, c.data)
-    })
+      emitter.emit(FILE_HIGHLIGHT, c.data);
+    });
   },
   'file:new_file': (c) => {
-    const node = c.context
-    const path = nodeToNearestDirPath(node)
-    const defaultValue = pathUtil.join(path, 'untitled')
+    const node = c.context;
+    const path = nodeToNearestDirPath(node);
+    const defaultValue = pathUtil.join(path, 'untitled');
 
-    const createFile = createFileWithContent(null)
+    const createFile = createFileWithContent(null);
 
     Modal.showModal('Prompt', {
       message: i18n`file.newFilePath`,
       defaultValue,
-      selectionRange: [path.length, defaultValue.length]
+      selectionRange: [path.length, defaultValue.length],
     })
-      .then(createFile)
+      .then(createFile);
   },
   'file:new_folder': (c) => {
-    const node = c.context
-    const path = nodeToNearestDirPath(node)
-    const defaultValue = pathUtil.join(path, 'untitled')
+    const node = c.context;
+    const path = nodeToNearestDirPath(node);
+    const defaultValue = pathUtil.join(path, 'untitled');
     Modal.showModal('Prompt', {
       message: i18n`file.newFileFolderPath`,
       defaultValue,
       selectionRange: [path.length, defaultValue.length],
-    }).then(createFolderAtPath)
+    }).then(createFolderAtPath);
   },
   'file:save': (c) => {
-    const { EditorTabState } = mobxStore
-    const activeTab = EditorTabState.activeTab
-    const content = activeTab ? activeTab.editor.me.getValue() : ''
+    const { EditorTabState } = mobxStore;
+    const { activeTab } = EditorTabState;
+    const content = activeTab ? activeTab.editor.me.getValue() : '';
 
     if (!activeTab.file) {
-      const createFile = createFileWithContent(content)
-      const defaultPath = activeTab._title ? `/${activeTab._title}` : '/untitled'
+      const createFile = createFileWithContent(content);
+      const defaultPath = activeTab._title ? `/${activeTab._title}` : '/untitled';
       Modal.showModal('Prompt', {
         message: i18n`file.newFilePath`,
         defaultValue: defaultPath,
-        selectionRange: [1, defaultPath.length]
+        selectionRange: [1, defaultPath.length],
       })
-        .then(createFile)
+        .then(createFile);
     } else {
       api.writeFile(activeTab.file.path, content)
         .then((res) => {
@@ -217,87 +210,79 @@ const fileCommands = {
             isSynced: true,
             lastModified: res.lastModified,
             // content,
-          })
-        })
+          });
+        });
     }
   },
 
-
   'file:rename': (c) => {
-    const node = c.context
-    const oldPath = node.path
-    const parentPath = nodeToParentDirPath(node)
+    const node = c.context;
+    const oldPath = node.path;
+    const parentPath = nodeToParentDirPath(node);
     const existingTabs = TabStore.findTab(
-      tab => tab.file && tab.file.path.startsWith(oldPath)
-    )
+      (tab) => tab.file && tab.file.path.startsWith(oldPath),
+    );
 
     const moveFile = (from, to, force) => {
       api.moveFile(from, to, force)
         .then(() => Modal.dismissModal())
-        .catch(err =>
-          Modal.updateModal({ statusMessage: err.msg }).then((_to, _force) =>
-            moveFile(from, _to, _force)
-          )
-        ).then(() => {
+        .catch((err) => Modal.updateModal({ statusMessage: err.msg }).then((_to, _force) => moveFile(from, _to, _force))).then(() => {
           if (existingTabs.length) {
             existingTabs.forEach((tab) => {
-              const newPath = tab.file.path.replace(from, to)
+              const newPath = tab.file.path.replace(from, to);
               api.readFile(newPath).then((data) => {
-                FileStore.loadNodeData(data)
-                TabStore.updateTab({ id: tab.id, editor: { filePath: newPath } })
-              })
-            })
+                FileStore.loadNodeData(data);
+                TabStore.updateTab({ id: tab.id, editor: { filePath: newPath } });
+              });
+            });
           }
-        })
-    }
+        });
+    };
 
     Modal.showModal('Prompt', {
       message: i18n`file.newFileName`,
       defaultValue: oldPath,
-      selectionRange: [parentPath.length, oldPath.length]
-    }).then(newPath => moveFile(oldPath, newPath))
+      selectionRange: [parentPath.length, oldPath.length],
+    }).then((newPath) => moveFile(oldPath, newPath));
   },
-
 
   'file:delete': async (c) => {
     const confirmed = await Modal.showModal('Confirm', {
       header: i18n`file.deleteHeader`,
       message: i18n`file.deleteMessage${{ file: c.context.path }}`,
-      okText: i18n`file.deleteButton`
-    })
+      okText: i18n`file.deleteButton`,
+    });
 
     if (confirmed) {
       api.deleteFile(c.context.path)
         .then(() => notify({ message: i18n`file.deleteNotifySuccess` }))
-        .catch(err =>
-          notify({ message: i18n`file.deleteNotifyFailed${err.msg}` })
-        )
+        .catch((err) => notify({ message: i18n`file.deleteNotifyFailed${err.msg}` }));
     }
 
-    Modal.dismissModal()
+    Modal.dismissModal();
   },
 
   'file:download': (c) => {
-    api.downloadFile(c.context.path, c.context.isDir)
+    api.downloadFile(c.context.path, c.context.isDir);
   },
 
   // 'file:unsaved_files_list':
   'file:open_welcome': (c) => {
     // const activeTabGroup = TabStore.getState().activeTabGroup
     const existingTabs = TabStore.findTab(
-      tab => tab.type === 'welcome'
-    )
+      (tab) => tab.type === 'welcome',
+    );
     if (existingTabs.length) {
-      const existingTab = existingTabs[0]
-      existingTab.activate()
+      const existingTab = existingTabs[0];
+      existingTab.activate();
     } else {
       TabStore.createTab({
         icon: 'fa fa-info-circle',
         type: 'welcome',
         title: 'Welcome',
-      })
+      });
     }
   },
-}
+};
 
-export default fileCommands
+export default fileCommands;

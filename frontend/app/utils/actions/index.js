@@ -1,9 +1,9 @@
-import dispatch from './dispatch'
-import handleAction from './handleAction'
-import handleActions from './handleActions'
-import createAction from './createAction'
-import registerAction from './registerAction'
-import emitterMiddleware from './emitterMiddleware'
+import dispatch from './dispatch';
+import handleAction from './handleAction';
+import handleActions from './handleActions';
+import createAction from './createAction';
+import registerAction from './registerAction';
+import emitterMiddleware from './emitterMiddleware';
 
 export {
   dispatch,
@@ -11,5 +11,5 @@ export {
   handleActions,
   createAction,
   registerAction,
-  emitterMiddleware
-}
+  emitterMiddleware,
+};

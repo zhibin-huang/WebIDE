@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { observable } from 'mobx';
 
 const state = observable({
   isActive: false,
@@ -6,6 +6,6 @@ const state = observable({
   contextNode: observable.ref(null),
   items: observable.ref([]),
   className: '',
-})
+});
 
-export default state
+export default state;

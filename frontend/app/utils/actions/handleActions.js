@@ -1,8 +1,8 @@
-import handleAction from './handleAction'
+import handleAction from './handleAction';
 
-export default function handleActions (handlers, state) {
-  const eventNames = Object.keys(handlers)
+export default function handleActions(handlers, state) {
+  const eventNames = Object.keys(handlers);
   eventNames.forEach((eventName) => {
-    handleAction(eventName, handlers[eventName], state)
-  })
+    handleAction(eventName, handlers[eventName], state);
+  });
 }

@@ -10,16 +10,16 @@ const COLORS = [
   '#967acc', // purple
   '#ea75f3', // violet
   '#d3d7ed', // light purplish gray
-]
+];
 
 export default class RandColors {
-  constructor () {
-    this.colors = COLORS.slice()
-    this._index = 0
-    this._period = this.colors.length
+  constructor() {
+    this.colors = COLORS.slice();
+    this._index = 0;
+    this._period = this.colors.length;
   }
 
-  get () {
-    return this.colors[this._index++ % this._period]
+  get() {
+    return this.colors[this._index++ % this._period];
   }
 }

@@ -1,27 +1,29 @@
-import uniqueId from 'lodash/uniqueId'
-import { extendObservable, observable, computed, action, autorunAsync } from 'mobx'
-import EditorTabState, { TabGroup } from 'components/Tab/state'
-import PaneScope from 'commons/Pane/state'
+import uniqueId from 'lodash/uniqueId';
+import {
+  extendObservable, observable, computed, action, autorunAsync,
+} from 'mobx';
+import EditorTabState, { TabGroup } from 'components/Tab/state';
+import PaneScope from 'commons/Pane/state';
 
-const { state, BasePane } = PaneScope()
+const { state, BasePane } = PaneScope();
 
 extendObservable(state, {
-  get panes () { return this.entities },
+  get panes() { return this.entities; },
   activePaneId: null,
   autoCloseEmptyPane: true,
-  get rootPane () {
-    const rootPane = this.panes.values().find(pane => pane.isRoot)
-    return rootPane || this.panes.values()[0]
+  get rootPane() {
+    const rootPane = this.panes.values().find((pane) => pane.isRoot);
+    return rootPane || this.panes.values()[0];
   },
-  get activePane () {
-    const activePane = this.panes.get(this.activePaneId)
-    return activePane || this.rootPane
+  get activePane() {
+    const activePane = this.panes.get(this.activePaneId);
+    return activePane || this.rootPane;
   },
-})
+});
 
 class Pane extends BasePane {
-  constructor (paneConfig) {
-    super()
+  constructor(paneConfig) {
+    super();
 
     extendObservable(this, {
       id: uniqueId('pane_view_'),
@@ -29,87 +31,87 @@ class Pane extends BasePane {
       size: 100,
       parentId: '',
       index: 0,
-    }, paneConfig)
+    }, paneConfig);
 
-    //新建Pane状态组件，会new一个TabGroup状态组件
-    this.contentType = 'tabGroup'
-    const tabGroup = this.tabGroup || new TabGroup()
-    this.contentId = tabGroup.id
-    state.entities.set(this.id, this)
+    // 新建Pane状态组件，会new一个TabGroup状态组件
+    this.contentType = 'tabGroup';
+    const tabGroup = this.tabGroup || new TabGroup();
+    this.contentId = tabGroup.id;
+    state.entities.set(this.id, this);
   }
 
   @observable contentId = ''
 
   @computed
-  get tabGroup () {
-    if (this.views.length) return null
-    return EditorTabState.tabGroups.get(this.contentId)
+  get tabGroup() {
+    if (this.views.length) return null;
+    return EditorTabState.tabGroups.get(this.contentId);
   }
 
   @action
-  destroy () {
-    if (this.isRoot) return
-    const parent = this.parent
-    if (!parent) return
+  destroy() {
+    if (this.isRoot) return;
+    const { parent } = this;
+    if (!parent) return;
 
     if (this.views.length) {
-      this.views.forEach(pane => pane.destroy())
+      this.views.forEach((pane) => pane.destroy());
     }
 
-    let inherior = this.prev || this.next
+    let inherior = this.prev || this.next;
     if (!inherior) {
-      parent.contentId = this.contentId
+      parent.contentId = this.contentId;
     } else {
       if (!inherior.tabGroup) {
-        const candidates = inherior.leafChildren
-        inherior = this.prev ? candidates[candidates.length - 1] : candidates[0]
+        const candidates = inherior.leafChildren;
+        inherior = this.prev ? candidates[candidates.length - 1] : candidates[0];
       }
-      inherior.tabGroup.merge(this.tabGroup)
+      inherior.tabGroup.merge(this.tabGroup);
     }
 
-    state.panes.delete(this.id)
+    state.panes.delete(this.id);
   }
 }
 
 const rootPane = new Pane({
   flexDirection: 'row',
   size: 100,
-})
+});
 
-state.panes.set(rootPane.id, rootPane)
+state.panes.set(rootPane.id, rootPane);
 
-function noramlizePaneIndexes (parentPane) {
+function noramlizePaneIndexes(parentPane) {
   parentPane.views.forEach((pane, index) => {
-    if (pane.index !== index) pane.index = index
-  })
+    if (pane.index !== index) pane.index = index;
+  });
 }
 
-function removeUnnecessaryInternalPaneNode (pane) {
+function removeUnnecessaryInternalPaneNode(pane) {
   // pane.parent -> pane -> lonelyChild
   // => pane.panret -> lonelyChild
   //    delete pane
   if (pane.views.length === 1) {
-    const lonelyChild = pane.views[0]
-    lonelyChild.parentId = pane.parentId
-    state.panes.delete(pane.id)
+    const lonelyChild = pane.views[0];
+    lonelyChild.parentId = pane.parentId;
+    state.panes.delete(pane.id);
   }
 }
 
-function autoRemovePaneWithoutTabs (pane) {
-  if (!state.autoCloseEmptyPane) return
+function autoRemovePaneWithoutTabs(pane) {
+  if (!state.autoCloseEmptyPane) return;
   if (!pane.views.length && pane.tabGroup && pane.tabGroup.tabs.length === 0) {
-    pane.destroy()
+    pane.destroy();
   }
 }
 
 autorunAsync(() => {
   state.panes.forEach((pane) => {
-    if (!pane) return
-    noramlizePaneIndexes(pane)
-    removeUnnecessaryInternalPaneNode(pane)
-    autoRemovePaneWithoutTabs(pane)
-  })
-})
+    if (!pane) return;
+    noramlizePaneIndexes(pane);
+    removeUnnecessaryInternalPaneNode(pane);
+    autoRemovePaneWithoutTabs(pane);
+  });
+});
 
-export default state
-export { Pane }
+export default state;
+export { Pane };

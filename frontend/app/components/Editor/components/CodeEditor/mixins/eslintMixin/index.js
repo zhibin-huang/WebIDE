@@ -1,2 +1,3 @@
-import eslintMixin from './eslintMixin'
-export default eslintMixin
+import eslintMixin from './eslintMixin';
+
+export default eslintMixin;

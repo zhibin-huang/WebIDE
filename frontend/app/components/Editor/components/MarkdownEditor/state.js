@@ -1,10 +1,10 @@
-import { observable } from 'mobx'
+import { observable } from 'mobx';
 
 const state = observable({
   leftGrow: 50,
   rightGrow: 50,
   showBigSize: false,
   showPreview: true,
-})
+});
 
-export default state
+export default state;

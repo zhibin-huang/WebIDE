@@ -1,36 +1,36 @@
-import config from '../config'
-import request from '../utils/request'
-import { FsSocketClient} from './websocketClients'
-//TtySocketClient } from './websocketClients'
+import config from '../config';
+import request from '../utils/request';
+import { FsSocketClient } from './websocketClients';
+// TtySocketClient } from './websocketClients'
 
-let connectedResolve
-export const fsSocketConnectedPromise = new Promise((rs, rj) => connectedResolve = rs)
+let connectedResolve;
+export const fsSocketConnectedPromise = new Promise((rs, rj) => connectedResolve = rs);
 
-export function isWorkspaceExist () {
+export function isWorkspaceExist() {
   return request.get(`/workspaces/${config.spaceKey}`)
-  .catch(() => false)
-  .then(data => data)
+    .catch(() => false)
+    .then((data) => data);
 }
 
-export function setupWorkspace () {
-  return request.post(`/workspaces/${config.spaceKey}/setup`)
+export function setupWorkspace() {
+  return request.post(`/workspaces/${config.spaceKey}/setup`);
 }
 
-export function connectWebsocketClient () {
+export function connectWebsocketClient() {
   return new Promise((resolve) => {
-    const fsSocketClient = new FsSocketClient()
+    const fsSocketClient = new FsSocketClient();
     fsSocketClient.successCallback = function (stompClient) {
-      connectedResolve(stompClient)
-      resolve(true)
-    }
-    fsSocketClient.errorCallback = function (err) {}
-    fsSocketClient.connect()
-  })
+      connectedResolve(stompClient);
+      resolve(true);
+    };
+    fsSocketClient.errorCallback = function (err) {};
+    fsSocketClient.connect();
+  });
 }
 
-export function closeWebsocketClient () {
-  const fsSocketClient = new FsSocketClient()
-  fsSocketClient.close()
+export function closeWebsocketClient() {
+  const fsSocketClient = new FsSocketClient();
+  fsSocketClient.close();
 }
 
 // export function closeTtySocketClient () {
@@ -38,22 +38,22 @@ export function closeWebsocketClient () {
 //   ttySocketClient.close()
 // }
 
-export function getSettings () {
-  return request.get(`/workspaces/${config.spaceKey}/settings?base64=false`).then(({ content = {} }) => JSON.parse(content))
+export function getSettings() {
+  return request.get(`/workspaces/${config.spaceKey}/settings?base64=false`).then(({ content = {} }) => JSON.parse(content));
 }
 
-export function triggerCloneTask () {
-  return request.post(`/workspaces/${config.spaceKey}/clone`)
+export function triggerCloneTask() {
+  return request.post(`/workspaces/${config.spaceKey}/clone`);
 }
 
-export function requestCollaborator () {
-  return request.post(`/workspaces/${config.spaceKey}/collaborator/request`)
+export function requestCollaborator() {
+  return request.post(`/workspaces/${config.spaceKey}/collaborator/request`);
 }
 
 // export function execShellCommand (command) {
 //   return request.post(`/tty/${config.spaceKey}/exec`, { command })
 // }
 
-export function getWorkspaceList () {
-  return request.get('/workspaces?page=0&size=5&sort=lastModifiedDate,desc')
+export function getWorkspaceList() {
+  return request.get('/workspaces?page=0&size=5&sort=lastModifiedDate,desc');
 }

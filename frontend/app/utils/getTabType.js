@@ -1,4 +1,4 @@
-export default function getTabType (node) {
+export default function getTabType(node) {
   if (
     /^text\/[^/]+/.test(node.contentType) || (
       node.contentType === 'application/xml'
@@ -7,15 +7,15 @@ export default function getTabType (node) {
     ) || (
       node.contentType === 'application/xhtml+xml'
     )) {
-    return 'TEXT'
-  } else if (/^image\/[^/]+/.test(node.contentType)) {
+    return 'TEXT';
+  } if (/^image\/[^/]+/.test(node.contentType)) {
     if (node.contentType === 'image/vnd.adobe.photoshop') {
-      return 'UNKNOWN'
+      return 'UNKNOWN';
     }
     if (node.contentType === 'image/jpeg' || node.contentType === 'image/png' || node.contentType === 'image/bmp' || node.contentType === 'image/gif') {
-      return 'IMAGE'
+      return 'IMAGE';
     }
   }
   // Unknown
-  return 'UNKNOWN'
+  return 'UNKNOWN';
 }

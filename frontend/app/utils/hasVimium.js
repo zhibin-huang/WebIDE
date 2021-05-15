@@ -1,8 +1,8 @@
-export default function hasVimium () {
+export default function hasVimium() {
   try {
-    const shadowRoot = document.querySelector('html > div').shadowRoot
-    return Boolean(shadowRoot.querySelector('style').textContent.match(/vimium/))
+    const { shadowRoot } = document.querySelector('html > div');
+    return Boolean(shadowRoot.querySelector('style').textContent.match(/vimium/));
   } catch (e) {
-    return false
+    return false;
   }
 }

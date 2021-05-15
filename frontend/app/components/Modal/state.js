@@ -1,14 +1,15 @@
-import { observable, extendObservable } from 'mobx'
+import { observable, extendObservable } from 'mobx';
 
 class Modal {
   // make modal.content observable, to faciliate modal content updating
 
-  constructor (opt) {
-    let resolve, reject
+  constructor(opt) {
+    let resolve; let
+      reject;
     const promise = new Promise((rsv, rjt) => {
-      resolve = rsv
-      reject = rjt
-    })
+      resolve = rsv;
+      reject = rjt;
+    });
     const defaults = {
       id: 0,
       isActive: false,
@@ -16,24 +17,25 @@ class Modal {
       position: 'top',
       content: {},
       meta: { promise, resolve, reject },
-    }
-    extendObservable(this, defaults, opt)
+    };
+    extendObservable(this, defaults, opt);
   }
 
-  update (content) {
-    let resolve, reject
+  update(content) {
+    let resolve; let
+      reject;
     const promise = new Promise((rsv, rjt) => {
-      resolve = rsv
-      reject = rjt
-    })
-    this.content = { ...this.content, ...content }
-    this.meta = { promise, resolve, reject }
+      resolve = rsv;
+      reject = rjt;
+    });
+    this.content = { ...this.content, ...content };
+    this.meta = { promise, resolve, reject };
   }
 }
 
 const state = observable({
   stack: observable.shallowArray(),
-})
+});
 
-export default state
-export { Modal }
+export default state;
+export { Modal };

@@ -1,7 +1,7 @@
-import { observable } from 'mobx'
+import { observable } from 'mobx';
 
 const state = observable({
   notifications: [],
-})
+});
 
-export default state
+export default state;

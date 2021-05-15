@@ -1,5 +1,3 @@
-
-
 const keyCodeToKey = {
   8: 'backspace',
   9: 'tab',
@@ -61,9 +59,9 @@ const keyCodeToKey = {
   219: '[',
   220: '\\',
   221: ']',
-  222: "'"
-}
-for (var k = 1; k < 20; k++) { keyCodeToKey[111 + k] = `f${k}` }
+  222: "'",
+};
+for (var k = 1; k < 20; k++) { keyCodeToKey[111 + k] = `f${k}`; }
 
 const keyToKeyCode = {
   backspace: 8,
@@ -131,11 +129,11 @@ const keyToKeyCode = {
   '[': 219,
   '\\': 220,
   ']': 221,
-  "'": 222
-}
-for (var k = 1; k < 20; k++) { keyToKeyCode[`f${k}`] = 111 + k }
+  "'": 222,
+};
+for (var k = 1; k < 20; k++) { keyToKeyCode[`f${k}`] = 111 + k; }
 
 module.exports = {
   keyCodeToKey,
-  keyToKeyCode
-}
+  keyToKeyCode,
+};

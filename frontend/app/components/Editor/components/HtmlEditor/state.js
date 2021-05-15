@@ -1,4 +1,4 @@
-import { observable } from 'mobx'
+import { observable } from 'mobx';
 
 const state = observable({
   leftGrow: 50,
@@ -7,6 +7,6 @@ const state = observable({
   showPreview: false,
   previewUniqueId: '1',
   isResizing: false,
-})
+});
 
-export default state
+export default state;

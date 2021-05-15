@@ -1,5 +1,6 @@
-import _ from 'lodash'
-const localStoreCache = {}
+import _ from 'lodash';
+
+const localStoreCache = {};
 
 const stateDomainsToCache = [
   // 'MarkdownEditorState',
@@ -15,30 +16,29 @@ const stateDomainsToCache = [
   // 'DragAndDrop',
   // 'SettingState',
   // 'PackageState',
-]
+];
 
-const stateFilter = state => stateDomainsToCache.reduce((stateToCache, domain) => {
-  if (!state) return ''
-  stateToCache[domain] = state[domain]
-  return stateToCache
-}, {})
+const stateFilter = (state) => stateDomainsToCache.reduce((stateToCache, domain) => {
+  if (!state) return '';
+  stateToCache[domain] = state[domain];
+  return stateToCache;
+}, {});
 
-
-let cachedState
+let cachedState;
 localStoreCache.beforeReducer = (state, action) => {
   // if (!state) state = JSON.parse(window.localStorage.getItem('snapshot'))
-  if (!state) return
-  cachedState = JSON.stringify(stateFilter(state))
-  return state
-}
+  if (!state) return;
+  cachedState = JSON.stringify(stateFilter(state));
+  return state;
+};
 
 localStoreCache.afterReducer = (state, action) => {
-  const nextCachedState = JSON.stringify(stateFilter(state))
+  const nextCachedState = JSON.stringify(stateFilter(state));
   if (nextCachedState !== cachedState) {
-    localStorage.setItem('snapshot', nextCachedState)
-    cachedState = nextCachedState
+    localStorage.setItem('snapshot', nextCachedState);
+    cachedState = nextCachedState;
   }
-  return state
-}
+  return state;
+};
 
-export default localStoreCache
+export default localStoreCache;
