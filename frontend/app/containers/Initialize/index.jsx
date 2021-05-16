@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
-import { observer } from 'mobx-react'
-import config from 'config'
-import i18n from 'utils/createI18n'
-import state from './state'
-import api from '../../backendAPI'
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import i18n from 'utils/createI18n';
+import state from './state';
+import api from '../../backendAPI';
 
 const WORKING_STATE = {
   Created: 'Created',
@@ -16,134 +15,134 @@ const WORKING_STATE = {
   Maintaining: 'Maintaining',
   Online: 'Online',
   Offline: 'Offline',
-}
+};
 
 @observer
 class Initialize extends Component {
   handleRequest = () => {
-    api.requestCollaborator()
-    state.errorCode = 403
-    state.status = 'Request'
+    api.requestCollaborator();
+    state.errorCode = 403;
+    state.status = 'Request';
   }
+
   handleReclone = () => {
-    api.triggerCloneTask()
-    state.status = WORKING_STATE.Created
+    api.triggerCloneTask();
+    state.status = WORKING_STATE.Created;
   }
-  render () {
-    let errorInfo = null
+
+  render() {
+    let errorInfo = null;
     if (state.errorInfo) {
       errorInfo = (
-        <div className='loading-error'>
-          <i className='fa fa-exclamation-triangle' />
+        <div className="loading-error">
+          <i className="fa fa-exclamation-triangle" />
           {state.errorInfo}
         </div>
-      )
+      );
     }
     let info = (
-      <div className='loading-info'>
+      <div className="loading-info">
         {i18n`global.loadingWorkspace`}
       </div>
-    )
-    let requestInfo = null
+    );
+    let requestInfo = null;
     if (state.errorCode) {
       if (state.errorCode === 404) {
-        errorInfo = null
+        errorInfo = null;
         info = (
-          <div className='loading-info error'>
+          <div className="loading-info error">
             {i18n`global.loadingWorkspaceDenied`}
           </div>
-        )
+        );
         requestInfo = (
-          <div className='request-info'>
-            <button className="btn btn-default" onClick={this.handleRequest} >{i18n`global.requestCollaboration`}</button>
+          <div className="request-info">
+            <button className="btn btn-default" onClick={this.handleRequest}>{i18n`global.requestCollaboration`}</button>
           </div>
-        )
+        );
       } else if (state.errorCode === 403) {
         if (state.status === 'Rejected') {
           requestInfo = (
-            <div className='request-info'>
+            <div className="request-info">
               {i18n`global.requestCollaborationReject`}
             </div>
-          )
+          );
           info = (
-            <div className='loading-info error'>
+            <div className="loading-info error">
               {i18n`global.loadingWorkspaceDenied`}
             </div>
-          )
+          );
         } else if (state.status === 'Request') {
-          errorInfo = null
+          errorInfo = null;
           info = (
-            <div className='loading-info error'>
+            <div className="loading-info error">
               {i18n`global.loadingWorkspaceDenied`}
             </div>
-          )
+          );
           requestInfo = (
-            <div className='request-info'>
+            <div className="request-info">
               {i18n`global.requestingCollaboration`}
             </div>
-          )
+          );
         } else if (state.status === 'Expired') {
-          errorInfo = null
+          errorInfo = null;
           requestInfo = (
-            <div className='request-info'>
+            <div className="request-info">
               {i18n`global.requestCollaborationExpires`}
             </div>
-          )
+          );
           info = (
-            <div className='loading-info error'>
+            <div className="loading-info error">
               {i18n`global.loadingWorkspaceDenied`}
             </div>
-          )
+          );
         } else if (state.status === WORKING_STATE.Created || state.status === WORKING_STATE.Cloning) {
-          errorInfo = null
+          errorInfo = null;
           requestInfo = (
-            <div className='request-info'>
+            <div className="request-info">
               {i18n`global.loadingWorkspaceCloning`}
             </div>
-          )
+          );
           info = (
-            <div className='loading-info'>
+            <div className="loading-info">
               {i18n`global.loadingWorkspace`}
             </div>
-          )
+          );
         } else if (state.status === WORKING_STATE.Failed) {
-          errorInfo = null
+          errorInfo = null;
           info = (
-            <div className='loading-info error'>
+            <div className="loading-info error">
               {i18n`global.loadingWorkspaceCloneFailed`}
             </div>
-          )
+          );
           requestInfo = (
-            <div className='request-info'>
-              <button className="btn btn-default" onClick={this.handleReclone} >{i18n`global.recloneWorkspace`}</button>
+            <div className="request-info">
+              <button className="btn btn-default" onClick={this.handleReclone}>{i18n`global.recloneWorkspace`}</button>
             </div>
-          )
+          );
         } else {
           info = (
-            <div className='loading-info error'>
+            <div className="loading-info error">
               {i18n`global.loadingWorkspaceDenied`}
             </div>
-          )
+          );
         }
       } else if (state.errorInfo) {
         info = (
-          <div className='loading-info error'>
+          <div className="loading-info error">
             {i18n`global.loadingWorkspaceFailed`}
           </div>
-        )
+        );
       }
     }
 
     return (
-      <div className='initialize-container'>
-        {config.isPlatform && <div className='coding-loading'></div>}
-        {/* <div className='monkey splash-logo'></div> */}
+      <div className="initialize-container">
         {info}
         {errorInfo}
         {requestInfo}
       </div>
-    )
+    );
   }
 }
 
-export default Initialize
+export default Initialize;

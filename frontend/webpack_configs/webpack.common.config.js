@@ -1,24 +1,19 @@
-const path = require('path')
-const webpack = require('webpack')
-const str = JSON.stringify
-const { DefinePlugin } = webpack
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const GitRevisionPlugin = require('git-revision-webpack-plugin')
-const gitRevisionPlugin = new GitRevisionPlugin()
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..')
-require('dotenv').config()
+const PROJECT_ROOT = path.resolve(__dirname, '..');
+require('dotenv').config();
 
 module.exports = function (options = {}) {
   const {
     mainEntryHtmlName = 'workspace.html',
     workspacesEntryHtmlName = 'index.html',
     staticDir = 'rs',
-  } = options
+  } = options;
 
-  const publicPath = path.join('/', staticDir, '/') // publicPath should end with '/'
+  const publicPath = path.join('/', staticDir, '/'); // publicPath should end with '/'
   return {
     entry: {
       main: [path.join(PROJECT_ROOT, 'app')],
@@ -31,27 +26,22 @@ module.exports = function (options = {}) {
       chunkFilename: '[name].[chunkhash].chunk.js',
     },
     resolve: {
-      extensions: ['*', '.js', '.jsx'],
+      extensions: ['.js', '.jsx'],
       modules: ['node_modules', path.join(PROJECT_ROOT, 'app')],
       alias: {
         static: path.join(PROJECT_ROOT, 'static'),
-        'vscode': require.resolve('monaco-languageclient/lib/vscode-compatibility')
+        vscode: require.resolve('monaco-languageclient/lib/vscode-compatibility'),
       },
       fallback: {
         net: false,
         child_process: false,
-        path: require.resolve("path-browserify")
-      }
+        path: require.resolve('path-browserify'),
+      },
     },
     resolveLoader: {
-      modules: [path.resolve(__dirname, "./loaders/"), "node_modules"]
+      modules: [path.resolve(__dirname, './loaders/'), 'node_modules'],
     },
     plugins: [
-      gitRevisionPlugin,
-      new DefinePlugin({
-        __VERSION__: str(gitRevisionPlugin.commithash() + '@' + gitRevisionPlugin.version()),
-        __PUBLIC_PATH__: str(publicPath),
-      }),
       new HtmlWebpackPlugin({
         title: 'Web IDE',
         excludeChunks: ['workspaces'],
@@ -72,17 +62,17 @@ module.exports = function (options = {}) {
         }, {
           from: path.join(PROJECT_ROOT, 'node_modules/octicons'),
           to: 'octicons',
-        }]
+        }],
       }),
       new MonacoWebpackPlugin({
-        languages:['java'],
-      })
-    
+        languages: ['java'],
+      }),
+
     ],
     module: {
       rules: [
-        { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' }
-      ]
-    }
-  }
-}
+        { test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader' },
+      ],
+    },
+  };
+};

@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import cx from 'classnames'
-import { observable } from 'mobx'
-import { observer, inject } from 'mobx-react'
-import ModalState from './state'
-import { dismissModal } from './actions'
-import modalCache from './modals/modalCache'
+import React, { Component } from 'react';
+import cx from 'classnames';
+import { observable } from 'mobx';
+import { observer, inject } from 'mobx-react';
+import ModalState from './state';
+import { dismissModal } from './actions';
+import modalCache from './modals/modalCache';
 
 // import {
 //   Prompt,
@@ -34,47 +34,51 @@ import modalCache from './modals/modalCache'
 // } from './modals'
 
 let ModalContainer = observer((props) => {
-  if (props.stack.length === 0) return null
+  if (props.stack.length === 0) return null;
   return (
     <div className={cx('modals-container')}>
       {props.stack.map((modalConfig) => {
-        const { id, isActive, showBackdrop, position } = modalConfig
-        if (!isActive) return null
+        const {
+          id, isActive, showBackdrop, position,
+        } = modalConfig;
+        if (!isActive) return null;
         return (
-          <div key={id}
+          <div
+            key={id}
             className={cx(position, 'modal-container', { 'show-backdrop': showBackdrop })}
           >
             <Modal modalConfig={modalConfig} />
-            <div className='backdrop' onClick={dismissModal} />
+            <div className="backdrop" onClick={dismissModal} />
           </div>
-        )
+        );
       })}
     </div>
-  )
-})
+  );
+});
 
-ModalContainer = inject(() => ({ stack: ModalState.stack }))(ModalContainer)
-
+ModalContainer = inject(() => ({ stack: ModalState.stack }))(ModalContainer);
 
 @observer
 class Modal extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
   }
 
-  makeModalContent (type, modalConfig, content) {
-    const TargetComponent = modalCache.get(type)
+  makeModalContent(type, modalConfig, content) {
+    const TargetComponent = modalCache.get(type);
     if (TargetComponent) {
-      return (<div className='modal'>
-        <TargetComponent {...modalConfig} />
-      </div>)
+      return (
+        <div className="modal">
+          <TargetComponent {...modalConfig} />
+        </div>
+      );
     }
-    return <div className='modal'>{content}</div>
+    return <div className="modal">{content}</div>;
   }
 
-  render () {
-    const modalConfig = this.props.modalConfig
-    const { type, content } = modalConfig
+  render() {
+    const { modalConfig } = this.props;
+    const { type, content } = modalConfig;
 
     // const modalContent = function () {
     //   switch (type) {
@@ -154,24 +158,23 @@ class Modal extends Component {
     //   }
     // }.call(this)
 
-    return this.makeModalContent(type, modalConfig, content)
+    return this.makeModalContent(type, modalConfig, content);
   }
 
   dismiss = (e) => {
     if (e.keyCode === 27) {
-      dismissModal()
+      dismissModal();
     }
   }
 
-  componentDidMount () {
-    window.addEventListener('keydown', this.dismiss)
+  componentDidMount() {
+    window.addEventListener('keydown', this.dismiss);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     // this.props.meta.reject()  // always reject any pending promise when unmount.
-    window.removeEventListener('keydown', this.dismiss)
+    window.removeEventListener('keydown', this.dismiss);
   }
 }
 
-
-export default ModalContainer
+export default ModalContainer;

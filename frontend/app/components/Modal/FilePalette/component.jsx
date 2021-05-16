@@ -105,7 +105,7 @@ class FilePalette extends Component {
               onClick={(e) => this.openFile(itemIdx)}
               key={itemIdx}
             >
-{ this.renderItem(item, itemIdx) }
+              { this.renderItem(item, itemIdx) }
             </li>
           ))}
         </ul>

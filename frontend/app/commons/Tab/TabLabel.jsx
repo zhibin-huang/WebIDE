@@ -1,53 +1,56 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import cx from 'classnames'
-import { observer } from 'mobx-react'
-import dnd from 'utils/dnd'
-import { defaultProps } from 'utils/decorators'
+import React from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
+import { observer } from 'mobx-react';
+import dnd from 'utils/dnd';
+import { defaultProps } from 'utils/decorators';
 
-let TabLabel = observer(({ tab, removeTab, activateTab, openContextMenu }) => {
-  const tabLabelId = `tab_label_${tab.id}`
+let TabLabel = observer(({
+  tab, removeTab, activateTab, openContextMenu,
+}) => {
+  const tabLabelId = `tab_label_${tab.id}`;
   return (
-    <li className={cx('tab-label', {
-      active: tab.isActive,
-      modified: tab.flags.modified
-    })}
+    <li
+      className={cx('tab-label', {
+        active: tab.isActive,
+        modified: tab.flags.modified,
+      })}
       id={tabLabelId}
-      data-droppable='TABLABEL'
-      draggable='true'
-      onClick={e => activateTab(tab.id)}
-      onMouseUp={e => { e.button === 1 && removeTab(tab.id) }}
-      onDragStart={e => {
+      data-droppable="TABLABEL"
+      draggable="true"
+      onClick={(e) => activateTab(tab.id)}
+      onMouseUp={(e) => { e.button === 1 && removeTab(tab.id); }}
+      onDragStart={(e) => {
         // Chrome 下直接执行 dragStart 会导致立即又出发了 window.dragend, 添加 timeout 以避免无法拖动的情况
-        setTimeout(() => dnd.dragStart({ type: 'TAB', id: tab.id }), 0)
+        setTimeout(() => dnd.dragStart({ type: 'TAB', id: tab.id }), 0);
       }}
-      onContextMenu={e => openContextMenu(e, tab)}
+      onContextMenu={(e) => openContextMenu(e, tab)}
     >
-      {dnd.target.id === tabLabelId ? <div className='tab-label-insert-pos'></div> : null}
-      {tab.icon ? <div className={`icon ${tab.icon}`}></div> : null}
-      <div className='title'>{tab.title}</div>
-      <div className='control'>
-        <i className='close' onClick={e => { e.stopPropagation(); removeTab(tab.id) }}>×</i>
-        <i className='dot'></i>
+      {dnd.target.id === tabLabelId ? <div className="tab-label-insert-pos" /> : null}
+      {tab.icon ? <div className={`icon ${tab.icon}`} /> : null}
+      <div className="title">{tab.title}</div>
+      <div className="control">
+        <i className="close" onClick={(e) => { e.stopPropagation(); removeTab(tab.id); }}>×</i>
+        <i className="dot" />
       </div>
     </li>
-  )
-})
+  );
+});
 
 TabLabel.propTypes = {
   tab: PropTypes.object.isRequired,
   removeTab: PropTypes.func.isRequired,
   activateTab: PropTypes.func.isRequired,
   openContextMenu: PropTypes.func.isRequired,
-}
+};
 
-TabLabel = defaultProps(props => ({
-  activateTab: function () {
-    props.tab.activate()
+TabLabel = defaultProps((props) => ({
+  activateTab() {
+    props.tab.activate();
   },
-  removeTab: function () {
-    props.tab.destroy()
+  removeTab() {
+    props.tab.destroy();
   },
-}))(TabLabel)
+}))(TabLabel);
 
-export default TabLabel
+export default TabLabel;

@@ -21,7 +21,10 @@
     "plugins": [
         "react"
     ],
+    "settings":{
+        "import/resolver" : "webpack"
+    },
     "rules": {
-        
+        "import/order":["off"]
     }
 }

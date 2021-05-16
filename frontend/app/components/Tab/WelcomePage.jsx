@@ -1,95 +1,97 @@
-import _ from 'lodash'
-import React, { Component } from 'react'
-import { observer } from 'mobx-react'
-import { observable } from 'mobx'
-import dispatchCommand from 'commands/dispatchCommand'
-import api from '../../backendAPI'
+import _ from 'lodash';
+import React, { Component } from 'react';
+import { observer } from 'mobx-react';
+import { observable } from 'mobx';
+import dispatchCommand from 'commands/dispatchCommand';
+import api from '../../backendAPI';
 
 @observer
 class WelcomePage extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = observable({
-      recentList: []
-    })
-  }
-  componentWillMount () {
-    this.loadRecentWS()
+      recentList: [],
+    });
   }
 
-  render () {
+  componentWillMount() {
+    this.loadRecentWS();
+  }
+
+  render() {
     return (
-      <div className='welcome-page'>
+      <div className="welcome-page">
         <h1>Coding WebIDE</h1>
-        <div className='subtitle'>Coding Anytime Anywhere</div>
+        <div className="subtitle">Coding Anytime Anywhere</div>
 
         <h2>Start</h2>
-        <div className='block start-block'>
-          <div className='link-item'>
-            <a href='#' onClick={this.createNewFile}>New File...</a>
+        <div className="block start-block">
+          <div className="link-item">
+            <a href="#" onClick={this.createNewFile}>New File...</a>
           </div>
-          <div className='link-item'>
-            <a href='#' onClick={this.createNewFolder}>New Folder...</a>
+          <div className="link-item">
+            <a href="#" onClick={this.createNewFolder}>New Folder...</a>
           </div>
         </div>
 
         <h2>Recent</h2>
-        <div className='block recent-block'>
+        <div className="block recent-block">
           {this.renderRecentItem()}
         </div>
       </div>
-    )
+    );
   }
-  renderRecentItem () {
+
+  renderRecentItem() {
     return (
-      <div className='recent-list'>
+      <div className="recent-list">
         {
-          this.state.recentList.map((recentItem) => {
-            return (
-              <div className='recent-item' key={recentItem.name}>
-                <a href={recentItem.link}>{recentItem.name}</a>
-              </div>
-            )
-          })
+          this.state.recentList.map((recentItem) => (
+            <div className="recent-item" key={recentItem.name}>
+              <a href={recentItem.link}>{recentItem.name}</a>
+            </div>
+          ))
         }
       </div>
-    )
+    );
   }
-  createNewFile (e) {
-    e.preventDefault()
-    dispatchCommand('file:new_file')
+
+  createNewFile(e) {
+    e.preventDefault();
+    dispatchCommand('file:new_file');
   }
-  createNewFolder (e) {
-    e.preventDefault()
-    dispatchCommand('file:new_folder')
+
+  createNewFolder(e) {
+    e.preventDefault();
+    dispatchCommand('file:new_folder');
   }
-  loadRecentWS () {
+
+  loadRecentWS() {
     api.getWorkspaceList().then((res) => {
       if (res.contents && res.contents.length > 0) {
-        const recentList = []
+        const recentList = [];
         res.contents.forEach((ws) => {
-          let name = ''
+          let name = '';
           if (ws.defaultWorkspace || !ws.project) {
-            name = 'Default'
+            name = 'Default';
           } else {
-            name = `${ws.project.ownerName}/${ws.project.name}`
+            name = `${ws.project.ownerName}/${ws.project.name}`;
           }
           const wsItem = {
             name,
             icon: '',
             link: `/ws/${ws.spaceKey}`,
             command: () => {
-              window.open(`/ws/${ws.spaceKey}`)
+              window.open(`/ws/${ws.spaceKey}`);
             },
-          }
-          recentList.push(wsItem)
-        })
+          };
+          recentList.push(wsItem);
+        });
 
-        this.state.recentList = recentList
+        this.state.recentList = recentList;
       }
-    })
+    });
   }
-
 }
 
-export default WelcomePage
+export default WelcomePage;

@@ -1,5 +1,4 @@
 const bootstrap = require('bootstrap-styl')
-const stylusLoader = require('stylus-loader')
 
 module.exports = function (paths) {
   return {
@@ -50,12 +49,5 @@ module.exports = function (paths) {
         }
       ]
     },
-    // https://github.com/shama/stylus-loader/issues/149
-    // https://github.com/shama/stylus-loader/pull/154/files#diff-0444c5b7c3bc2c340b3654c507443b06R35
-    // plugins: [
-    //   new (stylusLoader.OptionsPlugin)({
-    //     default: { use: [bootstrap()] }
-    //   })
-    // ]
   }
 }

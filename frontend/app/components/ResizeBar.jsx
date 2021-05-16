@@ -1,101 +1,103 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import _ from 'lodash'
-import cx from 'classnames'
-import emitter from 'utils/emitter'
-import * as E from 'utils/emitter'
+import React from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import cx from 'classnames';
+import emitter from 'utils/emitter';
+import * as E from 'utils/emitter';
 
-const debounced = _.debounce(func => func(), 50)
-function emitPanelResizedEvent () {
+const debounced = _.debounce((func) => func(), 50);
+function emitPanelResizedEvent() {
   debounced(() => {
-    emitter.emit(E.PANEL_RESIZED)
-  })
+    emitter.emit(E.PANEL_RESIZED);
+  });
 }
 
 // onloading this module, should make window resize event be heard by emitting `E.PANEL_RESIZED`
-window.onresize = emitPanelResizedEvent
+window.onresize = emitPanelResizedEvent;
 
 const getNextSiblingNode = (currentDOM) => {
-  let sibling = currentDOM.nextSibling
+  let sibling = currentDOM.nextSibling;
   if (sibling) {
     while (sibling.nodeName !== currentDOM.nodeName) {
-      sibling = sibling.nextSibing
-      if (!sibling) break
+      sibling = sibling.nextSibing;
+      if (!sibling) break;
     }
   }
- return sibling
-}
+  return sibling;
+};
 
 const startResize = (e, viewId, confirmResize) => {
-  if (e.button !== 0) return // do nothing unless left button pressed
-  e.preventDefault()
+  if (e.button !== 0) return; // do nothing unless left button pressed
+  e.preventDefault();
 
-  let leftViewDom = document.getElementById(viewId)
-  let rightViewDom = getNextSiblingNode(leftViewDom)
-  if (!rightViewDom) return
+  const leftViewDom = document.getElementById(viewId);
+  const rightViewDom = getNextSiblingNode(leftViewDom);
+  if (!rightViewDom) return;
 
-  let [oX, oY] = [e.pageX, e.pageY]
-  let [leftSize, rightSize] = [Number(leftViewDom.style.flexGrow), Number(rightViewDom.style.flexGrow)]
+  let [oX, oY] = [e.pageX, e.pageY];
+  let [leftSize, rightSize] = [Number(leftViewDom.style.flexGrow), Number(rightViewDom.style.flexGrow)];
   // if (!leftSize || !rightSize) console.log('bommer', typeof rightSize); return
 
   const handleResize = (e) => {
-    let [dX, dY] = [oX - e.pageX, oY - e.pageY]
-    ;[oX, oY] = [e.pageX, e.pageY]
-    ;[leftSize, rightSize] = resize(leftViewDom.id, rightViewDom.id, dX, dY)
+    const [dX, dY] = [oX - e.pageX, oY - e.pageY];
+    [oX, oY] = [e.pageX, e.pageY];
+    [leftSize, rightSize] = resize(leftViewDom.id, rightViewDom.id, dX, dY);
     // Array.isArray(resizingListeners) && resizingListeners.forEach(listener => listener())
-  }
+  };
 
   const stopResize = () => {
-    window.document.removeEventListener('mousemove', handleResize)
-    window.document.removeEventListener('mouseup', stopResize)
-    confirmResize(leftViewDom.id, leftSize, rightViewDom.id, rightSize)
-  }
+    window.document.removeEventListener('mousemove', handleResize);
+    window.document.removeEventListener('mouseup', stopResize);
+    confirmResize(leftViewDom.id, leftSize, rightViewDom.id, rightSize);
+  };
 
-  window.document.addEventListener('mousemove', handleResize)
-  window.document.addEventListener('mouseup', stopResize)
-}
+  window.document.addEventListener('mousemove', handleResize);
+  window.document.addEventListener('mouseup', stopResize);
+};
 
 const resize = (leftViewId, rightViewId, dX, dY) => {
-  let leftViewDom = document.getElementById(leftViewId)
-  let rightViewDom = document.getElementById(rightViewId)
-  let [leftSize, rightSize] = [Number(leftViewDom.style.flexGrow), Number(rightViewDom.style.flexGrow)]
+  const leftViewDom = document.getElementById(leftViewId);
+  const rightViewDom = document.getElementById(rightViewId);
+  let [leftSize, rightSize] = [Number(leftViewDom.style.flexGrow), Number(rightViewDom.style.flexGrow)];
 
-  var r, rA, rB
+  let r; let rA; let
+    rB;
   if (leftViewDom.parentNode.style.flexDirection === 'column') {
-    r = dY
-    rA = leftViewDom.offsetHeight
-    rB = rightViewDom.offsetHeight
+    r = dY;
+    rA = leftViewDom.offsetHeight;
+    rB = rightViewDom.offsetHeight;
   } else {
-    r = dX
-    rA = leftViewDom.offsetWidth
-    rB = rightViewDom.offsetWidth
+    r = dX;
+    rA = leftViewDom.offsetWidth;
+    rB = rightViewDom.offsetWidth;
   }
-  if (!rA || !rB) return [leftSize, rightSize]
+  if (!rA || !rB) return [leftSize, rightSize];
 
-  leftSize *= (rA - r) / rA
-  rightSize *= (rB + r) / rB
+  leftSize *= (rA - r) / rA;
+  rightSize *= (rB + r) / rB;
 
-  leftViewDom.style.flexGrow = leftSize
-  rightViewDom.style.flexGrow = rightSize
+  leftViewDom.style.flexGrow = leftSize;
+  rightViewDom.style.flexGrow = rightSize;
 
-  emitPanelResizedEvent()
+  emitPanelResizedEvent();
 
-  return [leftSize, rightSize]
-}
+  return [leftSize, rightSize];
+};
 
 const ResizeBar = ({ parentFlexDirection, viewId, confirmResize }) => {
-  const barClass = (parentFlexDirection === 'row') ? 'col-resize' : 'row-resize'
+  const barClass = (parentFlexDirection === 'row') ? 'col-resize' : 'row-resize';
   return (
-    <div className={cx('resize-bar', barClass)}
-      onMouseDown={e => startResize(e, viewId, confirmResize)}
-    ></div>
-  )
-}
+    <div
+      className={cx('resize-bar', barClass)}
+      onMouseDown={(e) => startResize(e, viewId, confirmResize)}
+    />
+  );
+};
 
 ResizeBar.propTypes = {
   parentFlexDirection: PropTypes.string.isRequired,
   viewId: PropTypes.string.isRequired,
   confirmResize: PropTypes.func.isRequired,
-}
+};
 
-export default ResizeBar
+export default ResizeBar;

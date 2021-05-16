@@ -1,11 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import cx from 'classnames'
-import PluginArea from 'components/Plugins/component'
-import { SIDEBAR } from 'components/Plugins/constants'
-import { observer } from 'mobx-react'
-import { toggleSidePanelView } from './actions'
-
+import React from 'react';
+import PropTypes from 'prop-types';
+import cx from 'classnames';
+import PluginArea from 'components/Plugins/component';
+import { SIDEBAR } from 'components/Plugins/constants';
+import { observer } from 'mobx-react';
+import { toggleSidePanelView } from './actions';
 
 /* shape of label
 label = {
@@ -15,50 +14,50 @@ label = {
 }
 */
 
-
 const SideBarLabel = ({ label, isActive, onClick }) => (
-  <div className={
+  <div
+    className={
       cx('side-bar-label', {
-        active: isActive
-      })}
+        active: isActive,
+      })
+}
     onClick={onClick}
   >
-    <div className='side-bar-label-container'>
-      <div className='side-bar-label-content'>
+    <div className="side-bar-label-container">
+      <div className="side-bar-label-content">
         <i className={cx('icon', label.icon)} />
         <span>{label.text}</span>
       </div>
     </div>
   </div>
-  )
+);
 
 SideBarLabel.propTypes = {
   isActive: PropTypes.bool,
-  onClick: PropTypes.func
-}
+  onClick: PropTypes.func,
+};
 
 const SideBar = observer(({ side }) => (
   <PluginArea
     className={`bar side-bar ${side}`}
     position={SIDEBAR[side.toUpperCase()]}
-    filter={plugin => !plugin.status.hidden}
-    getChildView={plugin => (
+    filter={(plugin) => !plugin.status.hidden}
+    getChildView={(plugin) => (
       <SideBarLabel
         key={plugin.viewId}
         label={plugin.label}
         onClick={() => toggleSidePanelView(plugin.viewId)}
         isActive={plugin.status.get('active')}
       />
-      )}
-  />))
-
+    )}
+  />
+));
 
 SideBar.propTypes = {
   // labels: labelsShape,
   side: PropTypes.string,
   activeViewId: PropTypes.string,
-  activateView: PropTypes.func
-}
+  activateView: PropTypes.func,
+};
 
-
-export default SideBar
+export default SideBar;

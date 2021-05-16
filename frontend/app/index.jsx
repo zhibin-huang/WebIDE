@@ -39,6 +39,3 @@ async function startApp(module) {
 }
 
 startApp(module);
-
-const log = (...args) => console.log(...args) || ((x) => x);
-if (__VERSION__) log(`[VERSION] ${__VERSION__}`);

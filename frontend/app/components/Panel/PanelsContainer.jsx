@@ -1,15 +1,10 @@
-import React from 'react'
-import { inject } from 'mobx-react'
-import PanelState from './state'
-import PanelAxis from './PanelAxis'
+import React from 'react';
+import { inject } from 'mobx-react';
+import PanelState from './state';
+import PanelAxis from './PanelAxis';
 
+const PrimaryPanelAxis = inject(() => ({ panel: PanelState.rootPanel }))(PanelAxis);
 
-const PrimaryPanelAxis = inject(() =>
-  ({ panel: PanelState.rootPanel })
-)(PanelAxis)
+const PanelsContainer = () => (<PrimaryPanelAxis scope="window" className="primary-panel-axis" />);
 
-const PanelsContainer = () => {
-  return (<PrimaryPanelAxis scope='window' className='primary-panel-axis' />)
-}
-
-export default PanelsContainer
+export default PanelsContainer;

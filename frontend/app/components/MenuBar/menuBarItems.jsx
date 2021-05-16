@@ -1,8 +1,8 @@
-import api from 'backendAPI'
-import i18n from '../../utils/createI18n'
-import { observable } from 'mobx'
+import api from 'backendAPI';
+import i18n from '../../utils/createI18n';
+import { observable } from 'mobx';
 
-const divider = { isDivider: true }
+const divider = { isDivider: true };
 const menuBarItems = observable([
   {
     key: 'meta',
@@ -13,9 +13,9 @@ const menuBarItems = observable([
         name: i18n`menuBarItems.meta.main`,
         icon: 'octicon octicon-gear',
         command: 'global:show_settings',
-        canopen: true
-      }
-    ]
+        canopen: true,
+      },
+    ],
   }, {
     key: 'file',
     name: i18n`menuBarItems.file.main`,
@@ -25,22 +25,22 @@ const menuBarItems = observable([
         name: i18n`menuBarItems.file.newFile`,
         icon: 'fa fa-file-text-o',
         command: 'file:new_file',
-        showMore: true
+        showMore: true,
       }, {
         key: 'newFolder',
         name: i18n`menuBarItems.file.newFolder`,
         icon: 'fa fa-folder-o',
         command: 'file:new_folder',
-        showMore: true
+        showMore: true,
       }, {
         key: 'save',
         name: i18n`menuBarItems.file.save`,
         icon: 'fa fa-floppy-o',
-        command: 'file:save'
-      }
-    ]
-  }, 
-   {
+        command: 'file:save',
+      },
+    ],
+  },
+  {
     key: 'git',
     name: i18n`menuBarItems.git.main`,
     onOpen: onGitMenuOpen,
@@ -55,12 +55,12 @@ const menuBarItems = observable([
         key: 'pull',
         name: i18n`menuBarItems.git.pull`,
         icon: 'octicon octicon-repo-pull',
-        command: 'git:pull'
+        command: 'git:pull',
       }, {
         key: 'push',
         name: i18n`menuBarItems.git.push`,
         icon: 'octicon octicon-repo-push',
-        command: 'git:push'
+        command: 'git:push',
       },
       divider,
       {
@@ -68,7 +68,7 @@ const menuBarItems = observable([
         group: 'conflicts',
         name: i18n`menuBarItems.git.resolveConflicts`,
         command: 'git:resolve_conflicts',
-        showMore: true
+        showMore: true,
       },
       divider,
       {
@@ -81,13 +81,13 @@ const menuBarItems = observable([
         key: 'unstash',
         name: i18n`menuBarItems.git.unstashChanges`,
         command: 'git:unstash',
-        showMore: true
+        showMore: true,
       },
       {
         key: 'reset',
         name: i18n`menuBarItems.git.resetHead`,
         command: 'git:reset_head',
-        showMore: true
+        showMore: true,
       },
       divider,
       {
@@ -95,27 +95,27 @@ const menuBarItems = observable([
         name: i18n`menuBarItems.git.branches`,
         icon: 'octicon octicon-git-branch',
         command: 'global:show_branches',
-        showMore: true
+        showMore: true,
       },
       {
         key: 'merge',
         name: i18n`menuBarItems.git.mergeBranch`,
         icon: 'octicon octicon-git-merge',
         command: 'git:merge',
-        showMore: true
+        showMore: true,
       },
       {
         key: 'tag',
         name: i18n`menuBarItems.git.tag`,
         command: 'git:tag',
-        showMore: true
+        showMore: true,
       },
       divider,
       {
         key: 'rebase',
         name: i18n`menuBarItems.git.rebase`,
         command: 'git:rebase:start',
-        showMore: true
+        showMore: true,
       },
       {
         key: 'abort',
@@ -135,19 +135,19 @@ const menuBarItems = observable([
         command: 'git:rebase:skip_commit',
         showMore: true,
         getIsDisabled,
-      }
-    ]
-   },
-])
+      },
+    ],
+  },
+]);
 
 const isRebasing = ['REBASING', 'REBASING_REBASING',
-  'REBASING_MERGE', 'REBASING_INTERACTIVE']
+  'REBASING_MERGE', 'REBASING_INTERACTIVE'];
 
-function onGitMenuOpen () {
-  return api.gitRebaseState().then(rebaseState => ({ rebaseState }))
+function onGitMenuOpen() {
+  return api.gitRebaseState().then((rebaseState) => ({ rebaseState }));
 }
 
-function getIsDisabled (menuContext) {
-  return (isRebasing.indexOf(menuContext.rebaseState) === -1)
+function getIsDisabled(menuContext) {
+  return (isRebasing.indexOf(menuContext.rebaseState) === -1);
 }
-export default menuBarItems
+export default menuBarItems;

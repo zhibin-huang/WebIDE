@@ -1,37 +1,37 @@
-import _ from 'lodash'
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { observer } from 'mobx-react'
-import { TabBar, TabContent, TabContentItem } from 'commons/Tab'
-import Editor from 'components/Editor'
-import i18n from 'utils/createI18n'
-import WelcomePage from './WelcomePage'
+import _ from 'lodash';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
+import { TabBar, TabContent, TabContentItem } from 'commons/Tab';
+import Editor from 'components/Editor';
+import i18n from 'utils/createI18n';
+import WelcomePage from './WelcomePage';
 
 const contextMenuItems = [
   {
     name: i18n`tab.contextMenu.close`,
     icon: '',
-    command: 'tab:close'
+    command: 'tab:close',
   }, {
     name: i18n`tab.contextMenu.closeOthers`,
     icon: '',
-    command: 'tab:close_other'
+    command: 'tab:close_other',
   }, {
     name: i18n`tab.contextMenu.closeAll`,
     icon: '',
-    command: 'tab:close_all'
+    command: 'tab:close_all',
   },
   { isDivider: true },
   {
     name: i18n`tab.contextMenu.verticalSplit`,
     icon: '',
-    command: 'tab:split_v'
+    command: 'tab:split_v',
   }, {
     name: i18n`tab.contextMenu.horizontalSplit`,
     icon: '',
-    command: 'tab:split_h'
-  }
-]
+    command: 'tab:split_h',
+  },
+];
 
 @observer
 class TabContainer extends Component {
@@ -42,32 +42,33 @@ class TabContainer extends Component {
     closePane: PropTypes.func,
   };
 
-  render () {
-    const { tabGroup, closePane } = this.props
-    if (!tabGroup) return null
+  render() {
+    const { tabGroup, closePane } = this.props;
+    if (!tabGroup) return null;
     return (
-      <div className='tab-container'>
-        <TabBar tabGroup={tabGroup}
+      <div className="tab-container">
+        <TabBar
+          tabGroup={tabGroup}
           contextMenuItems={contextMenuItems}
           closePane={closePane}
         />
-        <TabContent tabGroup={tabGroup} >
-          {tabGroup.tabs.map(tab =>
-            <TabContentItem key={tab.id} tab={tab} >
+        <TabContent tabGroup={tabGroup}>
+          {tabGroup.tabs.map((tab) => (
+            <TabContentItem key={tab.id} tab={tab}>
               {this.renderContent(tab)}
             </TabContentItem>
-          )}
+          ))}
         </TabContent>
       </div>
-    )
+    );
   }
 
-  renderContent (tab) {
+  renderContent(tab) {
     if (tab.type === 'welcome') {
-      return <WelcomePage />
+      return <WelcomePage />;
     }
-    return <Editor tab={tab} active={tab.isActive} />
+    return <Editor tab={tab} active={tab.isActive} />;
   }
 }
 
-export default TabContainer
+export default TabContainer;

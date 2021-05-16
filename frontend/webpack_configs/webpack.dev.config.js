@@ -1,22 +1,24 @@
-const webpack = require('webpack')
-const {merge} = require('webpack-merge')
-const str = JSON.stringify
-const commonConfig = require('./webpack.common.config.js')
-const devServer = require('./devServer.config')
-const stylesheet = require('./stylesheet.config')
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
+
+const str = JSON.stringify;
+const commonConfig = require('./webpack.common.config.js');
+const devServer = require('./devServer.config');
+const stylesheet = require('./stylesheet.config');
 
 const reactHotLoaderPrependEntries = [
   'react-hot-loader/patch',
   'webpack-dev-server/client?http://localhost:8060',
   'webpack/hot/only-dev-server',
-]
+];
 
 const config = merge(
-  { mode: 'development',
+  {
+    mode: 'development',
     entry: {
       main: reactHotLoaderPrependEntries,
       workspaces: reactHotLoaderPrependEntries,
-    }
+    },
   },
   commonConfig({ staticDir: '' }),
   /*
@@ -52,18 +54,14 @@ const config = merge(
     plugins: [
       new webpack.DefinePlugin({
         __DEV__: true,
-        __RUN_MODE__: str(process.env.RUN_MODE || ''),
         __BACKEND_URL__: str(process.env.BACKEND_URL || ''),
-        __WS_URL__: str(process.env.WS_URL || ''),
         __STATIC_SERVING_URL__: str(process.env.STATIC_SERVING_URL || ''),
-        __NODE_ENV__: str(process.env.NODE_ENV || ''),
       }),
 
-    ]
+    ],
   },
   devServer({ port: 8060 }),
   stylesheet(),
-)
+);
 
-
-module.exports = config
+module.exports = config;
