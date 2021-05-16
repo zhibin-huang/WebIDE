@@ -1,95 +1,118 @@
-import * as monaco from 'monaco-editor';
 import React, { Component } from 'react';
 import { getRecommendation } from 'backendAPI/codeRecommendationAPI';
 import cx from 'classnames';
-import { observer, inject } from 'mobx-react';
+import { inject } from 'mobx-react';
 import path from 'utils/path';
+import config from 'config';
 
 @inject(({ EditorTabState }) => {
   const { activeTab } = EditorTabState;
   if (!activeTab || !activeTab.editor) return { filePath: '', line: '' };
-  return { filePath: activeTab.editor.filePath, title: activeTab.title, line: activeTab.editor.cursorPosition.ln };
+  return {
+    filePath: activeTab.editor.filePath,
+    title: activeTab.title,
+    line: activeTab.editor.cursorPosition.ln,
+  };
 })
 
 class Recommendation extends Component {
   constructor(props) {
     super(props);
+    const { title, filePath, line } = this.props;
     this.state = {
-      code: '', loading: false, title: this.props.title, filePath: this.props.filePath, line: this.props.line,
+      results: [], loading: false, title, filePath, line, first: true,
     };
-    this.htmlDOM = document.createElement('div');
-    Object.assign(this.htmlDOM.style, { width: '100%', height: '100%' });
     this.handleClick = this.onButnClick.bind(this);
-    this.meditor = monaco.editor.create(this.htmlDOM, {
-      readOnly: true,
-      language: 'java',
-      glyphMargin: false,
-      minimap: {
-        enabled: false,
-      },
-      automaticLayout: true,
-    });
   }
 
   componentWillReceiveProps(newProps) {
-    if (this.state.filePath != newProps.filePath) {
+    const { filePath, line, title } = this.state;
+    if (filePath !== newProps.filePath) {
       this.setState({ filePath: newProps.filePath });
     }
-    if (this.state.line != newProps.line) {
+    if (line !== newProps.line) {
       this.setState({ line: newProps.line });
     }
-    if (this.state.title != newProps.title) {
+    if (title !== newProps.title) {
       this.setState({ title: newProps.title });
     }
   }
 
   onButnClick() {
-    if (this.state.filePath && this.state.filePath.length > 0) {
-      this.setState({ loading: true });
+    const { filePath, line } = this.state;
+    if (filePath && filePath.length > 0) {
+      this.setState({ loading: true, first: false });
       const rootUri = `/${config.baseDIR}/${config.spaceKey}/working-dir`;
-      const completePath = path.join(rootUri, this.state.filePath);
-      const { line } = this.state;
+      const completePath = path.join(rootUri, filePath);
       getRecommendation(completePath, line).then(
         (response) => {
-          this.meditor.setValue(response.recommendation);
-          this.setState({ loading: false, code: response.recommendation });
-          this.dom.appendChild(this.meditor.getContainerDomNode());
+          this.setState({ loading: false, results: response.recommendation });
         },
       );
     }
   }
 
-  componentWillUnmount() {
-    if (this.meditor) {
-      if (this.meditor.getModel()) {
-        this.meditor.getModel().dispose();
-      }
-      this.meditor.dispose();
-      this.meditor = null;
-    }
-  }
-
   render() {
+    const {
+      results, title, line, loading, first,
+    } = this.state;
+    const resultsView = results.length > 0 ? results.map((result, index) => (
+      <div className="panel panel-info">
+        <div className="panel-heading">
+          <h4 className="panel-title">
+            <a
+              data-toggle="collapse"
+              data-parent="#accordion"
+              href={`#collapse${index}`}
+            >
+              {`推荐结果${index + 1}`}
+            </a>
+          </h4>
+        </div>
+        <div id={`collapse${index}`} className="panel-collapse collapse in">
+          <div className="panel-body">
+            <pre style={{ overflowY: 'hidden' }}>{result}</pre>
+          </div>
+        </div>
+        <br />
+      </div>
+    )) : (
+      <div className="panel panel-info">
+        <div className="panel-body">
+          当前方法未得到推荐结果。
+        </div>
+      </div>
+    );
     return (
-      <div ref={(r) => this.dom = r} style={{ width: '100%', height: '100%' }}>
+      <div style={{ width: '100%', height: '100%' }}>
         <span>
-          {' '}
           <br />
           当前文件:
-          {this.state.title}
-          , &nbsp; 当前行:
-          {this.state.line}
           {' '}
-          <br />
-          <br />
+          {title}
+          , &nbsp; 当前行:
+          {line}
         </span>
+        <br />
+        <br />
         <button
-          className={cx('btn btn-primary', { disabled: this.state.loading })}
+          type="submit"
+          className={cx('btn btn-primary', { disabled: loading })}
           style={{ marginLeft: '4px' }}
           onClick={this.handleClick}
         >
-          {this.state.loading ? '分析中...' : '执行分析'}
+          {loading ? '分析中...' : '执行分析'}
         </button>
+        <br />
+        <br />
+        {
+          !loading && !first
+            ? (
+              <div className="panel-group" id="accordion">
+                {resultsView}
+              </div>
+            ) : ''
+        }
       </div>
     );
   }

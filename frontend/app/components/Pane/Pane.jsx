@@ -27,7 +27,7 @@ const Pane = observer((props) => {
       {pane.views.length // priortize `pane.views` over `pane.content`
         ? <PaneAxis pane={pane} />
         : (
-          <div className="pane">
+          <div className="customized-pane">
             <TabContainer tabGroup={pane.tabGroup} containingPaneId={pane.id} closePane={closePane} />
           </div>
         )}

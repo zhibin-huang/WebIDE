@@ -33,7 +33,7 @@ const Panel = observer((props) => {
       {' '}
       { panel.views.length
         ? <PanelAxis panel={panel} />
-        : <div className="panel"><PanelContent panel={panel} /></div>}
+        : <div className="customized-panel"><PanelContent panel={panel} /></div>}
       {panel.disableResizeBar
         ? null
         : (

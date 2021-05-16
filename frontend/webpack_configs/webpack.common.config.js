@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const webpack = require('webpack');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 require('dotenv').config();
@@ -67,7 +68,6 @@ module.exports = function (options = {}) {
       new MonacoWebpackPlugin({
         languages: ['java'],
       }),
-
     ],
     module: {
       rules: [
