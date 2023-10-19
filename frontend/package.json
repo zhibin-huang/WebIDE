@@ -86,7 +86,7 @@
     "octicons": "4.4.0",
     "path-browserify": "^1.0.1",
     "prop-types": "^15.5.10",
-    "qs": "^6.4.0",
+    "qs": "^6.10.3",
     "react": "^15.3.0",
     "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.3.1",
