@@ -57,7 +57,7 @@
     "@babel/runtime-corejs3": "^7.13.10",
     "@codingame/monaco-jsonrpc": "^0.3.1",
     "animated-scrollto": "^1.1.0",
-    "axios": "^0.21.2",
+    "axios": "^1.6.0",
     "backo2": "^1.0.2",
     "bootstrap-styl": "^5.0.7",
     "classnames": "^2.2.5",
